@@ -9,7 +9,9 @@
 6. Mahmud Asrul
 
 ## Kegunaan Aplikasi
-
+Aplikasi StartIn bertujuan memajukan inovasi teknologi di Indonesia. StartIn memberikan sarana bagi semua orang yang memiliki ide inovasi teknologi untuk mendapatkan donasi dari orang lain untuk funding terhadap projek mereka. Dengan begini, harapannya StartIn dapat mendukung pertumbuhan teknologi Indonesia dan meningkatkan jumlah tech startup.
+StartIn juga memberikan sarana bagi siswa dan mahasiswa untuk belajar segala hal mengenai teknologi dan cara memulai startup mereka sendiri dengan mengikuti workshop, talkshow, dan courses yang ada di StartIn.
+StartIn juga menampilkan berita-berita terbaru seputar tech startup dan teknologi terbaru yang paling berpotensi. Dengan begini, masyarakat Indonesia tidak akan ketinggalan berita mengenai teknologi yang saat ini sedang dikembangkan.
 
 ## Daftar Modul
 ### Modul Utama
