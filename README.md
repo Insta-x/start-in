@@ -1,3 +1,5 @@
+[Link Aplikasi Heroku](https://start-in.herokuapp.com/)
+
 ## Anggota Kelompok
 1. Uttsada Jason
 2. Rahfi Alyendra Gibran
@@ -5,8 +7,6 @@
 4. Rafi Rasendrya Favian
 5. Muhammad Raihan
 6. Mahmud Asrul
-
-[Link Aplikasi Heroku](https://start-in.herokuapp.com/)
 
 ## Kegunaan Aplikasi
 
