@@ -6,8 +6,7 @@
 5. Muhammad Raihan
 6. Mahmud Asrul
 
-## Link Heroku
-
+[Link Aplikasi Heroku](https://start-in.herokuapp.com/)
 
 ## Kegunaan Aplikasi
 
