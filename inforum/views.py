@@ -14,10 +14,8 @@ import json;
 # Create your views here.
 
 def show_all_forum(request):
-    
-    #TODO:render forum.html
 
-    return 
+    return render(request, 'inforum.html') 
 
 def get_all_forum(request):
     forums = Forum.objects.all();
