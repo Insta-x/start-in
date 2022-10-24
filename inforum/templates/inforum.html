@@ -26,47 +26,124 @@
             </div>
         <div>
     </section>
-    <section class="max-w-screen flex gap-x-6 items-start justify-center">
-        <article  class="flex flex-col items-center justify-start gap-y-6 pt-14 px-6">
-            <div onclick="redirectForum(3)" id="forum-${forum.pk}" class="card rounded-sm h-[300px] w-full lg:w-[800px] bg-base-100 shadow-md transform transition hover:ring hover:bg-opacity-70 cursor-pointer">
-                <div class="card-body p-4 md:p-6 relative">
-                <label id="delete-button" for="${forum.pk}" class=" text-xl text-red-500 absolute right-2 top-2 md:right-5 md:top-4 px-3 py-1 hover:bg-gray-200 rounded-md transition duration-100 cursor-pointer">X</label>
-                <h2 class="card-title text-[18px] md:text-xl">${forum.fields.title}</h2>
-                    <div class="h-full ">
-                        <p class="leading-none font-bold text-gray-600 text-base mb-6">${forum.fields.date} <span class="font-normal ml-3"> date</span></p>
-                        <p class='text-[13px] md:text-[15px] flex flex-col flex-wrap multi-line'>${forum.fields.description} 
-                            blalbalbkblalblablablablalbblbbbbbbbbl lalblab asljdlakdlaksd laklsdk lasld laskdl kalskdlakld klaskdla kdlkladklad asdas s
-                            blalbalbkblalblablablablalbblbbbbbbbbl lalblab asljdlakdlaksd laklsdk lasld laskdl kalskdlakld klaskdla kdlkladklad asdas s
-
-                        </p>
-                        </div>
-                </div>
-                </div>
+    <section class="max-w-screen flex gap-x-6 items-start justify-center pt-14">
+        <div class="flex flex-col items-center justify-start gap-y-6 px-6">
+            <label for="create-forum-modal" class=" flex items-center gap-x-3 cursor-pointer w-full p-2 pl-4 bg-gray-100 border border-gray-400 rounded-full text-gray-400 hover:border-blue-300 hover:text-blue-400 transition duration-100">
+                <img src="../../static/assets/pencil.svg" alt="pencil" class="w-5 h-5 font-semibold text-gray-400 transform hover:-rotate-45 transition-all duration-100 "/>
+                Start a new discussion!
+                
+            </label>
+            <article id="forum-card-placeholder" class="flex flex-col items-center justify-start">
+            </article>
+        </div>
+        <div class="bg-white gap-y-2 p-4 rounded-md flex flex-col justify-between w-52 h-52 shadow-md ">
+            <label class="text-lg text-gray-700 pb-3 font-semibold cursor-pointer">Filter by category</label>
+            <div class="flex gap-x-3 items-center">
+                <div class="w-4 h-4 p-2 bg-blue-500"> </div>
+                <label class="hover:text-blue-400 hover:underline cursor-pointer">Technology</label>
             </div>
-            <input type="checkbox" id=${forum.pk} class="modal-toggle" />
-            <div class="modal modal-bottom sm:modal-middle">
-                <div class="modal-box flex flex-col items-center">
-                <h3 class="font-bold text-lg">Deleted forum can't be restored</h3>
-                <h2 class=" text-lg">Are you sure?</h2>
-                <div class="modal-action mt-10">
-                    <button aria="${forum.pk}" class="btn bg-red-500 text-white hover:bg-red-600">delete</button>
-                    <label id="toggle-delete-modal-${forum.pk}" for=${forum.pk} class="btn bg-white text-red-500">cancel</label>
+            <div class="flex gap-x-3 items-center">
+                <div class="w-4 h-4 p-2 bg-amber-500"> </div>
+                <label class="hover:text-blue-400 hover:underline cursor-pointer">Business</label>
+            </div>
+            <div class="flex gap-x-3 items-center">
+                <div class="w-4 h-4 p-2 bg-green-600"> </div>
+                <label class="hover:text-blue-400 hover:underline cursor-pointer">Startup</label>
+            </div>
+            <div class="flex gap-x-3 items-center">
+                <div class="w-4 h-4 p-2 bg-gray-300"> </div>
+                <label class="hover:text-blue-400 hover:underline cursor-pointer">Misc</label>
+            </div>
+        <div>
+    <section>
+        <input type="checkbox" id="create-forum-modal" class="modal-toggle" />
+        <div class="modal modal-bottom sm:modal-middle sm:w-screen">
+          <div class="bg-white w-[600px] p-6 rounded-xl">
+            <form id="form-create" method="POST" action="" class="flex flex-col items-center relative w-full">
+            <label onclick="resetForm()" id="close-create-forum-modal" for="create-forum-modal" class=" text-gray-600 absolute -right-0 -top-2 text-3xl cursor-pointer hover:text-red-500 transition duration-100">x</label>
+            
+            {% if messages %}  
+            <div class="w-full my-2 text-gray-700">
+                <ul>   
+                    {% for message in messages %}  
+                    <div class="alert alert-info shadow-lg py-2">
+                      <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span>{{message}}</span>
+                      </div>
+                    </div> 
+                    {% endfor %}  
+                </ul> 
+            </div>
+            {% endif %}
+            <div class="gap-y-5 w-full">
+            {% csrf_token %}
+                
+                <h1 class="font-semibold text-xl text-gray-700 text-center">Create new Discussion</h1>  
+        
+                <div class="flex flex-col items-start gap-y-1 w-full"> 
+                    <label for="id_title">Title</label>
+                    <input class="input input-bordered input-warning w-full" type="text" name="title"  maxlength="50" required="" id="id_title" placeholder="What is it about?"/>
                 </div>
+                <div class="flex flex-col items-start w-full"> 
+                    <label for="category">Category</label>
+                    <select for="category" class="border px-2 py-1" >
+                        <option value="technology">Technology</option>
+                        <option value="business">Business</option>
+                        <option value="startup">Startup</option>
+                        <option value="misc">Misc</option>
+                    </select>
                 </div>
-        </article>
-        <h3>halooo</h3> 
-    <section>  
+                <div class="flex flex-col items-start gap-y-1 w-full">  
+                    <label for="id_description">Description</label>
+                    <textarea placeholder="let us know what's in your mind!" class="textarea textarea-bordered w-full" name="description" cols="40" rows="10" maxlength="1000" required="" id="id_description"></textarea>
+                </div>
+            
+            </div>
+            <input id="submit-button" class="btn w-[100px] mt-4 border border-slate-800 hover:bg-gray-200 text-gray-800" type="submit" name="submit" value="Create"></td>
+            </form>
+          </div>
+        </div>      
 </main>
 <script>
 function fetchAllForum(){
     $.get(window.location.href+"get_all_forum/", function(data){
         console.log(data)
+        var placeholder = $("#forum-card-placeholder");
+        placeholder.empty()
+
+        data.forEach(function(forum){
+            placeholder.append(
+            `<div onclick="redirectForum(${forum.pk})" id="forum-${forum.pk}" class="card rounded-sm h-[300px] w-full lg:w-[800px] bg-base-100 shadow-md transform transition hover:ring hover:bg-opacity-70 cursor-pointer">
+                <div class="h-full w-[3px] bg-amber-500 absolute"></div>
+                <div class="card-body p-4 md:p-6 relative">
+                <label onclick="event.stopPropagation();" id="delete-button" for="${forum.pk}" class=" text-xl text-red-500 absolute right-2 top-2 md:right-5 md:top-4 px-3 py-1 hover:bg-gray-200 rounded-md transition duration-100 cursor-pointer">X</label>
+                <h2 class="card-title text-[18px] md:text-xl">${forum.fields.title}</h2>
+                    <div class="h-full ">
+                        <p class="leading-none font-bold text-gray-600 text-base mb-6">${forum.fields.username} <span class="font-normal ml-3">${forum.fields.time_created}</span></p>
+                        <p class='text-[13px] md:text-[15px] flex flex-col flex-wrap multi-line'>${forum.fields.content} 
+                        </p>
+                        </div>
+                </div>
+                </div>
+                <input type="checkbox" id=${forum.pk} class="modal-toggle" />
+                <div class="modal modal-bottom sm:modal-middle">
+                    <div class="modal-box flex flex-col items-center">
+                    <h3 class="font-bold text-lg">Deleted forum can't be restored</h3>
+                    <h2 class=" text-lg">Are you sure?</h2>
+                    <div class="modal-action mt-10">
+                        <button onclick="deleteForum(${forum.pk})" aria="${forum.pk}" class="btn bg-red-500 text-white hover:bg-red-600">delete</button>
+                        <label id="toggle-delete-modal-${forum.pk}" for=${forum.pk} class="btn bg-white text-red-500">cancel</label>
+                    </div>
+                </div>
+            </div>`
+            )
+        })
     })
 }
 $(document).ready(fetchAllForum);
 </script>
 <script>
-    $("#delete-button").click(function(e){e.stopPropagation(); console.log(e)})
     function redirectForum( forum_id){
         window.open(window.location.href+`get_forum/${forum_id}`, "_blank");
     }

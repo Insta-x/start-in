@@ -41,7 +41,7 @@ def add_forum(request):
     if request.method == "POST":
 
         #TODO: validate request payload
-        newForum = Forum(creator=request.user);
+        newForum = Forum(creator=request.user, username=request.user.username);
         newForum.title = request.POST.get("title");
         newForum.content = request.POST.get("content");
         newForum.save();
