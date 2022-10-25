@@ -32,10 +32,10 @@ class NormalUser(User):
     class meta:
         proxy = True
 
-@receiver(post_save, sender=NormalUser)
-def create_normal_user_profile(sender, instance, created, **kwargs):
-    if created and instance.type == "NORMAL":
-        NormalUserProfile.objects.create(user=instance)
+# @receiver(post_save, sender=NormalUser)
+# def create_normal_user_profile(sender, instance, created, **kwargs):
+#     if created and instance.type == "NORMAL":
+#         NormalUserProfile.objects.create(user=instance)
 
 class NormalUserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

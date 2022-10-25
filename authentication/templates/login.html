@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Login</title>
+{% endblock meta %}
+
+{% block navbar %}
+<div class="container-fluid">
+    <a class="navbar-brand text-white" href="#">To Do List</a>
+    <div class="d-flex justify-content-end">
+        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:login' %}">Login</a>
+        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:register' %}">Register</a>
+    </div>
+</div>
+{% endblock navbar %}
+
+{% block content %}
+
+<div class = "login container-fluid text-center mt-5">
+
+    <h1>Login</h1>
+
+    <form method="POST" action="" class="form-signin">
+        {% csrf_token %}
+        <input type="text" name="username" placeholder="Username" class="form-control">
+        <input type="password" name="password" placeholder="Password" class="form-control">
+
+        <input class="btn btn-primary mt-3" type="submit" value="Login">
+    </form>
+
+    <div style="margin: 0 auto; max-width: 330px; width: 100%; padding: 0 15px;">
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+        
+    Belum mempunyai akun? <a href="{% url 'authentication:register' %}">Buat Akun</a>
+
+</div>
+
+{% endblock content %}
