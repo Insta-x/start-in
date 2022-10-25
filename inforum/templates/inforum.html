@@ -9,119 +9,161 @@
 
 {% block content %}
 <main class="max-w-screen min-h-screen bg-gray-50">
-    <section class="w-full h-[300px] relative shadow-lg">
+    <section class="w-full h-[200px] sm:h-[250px] md:h-[300px] relative shadow-lg">
         <img src="../../static/assets/inforum-banner.jpg" alt="banner" class="w-full h-full absolute object-cover"/>
         <div class="w-full h-full z-10 absolute flex justify-center items-center gap-x-5 text-white">
-            <h1 class="text-center text-7xl font-semibold  mb-3 ">inForum </h1>
-            <div class="border-l-2 border-white h-[150px] w-[200px] pl-10 flex flex-col justify-center">
-                <h3 class="text-3xl font-semibold">
+            <h1 class="text-center text-4xl sm:text-6xl md:text-7xl font-semibold  mb-3 ">inForum </h1>
+            <div class="border-l-2 border-white h-[130px] sm:h-[150px] w-auto sm:w-[200px] pl-6 sm:pl-10 flex flex-col justify-center text-2xl sm:text-3xl font-semibold">
+                <h3 class="">
                     inspire
                 </h3>
-                <h3 class="text-3xl font-semibold">
+                <h3 class="">
                     insightful
                 </h3>  
-                <h3 class="text-3xl font-semibold">
+                <h3 class="">
                     innovate
                 </h3>     
             </div>
         <div>
     </section>
     <section class="max-w-screen flex gap-x-6 items-start justify-center pt-14">
-        <div class="flex flex-col items-center justify-start gap-y-6 px-6">
-            <label for="create-forum-modal" class=" flex items-center gap-x-3 cursor-pointer w-full p-2 pl-4 bg-gray-100 border border-gray-400 rounded-full text-gray-400 hover:border-blue-300 hover:text-blue-400 transition duration-100">
-                <img src="../../static/assets/pencil.svg" alt="pencil" class="w-5 h-5 font-semibold text-gray-400 transform hover:-rotate-45 transition-all duration-100 "/>
-                Start a new discussion!
-                
-            </label>
-            <article id="forum-card-placeholder" class="flex flex-col items-center justify-start">
+        <div class="flex flex-col items-center justify-start gap-y-6 px-6 w-full lg:max-w-[840px]">
+            <div class="w-full flex justify-between items-center gap-x-2 ">
+                {% if user_id %}
+                <label for="create-forum-modal" class="place-self-start inline-flex items-center gap-x-3 cursor-pointer w-4/5 lg:w-full p-2 pl-4 bg-gray-100 border border-gray-400 rounded-full text-gray-400 hover:border-blue-300 hover:text-blue-400 transition duration-100">
+                    <img src="../../static/assets/pencil.svg" alt="pencil" class="text-sm sm:text-base w-4 h-4 sm:w-5 sm:h-5 font-semibold text-gray-400 transform hover:-rotate-45 transition-all duration-100 "/>
+                    Start a new discussion!
+                    
+                </label> 
+                {% else %}
+                    <a href="/login" class="text-center font-semibold cursor-pointer w-4/5 lg:w-full p-2 pl-4 bg-yellow-500 border border-slate-500 rounded-full text-slate-700 hover:shadow-lg transition duration-100">
+                        
+                        login to create a new discussion!
+                        
+                    </a> 
+                {% endif %}
+                <label for="category-filter" class="flex-shrink-0 text-lg sm:text-xl gap-x-1 flex lg:hidden items-center border rounded-full border-slate-700 px-2 py-1 cursor-pointer">
+                    <img src="../../static/assets/filter-list.svg" alt="filter" class="mt-1 w-6 h-7 sm:w-7 sm:h-7"/>
+                    <p class="hidden sm:block">Filter</p>
+                </label>
+            </div>
+            <article id="forum-card-placeholder" class="w-full flex flex-col items-center justify-start">
             </article>
         </div>
-        <div class="bg-white gap-y-2 p-4 rounded-md flex flex-col justify-between w-52 h-52 shadow-md ">
+        <div class="hidden lg:flex bg-white gap-y-2 p-4 rounded-md flex flex-col justify-between w-52 h-52 shadow-md ">
             <label class="text-lg text-gray-700 pb-3 font-semibold cursor-pointer">Filter by category</label>
             <div class="flex gap-x-3 items-center">
                 <div class="w-4 h-4 p-2 bg-blue-500"> </div>
-                <label class="hover:text-blue-400 hover:underline cursor-pointer">Technology</label>
+                <label onclick="filterCategory('technology')" class="hover:text-blue-400 hover:underline cursor-pointer">Technology</label>
             </div>
             <div class="flex gap-x-3 items-center">
                 <div class="w-4 h-4 p-2 bg-amber-500"> </div>
-                <label class="hover:text-blue-400 hover:underline cursor-pointer">Business</label>
+                <label onclick="filterCategory('business')" class="hover:text-blue-400 hover:underline cursor-pointer">Business</label>
             </div>
             <div class="flex gap-x-3 items-center">
                 <div class="w-4 h-4 p-2 bg-green-600"> </div>
-                <label class="hover:text-blue-400 hover:underline cursor-pointer">Startup</label>
+                <label onclick="filterCategory('startup')" class="hover:text-blue-400 hover:underline cursor-pointer">Startup</label>
             </div>
             <div class="flex gap-x-3 items-center">
                 <div class="w-4 h-4 p-2 bg-gray-300"> </div>
-                <label class="hover:text-blue-400 hover:underline cursor-pointer">Misc</label>
+                <label onclick="filterCategory('misc')" class="hover:text-blue-400 hover:underline cursor-pointer">Misc</label>
             </div>
         <div>
     <section>
-        <input type="checkbox" id="create-forum-modal" class="modal-toggle" />
-        <div class="modal modal-bottom sm:modal-middle sm:w-screen">
-          <div class="bg-white w-[600px] p-6 rounded-xl">
-            <form id="form-create" method="POST" action="" class="flex flex-col items-center relative w-full">
-            <label onclick="resetForm()" id="close-create-forum-modal" for="create-forum-modal" class=" text-gray-600 absolute -right-0 -top-2 text-3xl cursor-pointer hover:text-red-500 transition duration-100">x</label>
-            
-            {% if messages %}  
-            <div class="w-full my-2 text-gray-700">
-                <ul>   
-                    {% for message in messages %}  
-                    <div class="alert alert-info shadow-lg py-2">
-                      <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        <span>{{message}}</span>
-                      </div>
-                    </div> 
-                    {% endfor %}  
-                </ul> 
-            </div>
-            {% endif %}
-            <div class="gap-y-5 w-full">
-            {% csrf_token %}
-                
-                <h1 class="font-semibold text-xl text-gray-700 text-center">Create new Discussion</h1>  
+    </main>
+    <input type="checkbox" id="create-forum-modal" class="modal-toggle" />
+    <div class="modal modal-bottom sm:modal-middle sm:w-screen">
+      <div class="bg-white w-[600px] p-6 rounded-xl">
+        <form id="form-create" method="POST" action="" class="flex flex-col items-center relative w-full">
+        <label id="close-create-forum-modal" for="create-forum-modal" class=" text-gray-600 absolute -right-0 -top-2 text-3xl cursor-pointer hover:text-red-500 transition duration-100">x</label>
         
-                <div class="flex flex-col items-start gap-y-1 w-full"> 
-                    <label for="id_title">Title</label>
-                    <input class="input input-bordered input-warning w-full" type="text" name="title"  maxlength="50" required="" id="id_title" placeholder="What is it about?"/>
-                </div>
-                <div class="flex flex-col items-start w-full"> 
-                    <label for="category">Category</label>
-                    <select for="category" class="border px-2 py-1" >
-                        <option value="technology">Technology</option>
-                        <option value="business">Business</option>
-                        <option value="startup">Startup</option>
-                        <option value="misc">Misc</option>
-                    </select>
-                </div>
-                <div class="flex flex-col items-start gap-y-1 w-full">  
-                    <label for="id_description">Description</label>
-                    <textarea placeholder="let us know what's in your mind!" class="textarea textarea-bordered w-full" name="description" cols="40" rows="10" maxlength="1000" required="" id="id_description"></textarea>
-                </div>
+        {% if messages %}  
+        <div class="w-full my-2 text-gray-700">
+            <ul>   
+                {% for message in messages %}  
+                <div class="alert alert-info shadow-lg py-2">
+                  <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current flex-shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>{{message}}</span>
+                  </div>
+                </div> 
+                {% endfor %}  
+            </ul> 
+        </div>
+        {% endif %}
+        <div class="gap-y-5 w-full">
+        {% csrf_token %}
             
+            <h1 class="font-semibold text-xl text-gray-700 text-center">Create new Discussion</h1>  
+    
+            <div class="flex flex-col items-start gap-y-1 w-full"> 
+                <label for="id_title">Title</label>
+                <input class="input input-bordered input-warning w-full" type="text" name="title"  maxlength="50" required="" id="id_title" placeholder="What is it about?"/>
             </div>
-            <input id="submit-button" class="btn w-[100px] mt-4 border border-slate-800 hover:bg-gray-200 text-gray-800" type="submit" name="submit" value="Create"></td>
-            </form>
-          </div>
-        </div>      
-</main>
+            <div class="flex flex-col items-start w-full"> 
+                <label for="category">Category</label>
+                <select name="category" class="border px-2 py-1" >
+                    <option value="technology">Technology</option>
+                    <option value="business">Business</option>
+                    <option value="startup">Startup</option>
+                    <option value="misc">Misc</option>
+                </select>
+            </div>
+            <div class="flex flex-col items-start gap-y-1 w-full">  
+                <label for="id_content">Content</label>
+                <textarea placeholder="let us know what's in your mind!" class="textarea textarea-bordered w-full" name="content" cols="40" rows="10" maxlength="1000" required="" id="id_content"></textarea>
+            </div>
+        
+        </div>
+        <input id="submit-button" class="btn w-[100px] mt-4 border border-slate-800 hover:bg-gray-200 text-gray-800" type="submit" name="submit" value="Create"></td>
+        </form>
+      </div>
+    </div> 
+    <input type="checkbox" id="category-filter" class="modal-toggle" />
+    <div class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box flex flex-col gap-y-2">
+        <label for="category-filter" class="text-lg flex w-full justify-between items-center text-gray-700 pb-3 font-semibold cursor-pointer">
+            Filter by category
+            <label for="category-filter" class=" text-3xl text-gray-600 font-normal">x</label>
+        </label>
+        <div class="flex gap-x-3 items-center">
+            <div class="w-4 h-4 p-2 bg-blue-500"> </div>
+            <label for="category-filter" onclick="filterCategory('technology')" class="hover:text-blue-400 hover:underline cursor-pointer">Technology</label>
+        </div>
+        <div class="flex gap-x-3 items-center">
+            <div class="w-4 h-4 p-2 bg-amber-500"> </div>
+            <label for="category-filter" onclick="filterCategory('business')" class="hover:text-blue-400 hover:underline cursor-pointer">Business</label>
+        </div>
+        <div class="flex gap-x-3 items-center">
+            <div class="w-4 h-4 p-2 bg-green-600"> </div>
+            <label for="category-filter" onclick="filterCategory('startup')" class="hover:text-blue-400 hover:underline cursor-pointer">Startup</label>
+        </div>
+        <div class="flex gap-x-3 items-center">
+            <div class="w-4 h-4 p-2 bg-gray-300"> </div>
+            <label for="category-filter" onclick="filterCategory('misc')" class="hover:text-blue-400 hover:underline cursor-pointer">Misc</label>
+        </div>
+        </div>
+    </div>     
 <script>
-function fetchAllForum(){
-    $.get(window.location.href+"get_all_forum/", function(data){
-        console.log(data)
-        var placeholder = $("#forum-card-placeholder");
-        placeholder.empty()
 
-        data.forEach(function(forum){
-            placeholder.append(
-            `<div onclick="redirectForum(${forum.pk})" id="forum-${forum.pk}" class="card rounded-sm h-[300px] w-full lg:w-[800px] bg-base-100 shadow-md transform transition hover:ring hover:bg-opacity-70 cursor-pointer">
-                <div class="h-full w-[3px] bg-amber-500 absolute"></div>
+function createForumCard(forum){
+    var username = '{{username}}';
+    const colorPallete = {
+        technology : 'bg-blue-500',
+        business : "bg-amber-500",
+        startup : "bg-green-600",
+        misc : "bg-gray-400"
+    }
+    var placeholder = $("#forum-card-placeholder");
+    placeholder.append(
+            `<div id="forum-${forum.pk}" onclick="redirectForum(${forum.pk})" id="forum-${forum.pk}" class="my-3 card rounded-sm h-[240px] sm:h-[300px] w-full lg:w-[800px] bg-base-100 shadow-md transform transition hover:ring hover:bg-opacity-70 cursor-pointer">
+                <div class="h-full w-[3px] ${colorPallete[forum.fields.category.toLowerCase()]} absolute"></div>
                 <div class="card-body p-4 md:p-6 relative">
-                <label onclick="event.stopPropagation();" id="delete-button" for="${forum.pk}" class=" text-xl text-red-500 absolute right-2 top-2 md:right-5 md:top-4 px-3 py-1 hover:bg-gray-200 rounded-md transition duration-100 cursor-pointer">X</label>
+                ${username == forum.fields.username ? `<label onclick="event.stopPropagation();" id="delete-button" for=${forum.pk} class=" text-xl text-red-500 absolute right-2 top-2 md:right-5 md:top-4 px-3 py-1 hover:bg-gray-200 rounded-md transition duration-100 cursor-pointer">X</label>` : ""}
                 <h2 class="card-title text-[18px] md:text-xl">${forum.fields.title}</h2>
                     <div class="h-full ">
                         <p class="leading-none font-bold text-gray-600 text-base mb-6">${forum.fields.username} <span class="font-normal ml-3">${forum.fields.time_created}</span></p>
-                        <p class='text-[13px] md:text-[15px] flex flex-col flex-wrap multi-line'>${forum.fields.content} 
+                        <p class='text-[15px] flex flex-col flex-wrap multi-line'>${forum.fields.content} 
                         </p>
                         </div>
                 </div>
@@ -138,6 +180,13 @@ function fetchAllForum(){
                 </div>
             </div>`
             )
+}
+function fetchAllForum(){
+    $.get("/inforum/get_all_forum/", function(data){
+        var placeholder = $("#forum-card-placeholder");
+        placeholder.empty()
+        data.forEach(function(forum){
+            createForumCard(forum);
         })
     })
 }
@@ -148,5 +197,70 @@ $(document).ready(fetchAllForum);
         window.open(window.location.href+`get_forum/${forum_id}`, "_blank");
     }
 
+    function deleteForum(forum_id){
+        
+
+        $.ajax({
+            method : "DELETE",
+            url : window.location.href+`delete_forum/${forum_id}`,
+            beforeSend: xhr => xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}"),
+            success:() => {        
+                    
+            },
+            dataType: "json"
+
+
+        })
+        setTimeout(function(){
+            $(`#toggle-delete-modal-${forum_id}`).click();
+            $(`#forum-${forum_id}`).remove();
+        }, 1000)
+    }
+
+    $("#submit-button").click(function(e){
+		e.preventDefault();
+		let current = $('#form-create')
+		var formData = current.serializeArray();	
+		var url = e.currentTarget.action;
+		
+		const cleanData = {
+			"csrfmiddlewaretoken" : formData[0].value,
+			"title" : formData[1].value,
+            "category": formData[2].value,
+			"content" : formData[3].value,
+		}
+		
+		$.ajax({
+		type: "POST",
+		url: "/inforum/add/",
+		//contentType: "application/json; charset=utf-8",
+		data:cleanData,
+		success: data => {
+			
+			window.alert("berhasil menambahkan task!");
+            $('#form-create').trigger("reset");
+			$("#close-create-forum-modal").click();
+			createForumCard(data[0]);
+			
+		},
+		dataType: "json"
+		});
+      });
+
+      $("#close-create-forum-modal").click(function(){
+        $("#form-create").trigger("reset")
+      }
+      )
+    
+      function filterCategory(category){
+        $.get(`/inforum/get_all_forum/${category}`, function(data){
+            var placeholder = $("#forum-card-placeholder");
+            placeholder.empty()
+            data.forEach(function(forum){
+                createForumCard(forum);
+            })
+        })
+
+      }
 </script>
 {% endblock content %}

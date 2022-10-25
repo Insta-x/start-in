@@ -10,6 +10,7 @@ class Forum(models.Model):
     time_created = models.DateField(default=timezone.now());
     title = models.CharField(max_length=100);
     content = models.TextField(max_length=1000);
+    category = models.CharField(max_length=20);
 
 
 class Comment(models.Model):

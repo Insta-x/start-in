@@ -14,11 +14,19 @@ import json;
 # Create your views here.
 
 def show_all_forum(request):
+    context = {
+        'user_id' : request.user.id,
+        'username' : request.user.username
+    }
 
-    return render(request, 'inforum.html') 
+    return render(request, 'inforum.html', context) 
 
 def get_all_forum(request):
     forums = Forum.objects.all();
+    return HttpResponse(serializers.serialize("json", forums ), content_type="application/json")
+
+def get_all_forum_by_category(request, category):
+    forums = Forum.objects.filter(category=category.lower());
     return HttpResponse(serializers.serialize("json", forums ), content_type="application/json")
 
 
@@ -41,11 +49,12 @@ def add_forum(request):
     if request.method == "POST":
 
         #TODO: validate request payload
-        newForum = Forum(creator=request.user, username=request.user.username);
+        newForum = Forum(user_id=request.user, username=request.user.username);
         newForum.title = request.POST.get("title");
         newForum.content = request.POST.get("content");
+        newForum.category= request.POST.get("category");
         newForum.save();
-        return HttpResponse("succesfully created your forum!")
+        return HttpResponse(serializers.serialize("json", [newForum]), content_type="application/json")
 
     return HttpResponse("only POST method allowd!")
 
@@ -79,8 +88,9 @@ def delete_forum(request,forum_id):
     if request.method == "DELETE":
 
         #TODO: validate request payload
-        forum = Forum.objects.filter(id=forum_id);
-        if(forum.creator == request.user):
+        forum = Forum.objects.filter(id=forum_id).first();
+        print(forum)
+        if(forum):
             forum.delete();
         return HttpResponse("successfully deleted your forum")
 
