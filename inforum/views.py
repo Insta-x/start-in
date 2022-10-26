@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.contrib.auth import logout
 from django.shortcuts import render;
 from .models import *;
@@ -8,6 +9,7 @@ from django.contrib import messages;
 from django.contrib.auth import authenticate, login, models;
 from django.contrib.auth.decorators import login_required;
 from django.urls import reverse;
+from authentication.models import NormalUserProfile;
 import datetime;
 import json;
 
@@ -30,17 +32,21 @@ def get_all_forum_by_category(request, category):
     return HttpResponse(serializers.serialize("json", forums ), content_type="application/json")
 
 
-def show_forum(request):
-
-    return render(request, "forum-page.html") 
+def show_forum(request, forum_id):
+    forum = Forum.objects.get(id=forum_id);
+    print(forum)
+    related_forums = Forum.objects.filter(category=forum.category);
+    if len(related_forums) > 5:
+        related_forums= related_forums[0:5]
+    print(related_forums)
     
-def get_forum(request, id):
-    forum = Forum.objects.filter(id=id);
-    comments = Comment.objects.filter(forum=forum);
-    context = {'forum' : forum, 'comments' : comment}
+    return render(request, "forum-page.html", {"forum_id" : forum_id, "user" : request.user, "related_forums": related_forums, "forum_title": Forum.objects.get(id=forum_id).title}) 
+    
+def get_forum(request, forum_id):
+    forum = Forum.objects.filter(id=forum_id);
     
     #TODO:return data and render template html
-    return HttpResponse(serializers.serialize("json", context ), content_type="application/json")
+    return HttpResponse(serializers.serialize("json", forum), content_type="application/json")
 
 @login_required(login_url="/")
 def add_forum(request):
@@ -61,13 +67,22 @@ def add_comment(request, forum_id):
     if request.method == "POST":
 
         #TODO: validate request payload
-        newForum = Forum(from_user=request.user);
-        newForum.forum = Forum.objects.filter(id=forum_id);
-        newForum.comment = request.POST.get("comment");
-        newForum.save();
-        return HttpResponse("comment has been added!")
+        user = NormalUserProfile.objects.get(user=request.user);
+        newComment = Comment(from_user=request.user, username=user.name, user_job = user.job );
+        newComment.forum = Forum.objects.get(id=forum_id);
+        newComment.comment = request.POST.get("comment");
+        newComment.save();
+        return HttpResponse(serializers.serialize("json", [newComment]), content_type="application/json")
 
     return HttpResponse("only POST method allowd!")
+
+@login_required(login_url="/")
+def get_comment(request, forum_id):
+    if request.method == "GET":
+        forum = Forum.objects.filter(id=forum_id).first()
+        comments = Comment.objects.filter(forum=forum)
+
+        return HttpResponse(serializers.serialize("json", comments), content_type="application/json")
 
 @login_required(login_url="/")
 def delete_comment(request,forum_id, comment_id):
