@@ -2,6 +2,73 @@
 
 {% block meta %}
 <title>InProject</title>
+<script>
+    $(document).ready(function(){
+        $("form#search-bar-form").submit(function( event ) {
+            // alert( "Handler for .submit() called." );
+            event.preventDefault();
+
+            var actionurl = event.currentTarget.action;
+
+            $.get(actionurl, $("form#search-bar-form").serialize(), (data) => {
+                alert(data);
+            });
+        });
+
+        // show_tasks();
+    });
+
+    // function show_tasks() {
+    //     $.get("./json", data => {
+    //         data.forEach(element => {
+    //             $("#todolist-card-list").append(createTasKCard(element));
+    //         });
+    //     });
+    // }
+
+    // function createTasKCard(element) {
+    //     var data = element.fields
+
+    //     var card_div = $('<div></div>')
+    //         .addClass('card todolist-card mt-2 mb-2')
+    //         .addClass(data.is_finished ? 'border-success' : 'border-danger')
+    //         .attr('id', 'task-' + element.pk);
+
+    //     var card_body = $('<div class="card-body"></div>')
+    //         .append($('<h4 class="card-title"></h4>')
+    //             .append(data.title)
+    //             .append($('<span></span>')
+    //                 .addClass('badge rounded-pill')
+    //                 .addClass(data.is_finished ? 'bg-success' : 'bg-danger')
+    //                 .text(data.is_finished ? 'Finished' : 'Not Finished')))
+    //         .append($('<h6 class="card-subtitle mb-2 text-muted">Created on: ' + data.date + '</h6>'))
+    //         .append($('<p class="card-text">' + data.description + '</p>'))
+    //         .append($('<a class="btn btn-secondary" href="./show-task/' + element.pk + '">Show task</a>'))
+    //         .append($('<a class="btn btn-primary">Change status</a>')
+    //             .attr('href', (data.is_finished ? './unfinish-task/' : './finish-task/') + element.pk))
+    //         .append($('<a class="btn btn-danger" href="#">Delete task</a>')
+    //             .click(() => {
+    //                 $.ajax({
+    //                     url: './delete/' + element.pk,
+    //                     type: 'delete',
+    //                     beforeSend: function(xhr) {
+    //                         xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+    //                     },
+    //                     success: () => {
+    //                         $('#task-' + element.pk).remove()
+    //                     }
+    //                 });
+    //             }));
+        
+    //     return card_div.append(card_body);
+    // }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+</script>
 {% endblock meta %}
 
 {% block navbar %}
@@ -19,12 +86,12 @@
 {% endblock navbar %}
 
 {% block content %}
-<div class="container">
-    <form class="search-form" action="#">
+<div class="container mt-3">
+    <form class="search-form" id="search-bar-form" action="./get-projects">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Search.." name="search">
+            <input type="text" class="form-control m-2" placeholder="Search Projects..." name="search">
             <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Search</button>
+                <button type="submit" class="btn btn-primary m-2">Search</button>
             </div>
         </div>
     </form>
