@@ -73,7 +73,7 @@
 
 {% block navbar %}
 <div class="container-fluid">
-    <a class="navbar-brand text-white" href="#">InProject</a>
+    <a class="navbar-brand text-white" href="/">InProject</a>
     <div class="d-flex justify-content-end">
         {% if logged_in %}  
             <a class="btn btn-outline-danger m-1" href="{% url 'authentication:logout' %}">Logout</a>
@@ -86,14 +86,90 @@
 {% endblock navbar %}
 
 {% block content %}
-<div class="container mt-3">
-    <form class="search-form" id="search-bar-form" action="./get-projects">
-        <div class="input-group">
-            <input type="text" class="form-control m-2" placeholder="Search Projects..." name="search">
-            <div class="input-group-append">
-                <button type="submit" class="btn btn-primary m-2">Search</button>
+<main class="d-flex flex-nowrap">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 200px;">
+        <!-- <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+            <span class="fs-4">Sidebar</span>
+        </a>
+        <hr> -->
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+            <a href="#" class="nav-link active" aria-current="page">
+                Create Project
+            </a>
+            </li>
+        </ul>
+        <!-- <hr>
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="" class="rounded-circle me-2" width="32" height="32">
+            <strong>mdo</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li><a class="dropdown-item" href="#">New project...</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Sign out</a></li>
+            </ul>
+        </div> -->
+    </div>
+
+    <div class="d-flex flex-column align-self-stretch">
+        <div class="container-fluid mt-3">
+            <form class="search-form" id="search-bar-form" action="./get-projects">
+                <div class="input-group">
+                    <input type="text" class="form-control m-2" placeholder="Search Projects..." name="search">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary m-2">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-around">
+            <div class="project-card p-4">
+                <strong class="d-inline-block mb-2 text-primary">World</strong>
+                <h3 class="mb-0">Featured post</h3>
+                <div class="mb-1 text-muted">Nov 12</div>
+                <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="stretched-link">Continue reading</a>
+            </div>
+            <div class="project-card p-4">
+                <strong class="d-inline-block mb-2 text-primary">World</strong>
+                <h3 class="mb-0">Featured post</h3>
+                <div class="mb-1 text-muted">Nov 12</div>
+                <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="stretched-link">Continue reading</a>
+            </div>
+            <div class="project-card p-4">
+                <strong class="d-inline-block mb-2 text-primary">World</strong>
+                <h3 class="mb-0">Featured post</h3>
+                <div class="mb-1 text-muted">Nov 12</div>
+                <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="stretched-link">Continue reading</a>
+            </div>
+            <div class="project-card p-4">
+                <strong class="d-inline-block mb-2 text-primary">World</strong>
+                <h3 class="mb-0">Featured post</h3>
+                <div class="mb-1 text-muted">Nov 12</div>
+                <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="stretched-link">Continue reading</a>
+            </div>
+            <div class="project-card p-4">
+                <strong class="d-inline-block mb-2 text-primary">World</strong>
+                <h3 class="mb-0">Featured post</h3>
+                <div class="mb-1 text-muted">Nov 12</div>
+                <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="stretched-link">Continue reading</a>
             </div>
         </div>
-    </form>
-</div>
+        
+    </div>
+        
+
+    
+</main>
+
 {% endblock content %}
