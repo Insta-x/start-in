@@ -1,6 +1,6 @@
 from django.db import models
 import uuid
-from django.contrib.auth.models import User
+from authentication.models import User
 
 # Referensi kode:
 # https://www.youtube.com/watch?v=Tqtsb9105T0&t=1884s
