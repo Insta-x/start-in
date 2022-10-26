@@ -35,7 +35,7 @@ def login_user(request):
             test = NormalUserProfile.objects.get(user=user)
             response = HttpResponse(request.user.type + ' ' + request.user.username + ' ' + test.name) # membuat response
             response.set_cookie('last_login', str(datetime.datetime.now())) # membuat cookie last_login dan menambahkannya ke dalam response
-            return response
+            return redirect('home:index')
         else:
             messages.info(request, 'Username atau Password salah!')
     context = {}
