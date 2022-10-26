@@ -1,3 +1,4 @@
+from email.policy import default
 from statistics import mode
 from django.db import models
 from django.utils import timezone
@@ -9,4 +10,4 @@ class Project(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
     donation_target = models.PositiveBigIntegerField()
-    current_donation = models.PositiveBigIntegerField()
+    current_donation = models.PositiveBigIntegerField(default=0)

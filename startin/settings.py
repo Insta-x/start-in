@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'home',
     'authentication',
     'inforum',
-    'project',
+    'projects',
 ]
 
 MIDDLEWARE = [

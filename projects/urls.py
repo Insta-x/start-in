@@ -1,9 +1,9 @@
 from pydoc import Helper
 from django.urls import path
-from .views import *
+from .views import show_projects
 
-app_name = 'project'
+app_name = 'projects'
 
 urlpatterns = [
-    path('', test, name='test')
+    path('', show_projects, name='show_projects')
 ]
