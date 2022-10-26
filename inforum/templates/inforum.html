@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block meta%}
+<title>StartIn | inforum</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdn.jsdelivr.net/npm/daisyui@2.33.0/dist/full.css" rel="stylesheet" type="text/css" />
 
@@ -193,7 +194,7 @@ $(document).ready(fetchAllForum);
 </script>
 <script>
     function redirectForum( forum_id){
-        window.open(window.location.href+`get_forum/${forum_id}`, "_blank");
+        window.open(window.location.href+`forum/${forum_id}`, "_blank");
     }
 
     function deleteForum(forum_id){

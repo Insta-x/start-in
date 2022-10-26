@@ -14,7 +14,10 @@ class Forum(models.Model):
 
 
 class Comment(models.Model):
+
     forum = models.ForeignKey("Forum", on_delete=models.CASCADE)
     from_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    username = models.CharField(max_length=150, default="")
+    user_job = models.CharField(max_length=50, default="Unemployed") 
     time_created = models.DateField(default=timezone.now)
     comment = models.TextField(max_length=250)

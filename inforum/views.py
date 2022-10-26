@@ -30,17 +30,15 @@ def get_all_forum_by_category(request, category):
     return HttpResponse(serializers.serialize("json", forums ), content_type="application/json")
 
 
-def show_forum(request):
-
-    return render(request, "forum-page.html") 
+def show_forum(request, forum_id):
     
-def get_forum(request, id):
-    forum = Forum.objects.filter(id=id);
-    comments = Comment.objects.filter(forum=forum);
-    context = {'forum' : forum, 'comments' : comment}
+    return render(request, "forum-page.html", {"forum_id" : forum_id}) 
+    
+def get_forum(request, forum_id):
+    forum = Forum.objects.filter(id=forum_id);
     
     #TODO:return data and render template html
-    return HttpResponse(serializers.serialize("json", context ), content_type="application/json")
+    return HttpResponse(serializers.serialize("json", forum), content_type="application/json")
 
 @login_required(login_url="/")
 def add_forum(request):
@@ -61,13 +59,21 @@ def add_comment(request, forum_id):
     if request.method == "POST":
 
         #TODO: validate request payload
-        newForum = Forum(from_user=request.user);
-        newForum.forum = Forum.objects.filter(id=forum_id);
-        newForum.comment = request.POST.get("comment");
-        newForum.save();
+        newComment = Comment(from_user=request.user, username=request.user.username, user_job = request.user.job );
+        newComment.forum = Forum.objects.filter(id=forum_id).first();
+        newComment.comment = request.POST.get("comment");
+        newComment.save();
         return HttpResponse("comment has been added!")
 
     return HttpResponse("only POST method allowd!")
+
+@login_required(login_url="/")
+def get_comment(request, forum_id):
+    if request.method == "GET":
+        forum = Forum.objects.filter(id=forum_id).first()
+        comments = Comment.objects.filter(forum=forum)
+
+        return HttpResponse(serializers.serialize("json", comments), content_type="application/json")
 
 @login_required(login_url="/")
 def delete_comment(request,forum_id, comment_id):
