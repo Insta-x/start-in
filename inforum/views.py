@@ -31,10 +31,8 @@ def get_all_forum_by_category(request, category):
 
 
 def show_forum(request):
-    
-    #TODO:render forum.html
 
-    return 
+    return render(request, "forum-page.html") 
     
 def get_forum(request, id):
     forum = Forum.objects.filter(id=id);
