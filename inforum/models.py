@@ -1,11 +1,11 @@
 from django.db import models
 from django.utils import timezone
-from authentication.models import User
+from authentication.models import User, NormalUserProfile
 
 # Create your models here.
 
 class Forum(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(NormalUserProfile, on_delete=models.CASCADE)
     username= models.CharField(max_length=100)
     time_created = models.DateField(default=timezone.now)
     title = models.CharField(max_length=100)

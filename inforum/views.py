@@ -1,3 +1,4 @@
+from unicodedata import category
 from django.contrib.auth import logout
 from django.shortcuts import render;
 from .models import *;
@@ -8,6 +9,7 @@ from django.contrib import messages;
 from django.contrib.auth import authenticate, login, models;
 from django.contrib.auth.decorators import login_required;
 from django.urls import reverse;
+from authentication.models import NormalUserProfile;
 import datetime;
 import json;
 
@@ -31,8 +33,14 @@ def get_all_forum_by_category(request, category):
 
 
 def show_forum(request, forum_id):
+    forum = Forum.objects.get(id=forum_id);
+    print(forum)
+    related_forums = Forum.objects.filter(category=forum.category);
+    if len(related_forums) > 5:
+        related_forums= related_forums[0:5]
+    print(related_forums)
     
-    return render(request, "forum-page.html", {"forum_id" : forum_id}) 
+    return render(request, "forum-page.html", {"forum_id" : forum_id, "user" : request.user, "related_forums": related_forums, "forum_title": Forum.objects.get(id=forum_id).title}) 
     
 def get_forum(request, forum_id):
     forum = Forum.objects.filter(id=forum_id);
@@ -59,11 +67,12 @@ def add_comment(request, forum_id):
     if request.method == "POST":
 
         #TODO: validate request payload
-        newComment = Comment(from_user=request.user, username=request.user.username, user_job = request.user.job );
-        newComment.forum = Forum.objects.filter(id=forum_id).first();
+        user = NormalUserProfile.objects.get(user=request.user);
+        newComment = Comment(from_user=request.user, username=user.name, user_job = user.job );
+        newComment.forum = Forum.objects.get(id=forum_id);
         newComment.comment = request.POST.get("comment");
         newComment.save();
-        return HttpResponse("comment has been added!")
+        return HttpResponse(serializers.serialize("json", [newComment]), content_type="application/json")
 
     return HttpResponse("only POST method allowd!")
 
