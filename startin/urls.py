@@ -23,6 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
     path('shop/',include('shop.urls')),
+    path('auth/', include('authentication.urls')),
+    path('inforum/', include('inforum.urls')),
 ]
 
 # Handle Media (Image)

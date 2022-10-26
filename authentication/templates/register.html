@@ -1,0 +1,71 @@
+{% extends 'auth_base.html' %}
+
+{% block meta %}
+<title>Account Registration</title>
+{% endblock meta %}
+
+{% block navbar %}
+<div class="container-fluid">
+    <a class="navbar-brand text-white" href="#">To Do List</a>
+    <div class="d-flex justify-content-end">
+        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:login' %}">Login</a>
+        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:register' %}">Register</a>
+    </div>
+</div>
+{% endblock navbar %}
+
+{% block content %}  
+
+<div class = "register container-fluid text-center mt-5">
+    
+    <h1>Formulir Registrasi</h1>  
+
+        <form method="POST" class="form-register">  
+            {% csrf_token %}
+            <!-- <label for="id_username" class="form-label">Username</label> -->
+            <input type="text" name="username" placeholder="Username" maxlength="150" autocapitalize="none" autocomplete="username" autofocus="" required="" id="id_username" class="form-control">
+            <input type="text" name="name" placeholder="Name" maxlength="150" autocapitalize="none" autofocus="" required="" id="id_name" class="form-control">
+            <!-- <label for="id_password1" class="form-label">Password</label> -->
+            <input type="password" name="password1" placeholder="Password" autocomplete="new-password" required="" id="id_password1" class="form-control">
+            <div class="form-text help-text">
+                <ul>
+                    <li>Your password can’t be too similar to your other personal information.</li>
+                    <li>Your password must contain at least 8 characters.</li>
+                    <li>Your password can’t be a commonly used password.</li>
+                    <li>Your password can’t be entirely numeric.</li>
+                </ul>
+            </div>
+            <!-- <label for="id_password2" class="form-label">Password confirmation</label> -->
+            <input type="password" name="password2" placeholder="Confirm Password" autocomplete="new-password" required="" id="id_password2" class="form-control">
+            <div class="form-text help-text">Enter the same password as before, for verification.</div>
+            <input type="date" id="id_birth" name="birth_date" required="" class="form-control">
+            <input type="text" name="job" placeholder="Job" maxlength="50" autocapitalize="none" autofocus="" required="" id="id_job" class="form-control">
+            <input type="textarea" name="description" placeholder="Short description of yourself" autocapitalize="none" autofocus="" id="id_desc" class="form-control">
+
+            <ul>
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li><div class="form-text help-text text-red">{{ error|escape }}</div></li>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <li><div class="form-text help-text text-red">{{ error|escape }}</div></li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+
+            <input type="submit" name="submit" value="Register" class="btn btn-primary mt-3"/> 
+        </form>
+
+    {% if messages %}  
+        <ul>   
+            {% for message in messages %}  
+                <li>{{ message }}</li>  
+                {% endfor %}  
+        </ul>   
+    {% endif %}
+
+</div>  
+
+{% endblock content %}
