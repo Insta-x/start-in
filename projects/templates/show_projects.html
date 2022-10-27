@@ -1,4 +1,5 @@
 {% extends 'projects_base.html' %}
+{% load static %}
 
 {% block meta %}
 <title>InProject</title>
@@ -11,57 +12,49 @@
             var actionurl = event.currentTarget.action;
 
             $.get(actionurl, $("form#search-bar-form").serialize(), (data) => {
-                alert(data);
+                show_projects(data);
             });
         });
-
-        // show_tasks();
     });
 
-    // function show_tasks() {
-    //     $.get("./json", data => {
-    //         data.forEach(element => {
-    //             $("#todolist-card-list").append(createTasKCard(element));
-    //         });
-    //     });
-    // }
+    function show_projects(projects) {
+        projects.forEach(element => {
+            $("#projects-list").append(createProjectCard(element));
+        });
+    }
 
-    // function createTasKCard(element) {
-    //     var data = element.fields
+    function createProjectCard(element) {
+        var data = element.fields
 
-    //     var card_div = $('<div></div>')
-    //         .addClass('card todolist-card mt-2 mb-2')
-    //         .addClass(data.is_finished ? 'border-success' : 'border-danger')
-    //         .attr('id', 'task-' + element.pk);
-
-    //     var card_body = $('<div class="card-body"></div>')
-    //         .append($('<h4 class="card-title"></h4>')
-    //             .append(data.title)
-    //             .append($('<span></span>')
-    //                 .addClass('badge rounded-pill')
-    //                 .addClass(data.is_finished ? 'bg-success' : 'bg-danger')
-    //                 .text(data.is_finished ? 'Finished' : 'Not Finished')))
-    //         .append($('<h6 class="card-subtitle mb-2 text-muted">Created on: ' + data.date + '</h6>'))
-    //         .append($('<p class="card-text">' + data.description + '</p>'))
-    //         .append($('<a class="btn btn-secondary" href="./show-task/' + element.pk + '">Show task</a>'))
-    //         .append($('<a class="btn btn-primary">Change status</a>')
-    //             .attr('href', (data.is_finished ? './unfinish-task/' : './finish-task/') + element.pk))
-    //         .append($('<a class="btn btn-danger" href="#">Delete task</a>')
-    //             .click(() => {
-    //                 $.ajax({
-    //                     url: './delete/' + element.pk,
-    //                     type: 'delete',
-    //                     beforeSend: function(xhr) {
-    //                         xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-    //                     },
-    //                     success: () => {
-    //                         $('#task-' + element.pk).remove()
-    //                     }
-    //                 });
-    //             }));
+        var card_div = $('<div class="card project-card mt-3 p-2"></div>')
+            // .addClass(data.is_finished ? 'border-success' : 'border-danger')
+            .attr('id', 'project-' + element.pk);
         
-    //     return card_div.append(card_body);
-    // }
+        var like_button = $('<button type="button" class="btn btn-outline-primary btn-rounded btn-sm"></button>')
+            .html("<img src=\'{% static 'projects/like-icon.svg' %}\'/> 101")
+        
+        var progress_bar = $('<div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>')
+            .attr('style', 'width: 50%;') // TODO donation progress
+        
+        var card_body = $('<div class="card-body"></div>')
+            .append($('<div class="d-flex justify-content-between"></div>')
+                .append($('<div class="d-flex flex-row align-items-center"></div>')
+                    .append($('<div class="ms-2 c-details">')
+                        .append($('<h6 class="mb-0"></h6>')
+                            .text('TestUser')) // TODO: username
+                        .append($('<span></span>')
+                            .text('some days ago')))) // TODO: create date
+                .append(like_button))
+            .append($('<div class="mt-5"></div>')
+                .append($('<h3 class="heading"></h3>')
+                    .text('Senior Product<br>Designer-Singapore'))
+                .append($('<div class="mt-5"></div>')
+                    .append($('<div class="progress"></div>')
+                        .append(progress_bar))
+                    .append($('<div class="mt-3"> <span class="text1">32 Applied <span class="text2">of 50 capacity</span></span> </div>')))); // TODO: donation amount
+
+        return card_div.append(card_body);
+    }
 
     function getCookie(name) {
         const value = `; ${document.cookie}`;
@@ -87,12 +80,12 @@
 
 {% block content %}
 <main class="d-flex flex-nowrap">
-    <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 200px;">
-        <!-- <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+    <!-- <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 200px;">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
             <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
             <span class="fs-4">Sidebar</span>
         </a>
-        <hr> -->
+        <hr>
         <ul class="nav nav-pills flex-column mb-auto">
             <li class="nav-item">
             <a href="#" class="nav-link active" aria-current="page">
@@ -100,7 +93,7 @@
             </a>
             </li>
         </ul>
-        <!-- <hr>
+        <hr>
         <div class="dropdown">
             <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="https://github.com/mdo.png" alt="" class="rounded-circle me-2" width="32" height="32">
@@ -113,10 +106,10 @@
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="#">Sign out</a></li>
             </ul>
-        </div> -->
-    </div>
+        </div>
+    </div> -->
 
-    <div class="d-flex flex-column align-self-stretch">
+    <div class="d-flex flex-column w-100">
         <div class="container-fluid mt-3">
             <form class="search-form" id="search-bar-form" action="./get-projects">
                 <div class="input-group">
@@ -128,8 +121,44 @@
             </form>
         </div>
 
-        <div class="d-flex flex-wrap justify-content-around">
-            <div class="project-card p-4">
+        <div class="d-flex flex-wrap justify-content-around" id="projects-list">
+            <!-- <div class="card project-card mt-3 p-2">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="ms-2 c-details">
+                                <h6 class="mb-0">Mailchimp</h6> <span>1 days ago</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary btn-rounded btn-sm">
+                            <img src="{% static 'projects/like-icon.svg' %}"/> 101
+                        </button>
+                    </div>
+                    <div class="mt-5">
+                        <h3 class="heading">Senior Product<br>Designer-Singapore</h3>
+                        <div class="mt-5">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="mt-3"> <span class="text1">32 Applied <span class="text2">of 50 capacity</span></span> </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <!-- <div class="card todolist-card mt-2 mb-2 border-danger" id="task-6">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        fdas
+                        <span class="badge rounded-pill bg-danger">Not Finished</span>
+                    </h4>
+                    <h6 class="card-subtitle mb-2 text-muted">Created on: 2022-09-27</h6>
+                    <p class="card-text">asdfasd</p>
+                    <a class="btn btn-secondary" href="./show-task/6">Show task</a>
+                    <a class="btn btn-primary" href="./finish-task/6">Change status</a>
+                    <a class="btn btn-danger" href="#">Delete task</a>
+                </div>
+            </div> -->
+            <!-- <div class="project-card p-4">
                 <strong class="d-inline-block mb-2 text-primary">World</strong>
                 <h3 class="mb-0">Featured post</h3>
                 <div class="mb-1 text-muted">Nov 12</div>
@@ -156,14 +185,7 @@
                 <div class="mb-1 text-muted">Nov 12</div>
                 <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
                 <a href="#" class="stretched-link">Continue reading</a>
-            </div>
-            <div class="project-card p-4">
-                <strong class="d-inline-block mb-2 text-primary">World</strong>
-                <h3 class="mb-0">Featured post</h3>
-                <div class="mb-1 text-muted">Nov 12</div>
-                <p class="card-text mb-auto">This is a wider card with supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" class="stretched-link">Continue reading</a>
-            </div>
+            </div> -->
         </div>
         
     </div>
