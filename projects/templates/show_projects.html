@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block meta %}
-<title>InProject</title>
+<title>StartIn Projects</title>
 <script>
     $(document).ready(function(){
         $("form#search-bar-form").submit(function( event ) {
@@ -32,6 +32,21 @@
         
         var like_button = $('<button type="button" class="btn btn-outline-primary btn-rounded btn-sm like-btn"></button>')
             .html("<img src=\'{% static 'projects/like-icon.svg' %}\'/>" + data.like_count)
+            .attr('id', 'like-' + element.pk)
+            .click(() => {
+                $.ajax({
+                    url: './like-project/',
+                    type: 'post',
+                    data: {'id' : element.pk},
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+                    },
+                    success: (data) => {
+                        $('#like-' + element.pk)
+                            .html("<img src=\'{% static 'projects/like-icon.svg' %}\'/>" + data[0].fields.like_count)
+                    }
+                })
+            });
         
         var progress_bar = $('<div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>')
             .attr('style', 'width: ' + data.current_donation / data.donation_target * 100 + '%;')
@@ -66,7 +81,7 @@
 
 {% block navbar %}
 <div class="container-fluid">
-    <a class="navbar-brand text-white" href="/">InProject</a>
+    <a class="navbar-brand text-white" href="/">StartIn Projects</a>
     <div class="d-flex justify-content-end">
         {% if logged_in %}  
             <a class="btn btn-outline-danger m-1" href="{% url 'authentication:logout' %}">Logout</a>
