@@ -1,4 +1,5 @@
 from email.policy import default
+from pyexpat import model
 from statistics import mode
 from django.db import models
 from django.utils import timezone
@@ -11,3 +12,4 @@ class Project(models.Model):
     description = models.TextField(max_length=1000)
     donation_target = models.PositiveBigIntegerField()
     current_donation = models.PositiveBigIntegerField(default=0)
+    liked_by = models.ManyToManyField(User, related_name='projects_liked')
