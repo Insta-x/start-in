@@ -1,0 +1,66 @@
+{% extends 'base-shop.html' %}
+{% block content %}
+
+<!-- Menambahkan bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+<div class = 'container' style = "width: 70%">
+    <table class="table table-light table-hover">
+        <thead>
+          <tr>
+            <th scope="col"><button type="button" class="btn btn-primary btn-lg"><a href="{% url 'shop:homepage' %}" style="color:black ;">Continue Shopping →</a></button></tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+         
+          <tr>
+            <td>
+              <a href = "{% url 'shop:checkout' %}">
+                <button type="button" class="btn btn-primary btn-lg">Checkout →</button></a></td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+
+
+    <!-- Cart Section -->
+<div class = 'container' style = 'margin-top: 50px; width: 70%'>
+<table class="table table-light table-hover">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col"><h3><strong>Item</strong></h3></th>
+        <th scope="col"><h3><strong>Price</strong></h3></th>
+        <th scope="col"><h3><strong>Quantity</strong></h3></th>
+        <th scope="col"><h3><strong>Total</strong></h3></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for item in cartitems %}
+      <tr>
+        <th scope="row"><div id = "cart_image"><img src ='{{item.product.image.url}}' width="45"></div></th>
+        <td><h3>{{item.product.name}}</h3></td>
+        <td><h3>Rp {{item.product.price}}</h3></td>
+        <td><input type = 'number'data-product="{{item.product.product_id}}" class = 'quantity' value = "{{item.quantity}}" style = 'width: 50px; padding-left: 5px'></td>
+        <td><h3>Rp {{item.subtotal | floatformat:2}}</h3></td> <!--subtotal dari property di model-->
+      </tr>
+      {% endfor %}
+      <tr>
+        <th scope="row"><div id = "cart_image"></div></th>
+        <td><h3></h3></td>
+        <td><h3></h3></td>
+        <td></td>
+        <td id = 'total'><h3><strong>Rp {{cart.grandtotal | floatformat:2}}</strong></h3></td>
+      </tr>
+      
+      
+    </tbody>
+  </table>
+</div>
+{% endblock %}

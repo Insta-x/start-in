@@ -32,9 +32,9 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user) # melakukan login terlebih dahulu
-            test = NormalUserProfile.objects.get(user=user)
-            response = HttpResponse(request.user.type + ' ' + request.user.username + ' ' + test.name) # membuat response
-            response.set_cookie('last_login', str(datetime.datetime.now())) # membuat cookie last_login dan menambahkannya ke dalam response
+            # test = NormalUserProfile.objects.get(user=user)
+            # response = HttpResponse(request.user.type + ' ' + request.user.username + ' ' + test.name) # membuat response
+            # response.set_cookie('last_login', str(datetime.datetime.now())) # membuat cookie last_login dan menambahkannya ke dalam response
             return redirect('home:index')
         else:
             messages.info(request, 'Username atau Password salah!')

@@ -1,7 +1,7 @@
 from pydoc import Helper
 from xml.etree.ElementInclude import include
 from django.urls import path
-from home.views import hello_world
+from .views import *;
 
 app_name = 'home'
 

@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>{{forum_title}}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@2.33.0/dist/full.css" rel="stylesheet" type="text/css" />
+{% endblock meta %}
+
+{% block content %}
+<main class="max-w-screen min-h-screen flex flex-col items-center justify-start bg-gray-50">
+    <section class="flex items-start gap-x-2 mt-14 mb-16">
+        <article id="forum-card-placeholder" class=" max-w-5xl mx-4">
+        </article>
+
+        <section class="hidden lg:block w-80">
+            <label class="text-gray-700 font-semibold text-[17px] mb-3">Related topics</label>
+            <div id="related-topics" class="w-full shadow-md">
+                {% for forum in related_forums %}
+                <a href="/inforum/forum/{{forum.id}}" class="cursor-pointer hover:opacity-70 transition-all duration-100 w-full bg-white p-2 flex flex-col justify-center border-b">
+                    <label class="text-[16px] text-gray-600 font-semibold truncate">{{forum.title}}</label>
+                    <p class="text-[13px]">{{forum.time_created}}</p>
+                    <p class="mt-2 flex flex-wrap text-[14px] text-black truncate">{{forum.content}}</p>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+    </section>   
+</main>
+<script>
+    function createForumCard(forum){
+        const isUser = '{{user}}'
+        const colorPallete = {
+            technology : 'bg-blue-500',
+            business : "bg-amber-500",
+            startup : "bg-green-600",
+            misc : "bg-gray-400"
+        }
+        var placeholder = $("#forum-card-placeholder");
+        placeholder.append(
+                `<div id="forum-page" id="forum-${forum.pk}" class=" card rounded-sm min-h-[400px] w-full lg:w-[800px] bg-base-100 cursor-pointer shadow-md">
+                    <div  class="h-full w-[3px] ${colorPallete[forum.fields.category.toLowerCase()]} absolute"></div>
+                        <div class="card-body p-4 md:p-6 relative">
+                            <h2 class="card-title text-[18px] md:text-xl">${forum.fields.title}</h2>
+                            <div class="h-full ">
+                                <p class="leading-none font-bold text-gray-600 text-base mb-6">${forum.fields.username} <span class="font-normal ml-3">${forum.fields.time_created}</span></p>
+                                <p class='text-[15px] flex flex-col flex-wrap multi-line'>${forum.fields.content} 
+                                </p>
+                            </div>
+                            
+                        </div>
+                        <div id="comment-placeholder" class="w-full">
+                            </div>
+                            <div id="comment-form" class="w-full p-4 relative pb-2" >
+                                ${isUser ? `<input id="comment" class="w-full border rounded-full p-2 pl-4 pr-14 bg-gray-100 placeholder-gray-400 focus:ring-blue-500 " placeholder="leave a reply"></input>
+                                <button onclick="submitHandler()" id="submit-comment"  class="absolute h-6 w-6 top-6 right-8" >
+                                    <img  src="../../static/assets/send-icon.svg"/>
+                                </button>` : 
+                                `<a href="/auth/login" class="text-center font-semibold cursor-pointer w-4/5 lg:w-full p-2 pl-4 bg-yellow-500 border border-slate-500 rounded-full text-slate-700 hover:shadow-lg transition duration-100">
+                        login to leave a reply!
+                    </a>`}
+                            </div>    
+                    </div>
+                </div>`
+                )
+    }
+
+    $(window).ready(function(){
+        $.get("/inforum/get_forum/{{forum_id}}", function(data) {
+            createForumCard(data[0]);
+            $.get("/inforum/forum/comment/{{forum_id}}", function(data) {
+                console.log(data)
+                data.forEach(function(item){
+                    createCommentCard(item);
+                })
+            })
+        })
+    })
+   
+    function submitHandler(){
+        comment = $("#comment")["0"];
+        const cleanData = {
+            "csrfmiddlewaretoken" : "{{csrf_token}}",
+            "comment" : comment.value,
+        }
+        
+        $.ajax({
+        type: "POST",
+        url: "/inforum/forum/{{forum_id}}/comment/add",
+        //contentType: "application/json; charset=utf-8",
+        data:cleanData,
+        success: (data) => {
+            
+           $("#comment").val("");
+           createCommentCard(data[0]);
+            
+        },
+        dataType: "json"
+        });
+    }
+   
+        
+   function createCommentCard(comment){
+    const placeholder = $("#comment-placeholder");
+    placeholder.append(
+        `<div class="w-11/12 mx-auto p-3 border-t bg-white flex flex-col justify-start">
+                            <label class="text-[16px] text-gray-600 font-semibold">${comment.fields.username + " - " + comment.fields.user_job}</label>
+                            <p class="text-[13px]">${comment.fields.time_created}</p>
+                            <p class="mt-2 flex flex-wrap text-[14px] text-black">${comment.fields.comment}</p>
+                        </div>`
+    )
+   };
+
+   $(document).ready(function(){
+    setInterval(() => {
+        $.get("/inforum/forum/comment/{{forum_id}}", function(data) {
+                $("#comment-placeholder").empty();
+                data.forEach(function(item){
+                    createCommentCard(item);
+                })
+            })
+    }, 10000)
+   })
+
+</script>
+
+{% endblock content %}
