@@ -4,7 +4,9 @@ from django.shortcuts import render
 from django.core import serializers
 from django.db.models import Count
 from requests import request
+from authentication.models import User
 from .models import Project
+import json
 
 def show_projects(request):
     context = {'logged_in' : request.user.is_authenticated}
@@ -14,9 +16,19 @@ def show_projects(request):
 def get_projects(request):
     data = Project.objects.filter(title__icontains=request.GET.get('search')).annotate(like_count=Count('liked_by')).order_by('-like_count')
 
-    print(data)
+    data_list = []
+    # print(serializers.serialize('json', data_list))
+    for e in data:
+        dict_data = json.loads(serializers.serialize('json', [e, ])[1:-1])
+        # print(dict_data)
+        dict_data['fields']['owner_username'] = User.objects.get(pk=dict_data['fields']['user_id']).username
+        dict_data['fields']['like_count'] = len(dict_data['fields']['liked_by'])
+        dict_data['fields']['is_liked'] = request.user.id in dict_data['fields']['liked_by']
+        del dict_data['fields']['liked_by']
+        data_list.append(dict_data)
+    # print(json.dumps(list(data_list)))
 
-    return HttpResponse(serializers.serialize('json', data), content_type='application/json')
+    return HttpResponse(json.dumps(data_list), content_type='application/json')
 
 def like_project(request):
     if request.user.is_authenticated:

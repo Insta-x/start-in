@@ -101,3 +101,7 @@ html {
 .text2 {
     color: #a5aec0
 }
+
+.like-btn {
+    min-width: 40px;
+}
