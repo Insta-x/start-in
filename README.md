@@ -26,7 +26,7 @@ Peran user:
 - Admin memasukkan berita yang telah diseleksi secara berkala.
 - User dapat melihat news yang ditampilkan.
 
-### Workshop & Talkshow
+### Events (Workshop & Talkshow)
 Menampilkan workshop dan talkshow mengenai teknologi dan startup yang sedang berlangsung. Bisa juga mendaftarkan workshop dan talkshow untuk dilaksanakan melalui aplikasi ini.
 Peran user:
 - Admin memasukkan workshop dan talkshow ke dalam list yang bisa dipantau.
