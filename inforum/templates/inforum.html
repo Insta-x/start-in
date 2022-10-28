@@ -47,7 +47,7 @@
                     <p class="hidden sm:block">Filter</p>
                 </label>
             </div>
-            <article id="forum-card-placeholder" class="w-full flex flex-col items-center justify-start">
+            <article id="forum-card-placeholder" class="w-full flex flex-col items-center justify-start mb-20">
             </article>
         </div>
         <div class="hidden lg:flex bg-white gap-y-2 p-4 rounded-md flex flex-col justify-between w-52 h-52 shadow-md ">
@@ -148,6 +148,7 @@
 
 function createForumCard(forum){
     var username = '{{username}}';
+    var userType = '{{user_type}}'
     const colorPallete = {
         technology : 'bg-blue-500',
         business : "bg-amber-500",
@@ -159,7 +160,7 @@ function createForumCard(forum){
             `<div id="forum-${forum.pk}" onclick="redirectForum(${forum.pk})" id="forum-${forum.pk}" class="my-3 card rounded-sm h-[240px] sm:h-[300px] w-full lg:w-[800px] bg-base-100 shadow-md transform transition hover:ring hover:bg-opacity-70 cursor-pointer">
                 <div class="h-full w-[3px] ${colorPallete[forum.fields.category.toLowerCase()]} absolute"></div>
                 <div class="card-body p-4 md:p-6 relative">
-                ${username == forum.fields.username ? `<label onclick="event.stopPropagation();" id="delete-button" for=${forum.pk} class=" text-xl text-red-500 absolute right-2 top-2 md:right-5 md:top-4 px-3 py-1 hover:bg-gray-200 rounded-md transition duration-100 cursor-pointer">X</label>` : ""}
+                ${username == forum.fields.username || userType == "ADMIN" ? `<label onclick="event.stopPropagation();" id="delete-button" for=${forum.pk} class=" text-xl text-red-500 absolute right-2 top-2 md:right-5 md:top-4 px-3 py-1 hover:bg-gray-200 rounded-md transition duration-100 cursor-pointer">X</label>` : ""}
                 <h2 class="card-title text-[18px] md:text-xl">${forum.fields.title}</h2>
                     <div class="h-full ">
                         <p class="leading-none font-bold text-gray-600 text-base mb-6">${forum.fields.username} <span class="font-normal ml-3">${forum.fields.time_created}</span></p>
