@@ -1,10 +1,8 @@
-from turtle import title
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.core import serializers
 from django.db.models import Count, Sum
 from django.urls import reverse
-from requests import request
 from authentication.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Project, Donation

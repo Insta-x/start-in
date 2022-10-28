@@ -1,6 +1,3 @@
-from email.policy import default
-from pyexpat import model
-from statistics import mode
 from django.db import models
 from django.utils import timezone
 from authentication.models import User
