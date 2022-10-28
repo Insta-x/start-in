@@ -2,10 +2,10 @@ from turtle import title
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.core import serializers
-from django.db.models import Count
+from django.db.models import Count, Sum
 from requests import request
 from authentication.models import User
-from .models import Project
+from .models import Project, Donation
 import json
 
 def show_projects(request):
@@ -31,6 +31,8 @@ def like_project(request):
 def show_project(request, id):
     project = Project.objects.get(pk=id)
 
+    # print(Donation.objects.filter(project_id=id).aggregate(Sum('amount'))['amount__sum'])
+
     return render(request, 'show_project.html', {'project' : encode_project(project, request.user.id)})
 
 def encode_projects(data_query_set, user_id):
@@ -41,6 +43,7 @@ def encode_projects(data_query_set, user_id):
 
 def encode_project(project, user_id):
     dict_data = json.loads(serializers.serialize('json', [project, ])[1:-1])
+    dict_data['fields']['current_donation'] = Donation.objects.filter(project_id=project.pk).aggregate(Sum('amount'))['amount__sum'] or 0
     dict_data['fields']['owner_username'] = User.objects.get(pk=dict_data['fields']['user_id']).username
     dict_data['fields']['like_count'] = len(dict_data['fields']['liked_by'])
     dict_data['fields']['is_liked'] = user_id in dict_data['fields']['liked_by']

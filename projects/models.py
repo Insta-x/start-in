@@ -11,5 +11,9 @@ class Project(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
     donation_target = models.PositiveBigIntegerField()
-    current_donation = models.PositiveBigIntegerField(default=0)
     liked_by = models.ManyToManyField(User, related_name='projects_liked')
+
+class Donation(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='donations')
+    project_id = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='donations')
+    amount = models.PositiveBigIntegerField(default=1)
