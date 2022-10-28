@@ -39,7 +39,7 @@ def donate_project(request):
     form = DonationForm(request.POST)
     if form.is_valid():
         new_donation = form.save(commit=False)
-        new_donation.user_id = request.user
+        new_donation.user = request.user
         new_donation.save()
         form.save_m2m()
         return HttpResponse(serializers.serialize('json', [new_donation, ]), content_type='application/json')
