@@ -1,5 +1,3 @@
-from pydoc import Helper
-from unicodedata import name
 from django.urls import path
 from .views import show_projects, get_projects, create_project, like_project, show_project, donate_project, get_donations
 
