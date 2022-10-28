@@ -28,6 +28,11 @@ def like_project(request):
             project.liked_by.add(request.user)
         return HttpResponse(json.dumps([encode_project(project, request.user.id), ]), content_type='application/json')
 
+def show_project(request, id):
+    project = Project.objects.get(pk=id)
+
+    return render(request, 'show_project.html', {'project' : encode_project(project, request.user.id)})
+
 def encode_projects(data_query_set, user_id):
     data_list = []
     for e in data_query_set:
