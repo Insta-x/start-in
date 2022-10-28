@@ -5,7 +5,9 @@ from django.core import serializers
 from django.db.models import Count, Sum
 from requests import request
 from authentication.models import User
+from django.contrib.auth.decorators import login_required
 from .models import Project, Donation
+from .forms import DonationForm
 import json
 
 def show_projects(request):
@@ -18,6 +20,7 @@ def get_projects(request):
 
     return HttpResponse(json.dumps(encode_projects(data, request.user.id)), content_type='application/json')
 
+@login_required(login_url='/auth/login/')
 def like_project(request):
     if request.user.is_authenticated:
         project_id = request.POST.get('id')
@@ -28,12 +31,38 @@ def like_project(request):
             project.liked_by.add(request.user)
         return HttpResponse(json.dumps([encode_project(project, request.user.id), ]), content_type='application/json')
 
+@login_required(login_url='/auth/login/')
+def donate_project(request):
+    if request.method != 'POST':
+        return HttpResponse(status=403)
+    
+    form = DonationForm(request.POST)
+    if form.is_valid():
+        new_donation = form.save(commit=False)
+        new_donation.user_id = request.user
+        new_donation.save()
+        form.save_m2m()
+        return HttpResponse(serializers.serialize('json', [new_donation, ]), content_type='application/json')
+
+def get_donations(request):
+    donations = Donation.objects.filter(project=request.GET.get('project_id'))
+    # print(request.GET.get('project_id'))
+    donation_sum = donations.aggregate(Sum('amount'))['amount__sum'] or 0
+    donators = []
+
+    for donation in donations.order_by('-amount')[:50]:
+        donators.append({'username' : User.objects.get(pk=donation.user_id).username, 'amount' : donation.amount})
+    
+    # print(donations, donation_sum, donators)
+
+    return HttpResponse(json.dumps({'donation_sum' : donation_sum, 'donators' : donators}), content_type='application/json')
+
 def show_project(request, id):
     project = Project.objects.get(pk=id)
 
-    # print(Donation.objects.filter(project_id=id).aggregate(Sum('amount'))['amount__sum'])
+    # print(Donation.objects.filter(project=id).aggregate(Sum('amount'))['amount__sum'])
 
-    return render(request, 'show_project.html', {'project' : encode_project(project, request.user.id)})
+    return render(request, 'show_project.html', {'project' : encode_project(project, request.user.id), 'form' : DonationForm()})
 
 def encode_projects(data_query_set, user_id):
     data_list = []
@@ -43,8 +72,8 @@ def encode_projects(data_query_set, user_id):
 
 def encode_project(project, user_id):
     dict_data = json.loads(serializers.serialize('json', [project, ])[1:-1])
-    dict_data['fields']['current_donation'] = Donation.objects.filter(project_id=project.pk).aggregate(Sum('amount'))['amount__sum'] or 0
-    dict_data['fields']['owner_username'] = User.objects.get(pk=dict_data['fields']['user_id']).username
+    dict_data['fields']['current_donation'] = Donation.objects.filter(project=project.pk).aggregate(Sum('amount'))['amount__sum'] or 0
+    dict_data['fields']['owner_username'] = User.objects.get(pk=dict_data['fields']['user']).username
     dict_data['fields']['like_count'] = len(dict_data['fields']['liked_by'])
     dict_data['fields']['is_liked'] = user_id in dict_data['fields']['liked_by']
     del dict_data['fields']['liked_by']
