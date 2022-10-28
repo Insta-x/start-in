@@ -31,7 +31,7 @@
     function createProjectCard(element) {
         var data = element.fields
 
-        var card_div = $('<div class="card project-card mt-3 p-2"></div>')
+        var card_div = $('<div class="card project-card mt-2 mb-2 p-2"></div>')
             .attr('id', 'project-' + element.pk);
         
         var like_button = $('<button type="button" class="btn btn-outline-primary btn-rounded btn-sm like-btn"></button>')
@@ -88,7 +88,7 @@
 <div class="container-fluid">
     <a class="navbar-brand text-white" href="/">StartIn Projects</a>
     <div class="d-flex justify-content-end">
-        {% if logged_in %}  
+        {% if logged_in %}
             <a class="btn btn-outline-danger m-1" href="{% url 'authentication:logout' %}">Logout</a>
             {% else %}
             <a class="btn btn-outline-primary m-1" href="{% url 'authentication:login' %}">Login</a>
@@ -99,7 +99,20 @@
 {% endblock navbar %}
 
 {% block content %}
-<main class="d-flex flex-nowrap">
+<main class="d-flex flex-column flex-nowrap">
+    <div class="px-4 py-5 my-5 text-center">
+        <h1 class="display-5 fw-bold">Create your project</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">Propose an innovative project that will increase the life quality of everyone.</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                {% if logged_in %}
+                    <a href="{% url 'projects:create_project' %}" class="btn btn-primary btn-lg px-4 gap-3">Create project</a>
+                    {% else %}
+                    <a href="{% url 'authentication:login' %}" class="btn btn-warning btn-lg px-4 gap-3">Login to create project</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
     <!-- <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 200px;">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
             <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>

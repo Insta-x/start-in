@@ -1,19 +1,34 @@
 from turtle import title
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.core import serializers
 from django.db.models import Count, Sum
+from django.urls import reverse
 from requests import request
 from authentication.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Project, Donation
-from .forms import DonationForm
+from .forms import ProjectForm, DonationForm
 import json
 
 def show_projects(request):
     context = {'logged_in' : request.user.is_authenticated}
 
     return render(request, 'show_projects.html', context)
+
+@login_required(login_url='/auth/login/')
+def create_project(request):
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            new_task = form.save(commit=False)
+            new_task.user = request.user
+            new_task.save()
+            form.save_m2m()
+            return HttpResponseRedirect(reverse('projects:show_projects'))
+    else:
+        form = ProjectForm()
+    return render(request, 'create_project.html', {'form': form})
 
 def get_projects(request):
     data = Project.objects.filter(title__icontains=request.GET.get('search')).annotate(like_count=Count('liked_by')).order_by('-like_count')
@@ -31,8 +46,10 @@ def like_project(request):
             project.liked_by.add(request.user)
         return HttpResponse(json.dumps([encode_project(project, request.user.id), ]), content_type='application/json')
 
-@login_required(login_url='/auth/login/')
 def donate_project(request):
+    if not request.user.is_authenticated:
+        return HttpResponse(status=403)
+
     if request.method != 'POST':
         return HttpResponse(status=403)
     
@@ -62,7 +79,7 @@ def show_project(request, id):
 
     # print(Donation.objects.filter(project=id).aggregate(Sum('amount'))['amount__sum'])
 
-    return render(request, 'show_project.html', {'project' : encode_project(project, request.user.id), 'form' : DonationForm()})
+    return render(request, 'show_project.html', {'project' : encode_project(project, request.user.id), 'logged_in' : request.user.is_authenticated})
 
 def encode_projects(data_query_set, user_id):
     data_list = []

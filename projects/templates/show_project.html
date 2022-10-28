@@ -94,9 +94,15 @@
                 <button type="button" class="btn btn-outline-primary btn-rounded btn-sm like-btn" id="like-{{ project.pk }}">
                     <img src="{% static 'projects/like-icon.svg' %}"/> {{ project.fields.like_count }}
                 </button>
-                <button type="button" class="btn btn-primary btn-rounded btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                    Donate
-                </button>
+                {% if logged_in %}
+                    <button type="button" class="btn btn-primary btn-rounded btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        Donate
+                    </button>
+                    {% else %}
+                    <a href="{% url 'authentication:login' %}" class="btn btn-warning btn-rounded btn-sm mt-3">
+                        Login to donate
+                    </a>
+                {% endif %}
             </div>
         </div>
         <div class="mt-5">
