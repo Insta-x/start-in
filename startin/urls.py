@@ -25,6 +25,7 @@ urlpatterns = [
     path('auth/', include('authentication.urls')),
     path('shop/',include('shop.urls')),
     path('inforum/', include('inforum.urls')),
+    path('projects/', include('projects.urls')),
 ]
 
 # Handle Media (Image)
