@@ -19,7 +19,7 @@
             <li><a href="/inforum"> <img src="../../static/assets/forum.svg" class="w-7 h-7"/> forum</a></li>
             <li><a href="/shop"> <img src="../../static/assets/shopping-bag.svg" class="w-7 h-7"/> shop</a></li>
             {%if username%}
-            <p>todo logout</p>
+            <li><a href="/logout" class="text-red-500"> <img src="../../static/assets/logout.svg" class="w-7 h-7"/> logout</a></li>
             {%else%}
             
             <li><a href="/auth/login"> <img src="../../static/assets/person.svg" class="w-7 h-7"/> login</a></li>
@@ -39,11 +39,12 @@
     <div class="navbar-end">
       {% if username %}
       <div class="dropdown dropdown-hover relative mr-2">
-        <label tabindex="0" class="text-lg sm:text-xl text-gray-500"> Hi, <span class="text-violet-500">{{username}}<span></label>
-        
+        <label tabindex="0" class="text-lg sm:text-xl text-gray-500 p-3 rounded-md transition duration-100 btn-ghost"> Hi, <span class="text-violet-500">{{username}}<span>
+        </label>
+          
         <ul tabindex="0" class="hidden lg:flex dropdown-content absolute right-0 menu ">
             <div class="w-full h-[20px] bg-transparent "></div>
-            <p class="p-3 shadow bg-base-100 rounded-box w-44 cursor-pointer">todo logout</p>
+            <li><a href="/logout" class=" p-3 py-4 text-right shadow-md bg-base-100 rounded-sm w-44 cursor-pointer text-red-500"> <img src="../../static/assets/logout.svg" class="w-6 h-6"/> logout</a></li>
         </ul>
       </div>
       {%else%}
