@@ -67,7 +67,7 @@
 
 {% block navbar %}
 <div class="container-fluid">
-    <a class="navbar-brand text-white" href="/projects/">StartIn Projects</a>
+    <a class="navbar-brand text-dark font-semibold text-xl tracking-wider" href="/projects/"><img src="{% static 'assets/startin-logo.png' %}" style="width: 2.5rem; height: 2.5rem;"/> StartIn Projects</a>
     <div class="d-flex justify-content-end">
         {% if logged_in %}  
             <a class="btn btn-outline-danger m-1" href="{% url 'authentication:logout' %}">Logout</a>
