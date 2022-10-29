@@ -1,1 +1,57 @@
-Hello World!
+{% extends 'base.html'%}
+
+{%block meta%}
+<title>StartIn</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@2.33.0/dist/full.css" rel="stylesheet" type="text/css" />
+
+{%endblock meta%}
+
+{%block content%}
+<navbar class="navbar bg-base-100 shadow-md">
+    <div class="navbar-start">
+      <div class="dropdown">
+        <label tabindex="0" class="btn btn-ghost lg:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+        </label>
+        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+            <li><a href="/projects"> <img src="../../static/assets/project.svg" class="w-7 h-7"/> projects</a></li>
+            <li><a href="/inforum"> <img src="../../static/assets/forum.svg" class="w-7 h-7"/> forum</a></li>
+            <li><a href="/shop"> <img src="../../static/assets/shopping-bag.svg" class="w-7 h-7"/> shop</a></li>
+            {%if username%}
+            <p>todo logout</p>
+            {%else%}
+            
+            <li><a href="/auth/login"> <img src="../../static/assets/person.svg" class="w-7 h-7"/> login</a></li>
+            {%endif%}
+        </ul>
+      </div>
+      <a href="/" class="btn btn-ghost normal-case text-2xl mb-1">Start<span class="text-violet-600">In</span></a>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+      <ul class="menu menu-horizontal p-0">
+        <li><a href="/projects">projects</a></li>
+        <li><a href="/inforum">forum</a></li>
+        <li><a href="/shop">shop</a></li>
+
+      </ul>
+    </div>
+    <div class="navbar-end">
+      {% if username %}
+      <div class="dropdown dropdown-hover relative mr-2">
+        <label tabindex="0" class="text-lg sm:text-xl text-gray-500"> Hi, <span class="text-violet-500">{{username}}<span></label>
+        
+        <ul tabindex="0" class="hidden lg:flex dropdown-content absolute right-0 menu ">
+            <div class="w-full h-[20px] bg-transparent "></div>
+            <p class="p-3 shadow bg-base-100 rounded-box w-44 cursor-pointer">todo logout</p>
+        </ul>
+      </div>
+      {%else%}
+       <a href="/auth/login" class="hidden lg:flex gap-x-1 p-2 border-2 hover:border-blue-500 transition duration-100 rounded-md "> <img src="../../static/assets/person.svg" class="w-6 h-6"/> login</a>
+      {%endif %}
+    </div>
+</navbar>
+<main class="max-w-screen min-h-screen">
+</main>
+{%endblock content%}
+
