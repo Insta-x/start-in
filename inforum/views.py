@@ -41,7 +41,7 @@ def show_forum(request, forum_id):
         related_forums= related_forums[0:5]
     print(related_forums)
     
-    return render(request, "forum-page.html", {"forum_id" : forum_id, "user" : request.user, "username" : request.user.username, "user_type" : request.user.type if request.user.id != None else "", "related_forums": related_forums, "forum_title": Forum.objects.get(id=forum_id).title}) 
+    return render(request, "forum-page.html", {"forum_id" : forum_id, "username" : request.user.username, "user_type" : request.user.type if request.user.id != None else "", "related_forums": related_forums, "forum_title": Forum.objects.get(id=forum_id).title}) 
     
 def get_forum(request, forum_id):
     forum = Forum.objects.filter(id=forum_id);
@@ -77,7 +77,6 @@ def add_comment(request, forum_id):
 
     return HttpResponse("only POST method allowd!")
 
-@login_required(login_url="/auth/login")
 def get_comment(request, forum_id):
     if request.method == "GET":
         forum = Forum.objects.filter(id=forum_id).first()
