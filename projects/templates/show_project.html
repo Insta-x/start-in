@@ -1,0 +1,151 @@
+{% extends 'projects_base.html' %}
+{% load static %}
+
+{% block meta %}
+<script>
+    $(document).ready(function(){
+        $('#like-{{ project.pk }}')
+            .click(() => {
+                $.ajax({
+                    url: "{% url 'projects:like_project' %}",
+                    type: 'post',
+                    data: {'id' : '{{ project.pk }}'},
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+                    },
+                    success: (data) => {
+                        $('#like-' + '{{ project.pk }}')
+                            .html("<img src=\'{% static 'projects/like-icon.svg' %}\'/>" + data[0].fields.like_count)
+                    }
+                })
+            });
+        
+        $( "form#donate-form" ).submit(function( event ) {
+            // alert( "Handler for .submit() called." );
+            event.preventDefault();
+
+            var actionurl = event.currentTarget.action;
+
+            $.ajax({
+                    url: actionurl,
+                    type: 'post',
+                    dataType: 'json',
+                    data: $("form#donate-form").serialize(),
+                    success: function(data) {
+                        update_donation();
+                    },
+                    error: function(){
+                        alert("ERROR");
+                    }
+            });
+        });
+        
+        update_donation()
+    });
+
+    function update_donation() {
+        $.get("{% url 'projects:get_donations' %}", 'project_id={{ project.pk }}', (data) => {
+            console.log(data);
+            $('#donation-amount').text('Rp' + data.donation_sum + ' ');
+            $('.progress-bar')
+                .attr('style', 'width:' + data.donation_sum / {{ project.fields.donation_target }} * 100 + '%;')
+            $('#donators-list').empty();
+            data.donators.forEach(element => {
+                $('#donators-list')
+                    .append($('<div></div>').text(element.username + ' donated Rp' + element.amount + '!'))
+            });
+        });
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+</script>
+{% endblock meta %}
+
+{% block navbar %}
+<div class="container-fluid">
+    <a class="navbar-brand text-white" href="/projects/">StartIn Projects</a>
+    <div class="d-flex justify-content-end">
+        {% if logged_in %}  
+            <a class="btn btn-outline-danger m-1" href="{% url 'authentication:logout' %}">Logout</a>
+            {% else %}
+            <a class="btn btn-outline-primary m-1" href="{% url 'authentication:login' %}">Login</a>
+            <a class="btn btn-outline-primary m-1" href="{% url 'authentication:register' %}">Register</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock navbar %}
+
+{% block content %}
+<main class="d-flex flex-nowrap">
+    <div class="d-flex flex-column w-100 m-5">
+        <div class="d-flex justify-content-between">
+            <div class="d-flex flex-column align-items-left">
+                <h1>{{ project.fields.title }}</h1>
+                <div class="d-flex flex-column mt-2">
+                    <h5 class="text-muted">Proposed by: {{ project.fields.owner_username }}</h5>
+                    <h5 class="text-muted">Proposed on: {{ project.fields.time_created }}</h5>
+                </div>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+                <button type="button" class="btn btn-outline-primary btn-rounded btn-sm like-btn" id="like-{{ project.pk }}">
+                    <img src="{% static 'projects/like-icon.svg' %}"/> {{ project.fields.like_count }}
+                </button>
+                {% if logged_in %}
+                    <button type="button" class="btn btn-primary btn-rounded btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                        Donate
+                    </button>
+                    {% else %}
+                    <a href="{% url 'authentication:login' %}" class="btn btn-warning btn-rounded btn-sm mt-3">
+                        Login to donate
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="mt-5">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div class="mt-3"> <span class="text1" id="donation-amount">Rp{{ project.fields.current_donation }} </span><span class="text2">/ Rp{{ project.fields.donation_target }}</span> </div>
+        </div>
+        <div class="d-flex flex-row mt-5">
+            <div class="d-flex w-100">
+                {{ project.fields.description }}
+            </div>
+            <div class="d-flex flex-column align-items-start" id="donators-list" style="max-width: 250px;">
+                <h3>Donator:</h3>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Donate to this project</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'projects:donate_project' %}" class="form-donate" id="donate-form">
+                        {% csrf_token %}
+                        <!-- <input type="text" name="title" placeholder="Title" maxlength="128" required="" id="id_title" class="form-control">
+                        <textarea name="description" placeholder="Description" cols="40" rows="10" required="" id="id_description" class="form-control"></textarea> -->
+                        <!-- {{ form.as_p }} -->
+                        <!-- <select name="project_id" required="" id="id_project_id">
+                            <option value="" selected="">---------</option>
+                            <option value="1">Project object (1)</option>
+                            <option value="2">Project object (2)</option>
+                        </select> -->
+                        <input type="hidden" name="project" id="id_project" value="{{ project.pk }}">
+                        <input class='form-control' type="number" name="amount" value="1" min="0" max="9223372036854775807" required="" id="id_amount">
+                        <input class="btn btn-primary mt-3" style="width: 100%;" type="submit" name="submit" value="Donate" data-bs-dismiss="modal"/>
+                    </form>
+                    <button type="button" class="btn btn-danger w-100 mt-2" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}

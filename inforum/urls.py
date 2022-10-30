@@ -14,4 +14,5 @@ urlpatterns = [
     path('forum/<int:forum_id>', show_forum, name='show_forum'),
     path('forum/comment/<int:forum_id>', get_comment, name='get_comment'),
     path('forum/<int:forum_id>/comment/add', add_comment, name='add_comment'),
+    path('forum/<int:forum_id>/comment/delete/<int:comment_id>', delete_comment, name='delete_comment'),
 ]
