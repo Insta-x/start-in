@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'authentication',
     'inforum',
     'events',
+    'projects',
 ]
 
 MIDDLEWARE = [

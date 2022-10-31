@@ -5,7 +5,7 @@
 <html lang="en">
 
 <head>
-    <title>Document</title>    
+    <title>Document</title>
 </head>
 
 
@@ -21,12 +21,19 @@
         padding-top: 40px;
         margin: auto;
         width: 75%;
+
+        color: rgb(136, 158, 207); 
         
     }
 
     .index-intro {
         width: 100%;
-        background-color: antiquewhite;
+        background-color: rgb(136, 158, 207);
+
+        background-image: url('../static/image/jumbotron_bg.png');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center;
     }
 
     .container-fluid {
@@ -34,7 +41,7 @@
     }
 
     .image-grid {
-        --gap: 16px;
+        --gap: 10px;
         --num-cols: 2;
         --row-heights: 300px;
 
@@ -45,6 +52,10 @@
         grid-template-columns: repeat(var(--num-cols), 1fr);
         grid-auto-rows: var(--row-heights);
         gap: var(--gap);
+
+        margin: auto;
+        width: 100%;
+        margin-left: 20px;
     }
     
 
@@ -52,39 +63,48 @@
         margin-bottom: 10px;
     }
 
+
+    body {
+        background-image: url('../static/image/purple_bg.png');
+        background-repeat: repeat;
+        background-size: 100%;
+        background-position: center;
+    }
+
+
 </style>
 
 <section class="main-container">
     <article class="index-intro">
         <div class="container-fluid">
             <div class="jumbotron">
-                <h1>What is Startln Store?</h1>
-                <p>In order to keep running and maintaining our website and giving the best experience to our customers, we need an aditional funds.
+                <h1><b>What is Startln Store?</b></h1>
+                <p><b>In order to keep running and maintaining our website and giving the best experience to our customers, we need an aditional funds.
                     StartIn Store was built because we want to keep developing our website so we can help more and more inovators around the world!
-                    </p>
-                <P>Help us reach the goal and spread our impact by buying our merchandise 😊</P>
-                <p>welcome {{username}}!</p>
+                </b></p>
+                <P><b>Help us reach the goal and spread our impact by buying our merchandise 😊</b></P>
+                <p><b>welcome {{username}}!</b></p>
                 <br>
             </div>
         </div>
     </article>
 
-
+<br>
 
     <div class="container-fluid">
 
          
         <div class="image-grid" >
 
-            <div>
+            <div style="width: 100%;">
                 <a href="{% url 'shop:clothing' %}" > 
-                    <img src="../static/image/clothing.png" alt="Clothing" width="600">
+                    <img src="../static/image/clothing.png" alt="Clothing" width="100%">
                 </a>
             </div>
 
             <div>
                 <a href="{% url 'shop:accessories' %}">
-                    <img src="../static/image/accessories.png" alt="Accessories" width="570">
+                    <img src="../static/image/accessories.png" alt="Accessories" width="96%">
                 </a>
             </div>
             
@@ -100,10 +120,9 @@
 
 </section>
 
-
+<br><br><br><br><br>
 
 {% endblock %}
-
 
 </body>
 </html>

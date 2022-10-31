@@ -10,29 +10,27 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 
+<style>
+  body {
+    background-image: url('../static/image/purple_bg.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+  }
+  .card {
+    background-color: rgb(176, 198, 245);
+  }
 
-<!-- <div class="container">
-    <div class="row">
-            {% for inputs in data %}
-                <div class="col-sm-4">
-                    <div class="card" style="width: 18rem;">
-                      <div class="card-body">
-                        <h5 class="card-title">{{inputs.street}}</h5>
-                      </div>
-                      <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><b>Date |</b>  {{inputs.city}}</li>
-                        <li class="list-group-item overflow-auto" style="height: 60px;"><b>Description |</b>  {{inputs.province}}</li>
-                        <li class="list-group-item overflow-auto" style="height: 60px;"><b>Description |</b>  {{inputs.postal}}</li>
-                      </ul>
-                      <div class="card-body">
-                      </div>
-                    </div>
-                </div>
-            {% endfor %} -->
+  h3 {
+    margin: auto;
+    width: 18%;
+  }
+
+</style>
 
 <br>
 <h3>Shipping Address</h3>
-<br>
+<br><br>
 
 <div class="container">
     <div class="row">

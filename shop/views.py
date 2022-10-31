@@ -68,7 +68,8 @@ def login_user(request):
 # Fungsi home dari shop
 def homepage(request):
     context = {
-        'username' : request.user.username
+        'username' : request.user.username,
+        
     }
     return render(request, 'homepage.html', context)
 
@@ -170,7 +171,7 @@ def updateQuantity(request):
 
 
 # Handle Checkout
-@login_required(login_url='/shop/login/')
+@login_required(login_url='/auth/login')
 def checkout(request):
     data = DeliveryAdress.objects.filter(user=request.user)
     context = {
