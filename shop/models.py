@@ -12,7 +12,7 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.FloatField()
     product_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True,editable=False) # ID Unique
-    image = models.ImageField(upload_to='img')
+    image = models.ImageField()
     category = models.CharField(max_length=20,default="product")
 
     def __str__(self):

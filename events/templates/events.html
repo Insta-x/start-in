@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- BOOTSTRAP -->
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+
+<!-- Style HTML-->
+<style>
+    .header {
+        text-align: center;
+        padding-top: 10px;
+    }
+
+    .body {
+        padding-bottom: 20px;
+    }
+
+    #description {
+        white-space: pre-line;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* number of lines to show */
+                line-clamp: 3; 
+        -webkit-box-orient: vertical;
+    }
+
+    .card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    }
+
+    .card:hover {
+    box-shadow: 0 12px 24px 0 rgba(0,0,0,0.2);
+    }
+</style>
+
+<!-- Navbar StartIn Events-->
+<nav class="navbar navbar-light bg-light fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" style="text-align: center; font-weight: bold;"href="#">StartIn Events</a>
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Cari Event" aria-label="Search">
+            <button class="btn btn-outline-dark" type="submit">Search</button>
+        </form>
+
+        <a class="nav-link active" aria-current="page" style="font-weight:bold" href="/">HOME</a> 
+    
+    </div>
+</nav>
+
+<body>
+    <h1>Text Kosong</h1>
+    <div class="header">
+        <h2>Daftar Event</h2>
+        <h6 style="padding-bottom: 20px;">Grow your network and learn from the best developers</h6>
+    </div>
+
+    <div class="row row-cols-md-3 mx-auto" style="width: 100%; padding-left: 10px; padding-right: 10px;">
+      
+        {% for event in list_events %}
+          <div class="col">
+              <div class="card mb-3">
+                <img src="../../static/event/Workshop_1.png" class="card-img-top" alt="image">
+                <h5 class="card-header">{{event.event_type}}</h5>
+
+                  <div class="card-body">
+                      
+                      <h3 class="card-title" style="padding-bottom: 2px">{{event.event_title}}</h3>
+                      <h6 class="card-subtitle" style="padding-bottom: 15px">oleh {{event.developer}}</h6>
+                      <p class="card-text" id="description">{{event.description}}</p>
+                      <h6 class="card-text" style="text-align: right; padding-top: 10px;">{{event.location}}</h6>
+    
+                  </div>
+
+              </div>
+          </div>
+        {% endfor %}
+
+    </div>
+
+    <p style="padding-bottom: 15px;"></p>
+</body>
+
+
+
+{% endblock content %}

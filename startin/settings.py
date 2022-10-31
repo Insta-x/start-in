@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'courses',
     'authentication',
     'inforum',
+    'events',
     'projects',
 ]
 
