@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- BOOTSTRAP -->
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+
+<!-- Style HTML-->
+<style>
+    .header {
+        text-align: center;
+        padding-top: 10px;
+    }
+</style>
+
+<!-- Navbar StartIn Events-->
+<nav class="navbar navbar-light bg-light fixed-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" style="text-align: center; font-weight: bold;"href="#">StartIn Events</a>
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Cari Event" aria-label="Search">
+            <button class="btn btn-outline-dark" type="submit">Search</button>
+        </form>
+
+        <a class="nav-link active" aria-current="page" style="font-weight:bold" href="#">HOME</a> 
+    
+    </div>
+</nav>
+
+<body>
+    <h1>Text Kosong</h1>
+    <div class="header">
+        <h2>Daftar Event</h2>
+        <h6 style="padding-bottom: 10px;">Grow your network and learn from the best developers</h6>
+    </div>
+</body>
+
+<!-- Footer -->
+<footer
+          class="text-center text-lg-start text-white"
+          style="background-color: #1c2331"
+          >
+    <!-- Section: Social media -->
+    <section
+             class="d-flex justify-content-between p-4"
+             style="background-color: #6351ce"
+             >
+    </section>
+    <!-- Section: Social media -->
+
+    <!-- Section: Links  -->
+    <section class="">
+      <div class="container text-center text-md-start mt-5">
+        <!-- Grid row -->
+        <div class="row mt-3">
+          <!-- Grid left column -->
+          <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+            <!-- Content -->
+            <h6 class="text fw-bold">About Us</h6>
+            <hr
+                class="mb-4 mt-0 d-inline-block mx-auto"
+                style="width: 60px; background-color: #7c4dff; height: 2px"
+                />
+            <p>
+                The StartIn application aims to advance technological innovation in Indonesia. 
+                StartIn provides a means for everyone who has a technological innovation idea to get donations from others to fund their projects. 
+                In this way, it is hoped that StartIn can support the growth of Indonesian technology and increase the number of tech startups.
+            </p>
+          </div>
+          <!-- Grid left column -->
+
+          <!-- Grid center column -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+            <!-- Links -->
+            <h6 class="text fw-bold">Application</h6>
+            <hr
+                class="mb-4 mt-0 d-inline-block mx-auto"
+                style="width: 60px; background-color: #7c4dff; height: 2px"
+                />
+            <p><i class="fas fa-home mr-3"></i>Project Tech Startup & Donation</p>
+            <p><i class="fas fa-envelope mr-3"></i>Tech News</p>
+            <p><i class="fas fa-phone mr-3"></i>Events</p>
+            <p><i class="fas fa-print mr-3"></i>Courses</p>
+            <p><i class="fas fa-print mr-3"></i>Shop</p>
+            <p><i class="fas fa-print mr-3"></i>Forum</p>
+          </div>
+          <!-- Grid right column -->
+
+          <!-- Grid right column -->
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+            <!-- Links -->
+            <h6 class="text fw-bold">Contact</h6>
+            <hr
+                class="mb-4 mt-0 d-inline-block mx-auto"
+                style="width: 60px; background-color: #7c4dff; height: 2px"
+                />
+            <p><i class="fas fa-home mr-3"></i>SCBD, Pacific Century Place Tower Level 45, Jl. Jenderal Sudirman No.53, RT.5/RW.3, Senayan, Kebayoran Baru, South Jakarta City, Jakarta 12190</p>
+            <p><i class="fas fa-envelope mr-3"></i> startincorp@gmail.com</p>
+            <p><i class="fas fa-phone mr-3"></i> + 62 234 567 438</p>
+          </div>
+          <!-- Grid right column -->
+        </div>
+        <!-- Grid row -->
+      </div>
+    </section>
+    <!-- Section: Links  -->
+
+    <!-- Copyright StartIn.com -->
+    <div
+         class="text-center p-3"
+         style="background-color: rgba(0, 0, 0, 0.2)"
+         >
+      © 2022 Copyright:
+      <a class="text-white" href="https://start-in.herokuapp.com/"
+         >StartIn.com</a
+        >
+    </div>
+    <!-- Copyright StartIn.com -->
+  </footer>
+  <!-- Footer -->
+
+{% endblock content %}
