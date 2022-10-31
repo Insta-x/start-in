@@ -9,19 +9,65 @@
 
 {% block content %}
 <main class="max-w-screen min-h-screen bg-gray-50">
+    <navbar class="navbar bg-base-100 shadow-md">
+        <div class="navbar-start">
+          <div class="dropdown">
+            <label tabindex="0" class="btn btn-ghost lg:hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+            </label>
+            <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a href="/projects"> <img src="../../static/assets/project.svg" class="w-7 h-7"/> projects</a></li>
+                <li><a href="/inforum"> <img src="../../static/assets/forum.svg" class="w-7 h-7"/> forum</a></li>
+                <li><a href="/shop"> <img src="../../static/assets/shopping-bag.svg" class="w-7 h-7"/> shop</a></li>
+                {%if username%}
+                <li><a href="/logout" class="text-red-500"> <img src="../../static/assets/logout.svg" class="w-7 h-7"/> logout</a></li>
+                {%else%}
+                
+                <li><a href="/auth/login"> <img src="../../static/assets/person.svg" class="w-7 h-7"/> login</a></li>
+                {%endif%}
+            </ul>
+          </div>
+          <a href="/" class="btn btn-ghost normal-case text-2xl mb-1 flex items-center gap-x-2">
+            <img src="../../static/assets/startin-logo.png" class="w-10 h-10"/>
+              <h4 class="font-semibold text-xl tracking-wider">StartIn</h4>
+          </a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+          <ul class="menu menu-horizontal p-0">
+            <li><a href="/projects">projects</a></li>
+            <li><a href="/inforum">forum</a></li>
+            <li><a href="/shop">shop</a></li>
+    
+          </ul>
+        </div>
+        <div class="navbar-end">
+          {% if username %}
+          <div class="dropdown dropdown-hover relative mr-2">
+            <label tabindex="0" class="text-lg sm:text-xl text-gray-500 p-3 rounded-md transition duration-100 btn-ghost"> Hi, <span class="text-violet-500">{{username}}<span></label>
+            
+            <ul tabindex="0" class="hidden lg:flex dropdown-content absolute right-0 menu ">
+                <div class="w-full h-[20px] bg-transparent "></div>
+                <li><a href="/logout" class=" p-3 py-4 text-right shadow-md bg-base-100 rounded-sm w-44 cursor-pointer text-red-500"> <img src="../../static/assets/logout.svg" class="w-6 h-6"/> logout</a></li>
+            </ul>
+          </div>
+          {%else%}
+           <a href="/auth/login" class="hidden lg:flex gap-x-1 p-2 border-2 hover:border-blue-500 transition duration-100 rounded-md "> <img src="../../static/assets/person.svg" class="w-6 h-6"/> login</a>
+          {%endif %}
+        </div>
+    </navbar>
     <section class="w-full h-[200px] sm:h-[250px] md:h-[300px] relative shadow-lg">
         <img src="../../static/assets/inforum-banner.jpg" alt="banner" class="w-full h-full absolute object-cover"/>
         <div class="w-full h-full z-10 absolute flex justify-center items-center gap-x-5 text-white">
             <h1 class="text-center text-4xl sm:text-6xl md:text-7xl font-semibold  mb-3 ">inForum </h1>
             <div class="border-l-2 border-white h-[130px] sm:h-[150px] w-auto sm:w-[200px] pl-6 sm:pl-10 flex flex-col justify-center text-2xl sm:text-3xl font-semibold">
                 <h3 class="">
-                    inspire
+                    inspirational
                 </h3>
                 <h3 class="">
                     insightful
                 </h3>  
                 <h3 class="">
-                    innovate
+                    innovative
                 </h3>     
             </div>
         <div>
@@ -47,7 +93,7 @@
                     <p class="hidden sm:block">Filter</p>
                 </label>
             </div>
-            <article id="forum-card-placeholder" class="w-full flex flex-col items-center justify-start">
+            <article id="forum-card-placeholder" class="w-full flex flex-col items-center justify-start mb-20">
             </article>
         </div>
         <div class="hidden lg:flex bg-white gap-y-2 p-4 rounded-md flex flex-col justify-between w-52 h-52 shadow-md ">
@@ -148,6 +194,7 @@
 
 function createForumCard(forum){
     var username = '{{username}}';
+    var userType = '{{user_type}}'
     const colorPallete = {
         technology : 'bg-blue-500',
         business : "bg-amber-500",
@@ -159,7 +206,7 @@ function createForumCard(forum){
             `<div id="forum-${forum.pk}" onclick="redirectForum(${forum.pk})" id="forum-${forum.pk}" class="my-3 card rounded-sm h-[240px] sm:h-[300px] w-full lg:w-[800px] bg-base-100 shadow-md transform transition hover:ring hover:bg-opacity-70 cursor-pointer">
                 <div class="h-full w-[3px] ${colorPallete[forum.fields.category.toLowerCase()]} absolute"></div>
                 <div class="card-body p-4 md:p-6 relative">
-                ${username == forum.fields.username ? `<label onclick="event.stopPropagation();" id="delete-button" for=${forum.pk} class=" text-xl text-red-500 absolute right-2 top-2 md:right-5 md:top-4 px-3 py-1 hover:bg-gray-200 rounded-md transition duration-100 cursor-pointer">X</label>` : ""}
+                ${username == forum.fields.username || userType == "ADMIN" ? `<label onclick="event.stopPropagation();" id="delete-button" for=${forum.pk} class=" text-xl text-red-500 absolute right-2 top-2 md:right-5 md:top-4 px-3 py-1 hover:bg-gray-200 rounded-md transition duration-100 cursor-pointer">X</label>` : ""}
                 <h2 class="card-title text-[18px] md:text-xl">${forum.fields.title}</h2>
                     <div class="h-full ">
                         <p class="leading-none font-bold text-gray-600 text-base mb-6">${forum.fields.username} <span class="font-normal ml-3">${forum.fields.time_created}</span></p>
