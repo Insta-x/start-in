@@ -1,62 +1,180 @@
 {% extends 'auth_base.html' %}
 
 {% block meta %}
-<title>Account Registration</title>
+<title>Registrasi</title>
 {% endblock meta %}
-
-{% block navbar %}
-<div class="container-fluid">
-    <a class="navbar-brand text-white" href="#">Register</a>
-    <div class="d-flex justify-content-end">
-        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:login' %}">Login</a>
-        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:register' %}">Register</a>
-    </div>
-</div>
-{% endblock navbar %}
 
 {% block content %}  
 
+<style>
+
+    body{
+        background-color: #31335d;
+    }
+
+    .container-fluid{
+        background-color: #31335d;
+    }
+
+    .infinity-image-container{
+        background: url("../../static/assets/login-bg2.jpg") left no-repeat;
+        background-size:cover;
+        opacity: 0.6;
+    }
+
+    .infinity-form-container{
+        background: #31335d;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .infinity-form{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 100vh;
+    }
+
+    .infinity-form h4 {
+        font-weight: bold;
+        color: white;
+    }
+
+    .infinity-form .form-input {
+        position: relative;
+    }
+
+    .infinity-form .form-input input {
+        width: 100%;
+        margin-bottom: 20px;
+        height: 40px;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        background: white;
+        padding-left: 45px;
+    }
+
+    .infinity-form .form-input input:focus,
+    .infinity-form .form-input input:valid {
+        border: 2px solid #4285f4;   
+    }    
+
+    .infinity-form button[type="submit"] {
+        margin-top: 10px;
+        border: none;
+        cursor: pointer;
+        border-radius: 20px;
+        background: linear-gradient(45deg, #4285f4, #709de8);   /*Button Color*/
+        color: #fff;
+        font-weight: bold;
+        transition: 0.5s;
+        width: 100%;
+    }
+
+    .infinity-form button[type="submit"]:hover {
+        background: linear-gradient(45deg, #709de8, #4285f4);   /*Button color when hover*/
+    }
+
+    .forget-link , .login-link , .register-link {
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .forget-link:hover , .login-link:hover , .register-link:hover {
+        color: #4285f4;
+        text-decoration: none;
+    }
+</style>
+
+
+
 <div class = "register container-fluid text-center mt-5">
-    
-    <h1>Formulir Registrasi</h1>  
 
-        <form method="POST" class="form-register">  
-            {% csrf_token %}
-            <!-- <label for="id_username" class="form-label">Username</label> -->
-            <input type="text" name="username" placeholder="Username" maxlength="150" autocapitalize="none" autocomplete="username" autofocus="" required="" id="id_username" class="form-control">
-            <input type="text" name="name" placeholder="Name" maxlength="150" autocapitalize="none" autofocus="" required="" id="id_name" class="form-control">
-            <!-- <label for="id_password1" class="form-label">Password</label> -->
-            <input type="password" name="password1" placeholder="Password" autocomplete="new-password" required="" id="id_password1" class="form-control">
-            <div class="form-text help-text">
-                <ul>
-                    <li>Your password can’t be too similar to your other personal information.</li>
-                    <li>Your password must contain at least 8 characters.</li>
-                    <li>Your password can’t be a commonly used password.</li>
-                    <li>Your password can’t be entirely numeric.</li>
-                </ul>
+    <div class="container-fluid">
+        <div class="row ">
+            <!-- IMAGE CONTAINER BEGIN -->
+            <div class="col-lg-6 col-md-6 d-none d-md-block infinity-image-container"></div>
+            <!-- IMAGE CONTAINER END -->
+        
+            <!-- FORM CONTAINER BEGIN -->
+            <div class="col-lg-6 col-md-6 infinity-form-container">					
+                <div class="col-lg-9 col-md-12 col-sm-8 col-xs-12 infinity-form">
+                    <!-- Company Logo -->
+                    <div class="text-center mb-3 mt-5">
+                        <img src="../../static/assets/startin-logo.png" width="50px">
+                    </div>
+                    <div class="text-center mb-4">
+                    <h4>Formulir Registrasi</h4>
+                    </div>
+                    <!-- Form -->
+                    <form class="px-3">
+                        <!-- Input Box -->
+                        <div class="form-input">
+                            <input type="text" name="username" placeholder="Username" maxlength="150" autocapitalize="none" autocomplete="username" autofocus="" required="" id="id_username" class="form-control">
+                        </div>
+                        <div class="form-input">
+                            <input type="text" name="name" placeholder="Name" maxlength="150" autocapitalize="none" autofocus="" required="" id="id_name" class="form-control">
+                        </div>
+                        <div class="form-input">
+                            <input type="password" name="password1" placeholder="Password" autocomplete="new-password" required="" id="id_password1" class="form-control">
+                        </div>
+                        <div class="form-input">
+                            <input type="password" name="password1" placeholder="Password" autocomplete="new-password" required="" id="id_password1" class="form-control">
+                        </div>
+                        <div class="form-input">
+                            <input type="password" name="password2" placeholder="Confirm Password" autocomplete="new-password" required="" id="id_password2" class="form-control">
+                        </div>
+                        <div class="form-input">
+                            <input type="date" id="id_birth" name="birth_date" required="" class="form-control">
+                        </div>
+                        <div class="form-input">
+                            <input type="text" name="job" placeholder="Job" maxlength="50" autocapitalize="none" autofocus="" required="" id="id_job" class="form-control">
+                        </div>
+                        <div class="form-input">
+                            <input type="textarea" name="description" placeholder="Short description of yourself" autocapitalize="none" autofocus="" id="id_desc" class="form-control">
+                        </div>
+
+
+                        <!-- Register Button -->
+                    <div class="mb-3"> 
+                            <button type="submit" class="btn btn-block">Register</button>
+                        </div>
+                        <div class="text-center mb-2">
+                        </div>
+                        <div class="text-center mb-5 text-white">Sudah punya akun?
+                            <a class="login-link" href="{% url 'authentication:login' %}">Login di sini</a>
+                    </div>
+                </div>
             </div>
-            <!-- <label for="id_password2" class="form-label">Password confirmation</label> -->
-            <input type="password" name="password2" placeholder="Confirm Password" autocomplete="new-password" required="" id="id_password2" class="form-control">
-            <div class="form-text help-text">Enter the same password as before, for verification.</div>
-            <input type="date" id="id_birth" name="birth_date" required="" class="form-control">
-            <input type="text" name="job" placeholder="Job" maxlength="50" autocapitalize="none" autofocus="" required="" id="id_job" class="form-control">
-            <input type="textarea" name="description" placeholder="Short description of yourself" autocapitalize="none" autofocus="" id="id_desc" class="form-control">
+            <!-- FORM CONTAINER END -->
+        </div>
+    </div>	
 
-            <ul>
-                {% if form.errors %}
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                            <li><div class="form-text help-text text-red">{{ error|escape }}</div></li>
-                        {% endfor %}
-                    {% endfor %}
-                    {% for error in form.non_field_errors %}
-                        <li><div class="form-text help-text text-red">{{ error|escape }}</div></li>
-                    {% endfor %}
-                {% endif %}
-            </ul>
 
-            <input type="submit" name="submit" value="Register" class="btn btn-primary mt-3"/> 
-        </form>
+
+            
+    <ul>
+        {% if form.errors %}
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li><div class="form-text help-text text-red">{{ error|escape }}</div></li>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <li><div class="form-text help-text text-red">{{ error|escape }}</div></li>
+            {% endfor %}
+        {% endif %}
+    </ul>
+
+    </form>
+
+
+
+
+
 
     {% if messages %}  
         <ul>   
