@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -14,6 +15,29 @@
         text-align: center;
         padding-top: 10px;
     }
+
+    .body {
+        padding-bottom: 20px;
+    }
+
+    #description {
+        white-space: pre-line;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* number of lines to show */
+                line-clamp: 3; 
+        -webkit-box-orient: vertical;
+    }
+
+    .card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    }
+
+    .card:hover {
+    box-shadow: 0 12px 24px 0 rgba(0,0,0,0.2);
+    }
 </style>
 
 <!-- Navbar StartIn Events-->
@@ -25,7 +49,7 @@
             <button class="btn btn-outline-dark" type="submit">Search</button>
         </form>
 
-        <a class="nav-link active" aria-current="page" style="font-weight:bold" href="#">HOME</a> 
+        <a class="nav-link active" aria-current="page" style="font-weight:bold" href="/">HOME</a> 
     
     </div>
 </nav>
@@ -34,92 +58,35 @@
     <h1>Text Kosong</h1>
     <div class="header">
         <h2>Daftar Event</h2>
-        <h6 style="padding-bottom: 10px;">Grow your network and learn from the best developers</h6>
+        <h6 style="padding-bottom: 20px;">Grow your network and learn from the best developers</h6>
     </div>
+
+    <div class="row row-cols-md-3 mx-auto" style="width: 100%; padding-left: 10px; padding-right: 10px;">
+      
+        {% for event in list_events %}
+          <div class="col">
+              <div class="card mb-3">
+                <img src="../../static/event/Workshop_1.png" class="card-img-top" alt="image">
+                <h5 class="card-header">{{event.event_type}}</h5>
+
+                  <div class="card-body">
+                      
+                      <h3 class="card-title" style="padding-bottom: 2px">{{event.event_title}}</h3>
+                      <h6 class="card-subtitle" style="padding-bottom: 15px">oleh {{event.developer}}</h6>
+                      <p class="card-text" id="description">{{event.description}}</p>
+                      <h6 class="card-text" style="text-align: right; padding-top: 10px;">{{event.location}}</h6>
+    
+                  </div>
+
+              </div>
+          </div>
+        {% endfor %}
+
+    </div>
+
+    <p style="padding-bottom: 15px;"></p>
 </body>
 
-<!-- Footer -->
-<footer
-          class="text-center text-lg-start text-white"
-          style="background-color: #1c2331"
-          >
-    <!-- Section: Social media -->
-    <section
-             class="d-flex justify-content-between p-4"
-             style="background-color: #6351ce"
-             >
-    </section>
-    <!-- Section: Social media -->
 
-    <!-- Section: Links  -->
-    <section class="">
-      <div class="container text-center text-md-start mt-5">
-        <!-- Grid row -->
-        <div class="row mt-3">
-          <!-- Grid left column -->
-          <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-            <!-- Content -->
-            <h6 class="text fw-bold">About Us</h6>
-            <hr
-                class="mb-4 mt-0 d-inline-block mx-auto"
-                style="width: 60px; background-color: #7c4dff; height: 2px"
-                />
-            <p>
-                The StartIn application aims to advance technological innovation in Indonesia. 
-                StartIn provides a means for everyone who has a technological innovation idea to get donations from others to fund their projects. 
-                In this way, it is hoped that StartIn can support the growth of Indonesian technology and increase the number of tech startups.
-            </p>
-          </div>
-          <!-- Grid left column -->
-
-          <!-- Grid center column -->
-          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-            <!-- Links -->
-            <h6 class="text fw-bold">Application</h6>
-            <hr
-                class="mb-4 mt-0 d-inline-block mx-auto"
-                style="width: 60px; background-color: #7c4dff; height: 2px"
-                />
-            <p><i class="fas fa-home mr-3"></i>Project Tech Startup & Donation</p>
-            <p><i class="fas fa-envelope mr-3"></i>Tech News</p>
-            <p><i class="fas fa-phone mr-3"></i>Events</p>
-            <p><i class="fas fa-print mr-3"></i>Courses</p>
-            <p><i class="fas fa-print mr-3"></i>Shop</p>
-            <p><i class="fas fa-print mr-3"></i>Forum</p>
-          </div>
-          <!-- Grid right column -->
-
-          <!-- Grid right column -->
-          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-            <!-- Links -->
-            <h6 class="text fw-bold">Contact</h6>
-            <hr
-                class="mb-4 mt-0 d-inline-block mx-auto"
-                style="width: 60px; background-color: #7c4dff; height: 2px"
-                />
-            <p><i class="fas fa-home mr-3"></i>SCBD, Pacific Century Place Tower Level 45, Jl. Jenderal Sudirman No.53, RT.5/RW.3, Senayan, Kebayoran Baru, South Jakarta City, Jakarta 12190</p>
-            <p><i class="fas fa-envelope mr-3"></i> startincorp@gmail.com</p>
-            <p><i class="fas fa-phone mr-3"></i> + 62 234 567 438</p>
-          </div>
-          <!-- Grid right column -->
-        </div>
-        <!-- Grid row -->
-      </div>
-    </section>
-    <!-- Section: Links  -->
-
-    <!-- Copyright StartIn.com -->
-    <div
-         class="text-center p-3"
-         style="background-color: rgba(0, 0, 0, 0.2)"
-         >
-      © 2022 Copyright:
-      <a class="text-white" href="https://start-in.herokuapp.com/"
-         >StartIn.com</a
-        >
-    </div>
-    <!-- Copyright StartIn.com -->
-  </footer>
-  <!-- Footer -->
 
 {% endblock content %}

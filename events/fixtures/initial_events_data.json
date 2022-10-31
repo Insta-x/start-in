@@ -3,6 +3,7 @@
         "model":"events.events",
         "pk":1,
         "fields":{
+            "event_image":"./static/event/Workshop_1.png",
             "event_type":"Workshop",
             "event_title": "Workshop : Cinematography In Game Dev",
             "developer": "Game Developer Batam",
@@ -15,12 +16,13 @@
         "model":"events.events",
         "pk":2,
         "fields":{
+            "event_image":"./static/event/Talkshow_1.png",
             "event_type":"Talkshow",
             "event_title": "Sharing session Game Design",
             "developer": "Game Developer Batam",
             "description": "Halo teman-teman!!\nPernah kah teman-teman bertanya, bagaimana proses Game Design yang baik? dasar-dasar game desain dan bagaimana desain game untuk game free to play? bagaimana tahapan-nya dan apa saja yang perlu diperhatikan?\nKali ini kita akan belajar bersama Ervin Ahmad, kita akan belajar dari pengalaman dan perspektif-nya tentang 'Fundamentals of game design' dan bersama Julio Andryanto kita akan belajar tentang 'Game design rules of free to play games'\njangan sampai ketinggalan ya!\n\nWaktu dan Tanggal : 1 October 2022 14:00 - 16:00 WIB",
             "schedule": "1 October 2022 14:00 - 16:00 WIB",
-            "location": "Politeknik Negeri Batam Technopark Lantai 3, Kota Batam"
+            "location": "Kota Batam"
         }
     }
 ]
