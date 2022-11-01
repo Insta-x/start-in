@@ -4,16 +4,13 @@
 {% endblock meta %}
 
 {% block navbar %}
-<div class="container-fluid">
-    <a class="navbar-brand text-dark font-semibold text-xl tracking-wider" href="/projects/"><img src="{% static 'assets/startin-logo.png' %}" style="width: 2.5rem; height: 2.5rem;"/> StartIn Projects</a>
-    <div class="d-flex justify-content-end">
-        {% if logged_in %}  
-            <a class="btn btn-outline-danger m-1" href="{% url 'authentication:logout' %}">Logout</a>
-            {% else %}
-            <a class="btn btn-outline-primary m-1" href="{% url 'authentication:login' %}">Login</a>
-            <a class="btn btn-outline-primary m-1" href="{% url 'authentication:register' %}">Register</a>
-        {% endif %}
-    </div>
+<div class="d-flex justify-content-end">
+    {% if logged_in %}  
+        <a class="btn btn-outline-danger m-1" href="{% url 'authentication:logout' %}">Logout</a>
+        {% else %}
+        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:login' %}">Login</a>
+        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:register' %}">Register</a>
+    {% endif %}
 </div>
 {% endblock navbar %}
 
