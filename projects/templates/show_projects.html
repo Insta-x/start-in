@@ -97,13 +97,17 @@
     function createUserProject(element) {
         data = element.fields
 
-        var div = $('<div class="d-flex flex-row flex-wrap justify-content-between mt-2" id="user-project-' + element.pk + '"></div>')
-        var detail_div = $('<div class="ms-2 c-details"><h6 class="mb-0">' + data.title + '</h6><span>' + data.time_created + '</span></div>')
-        var button_div = $('<div></div>')
+        var div = $('<div class="row align-items-center mt-2" id="user-project-' + element.pk + '"></div>')
+        var detail_div = $('<div class="col ms-2 c-details"><h6 class="mb-0">' + data.title + '</h6><span>' + data.time_created + '</span></div>')
+        var progress_bar = $('<div class="col progress"></div>').append($('<div class="progress-bar' + (data.is_done ? ' bg-success' : '') + '" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>')
+            .attr('style', 'width: ' + data.current_donation / data.donation_target * 100 + '%;'))
+        var button_div = $('<div class="row justify-content-end"></div>')
 
         if (data.is_published){
+            button_div.append($('<a href="./project/' + element.pk + '" class="col btn btn-secondary ms-1">View</a>'))
+
             if (!data.is_done) {
-                var done_button = $('<button class="btn btn-success">Done</button>').click(() => {
+                var done_button = $('<button class="col btn btn-success ms-1">Done</button>').click(() => {
                     $.ajax({
                         url: "{% url 'projects:done_project' %}",
                         type: 'post',
@@ -123,8 +127,8 @@
             }
         }
         else {
-            var edit_button = $('<a href="./edit/' + element.pk + '" %}" class="btn btn-primary">Edit</a>')
-            var publish_button = $('<button class="btn btn-success">Publish</button>').click(() => {
+            var edit_button = $('<a href="./edit/' + element.pk + '" %}" class="col btn btn-primary ms-1">Edit</a>')
+            var publish_button = $('<button class="col btn btn-success ms-1">Publish</button>').click(() => {
                 $.ajax({
                     url: "{% url 'projects:publish_project' %}",
                     type: 'post',
@@ -139,16 +143,17 @@
                     }
                 })
             })
-            var delete_button = $('<a class="btn btn-danger">Delete</a>')
+            var delete_button = $('<a class="col btn btn-danger ms-1">Delete</a>')
             button_div.append(edit_button)
             button_div.append(publish_button)
             button_div.append(delete_button)
         }
 
         div.append(detail_div)
-        div.append(button_div)
+        div.append(progress_bar)
+        div.append($('<div class="col justify-content-end"></div>').append(button_div))
 
-        return div
+        return $('<div class="container"></div>').append(div)
     }
 
     function getCookie(name) {
