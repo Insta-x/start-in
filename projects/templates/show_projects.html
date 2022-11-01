@@ -20,12 +20,20 @@
         $.get("{% url 'projects:get_projects' %}", $("form#search-bar-form").serialize(), (data) => {
             append_projects(data);
         });
+
+        $.get("{% url 'projects:get_user_projects' %}", success=(data) => {
+            append_user_projects(data);
+        });
     });
 
     function append_projects(projects) {
         projects.forEach(element => {
-            $("#projects-list").append(createProjectCard(element));
+            append_project(element);
         });
+    }
+
+    function append_project(project) {
+        $("#projects-list").append(createProjectCard(project));
     }
 
     function createProjectCard(element) {
@@ -76,6 +84,56 @@
         return card_div.append(card_body);
     }
 
+    function append_user_projects(projects) {
+        projects.forEach(element => {
+            append_user_project(element);
+        });
+    }
+
+    function append_user_project(project) {
+        $("#user-projects-list").append(createUserProject(project));
+    }
+
+    function createUserProject(element) {
+        data = element.fields
+
+        var div = $('<div class="d-flex flex-row flex-wrap justify-content-between" id="user-project-' + element.pk + '"></div>')
+        var detail_div = $('<div class="ms-2 c-details"><h6 class="mb-0">' + data.title + '</h6><span>' + data.time_created + '</span></div>')
+        var button_div = $('<div></div>')
+
+        if (data.is_published){
+            var done_button = $('<a class="btn btn-success">Done</a>')
+            button_div.append(done_button)
+        }
+        else {
+            var edit_button = $('<a class="btn btn-primary">Edit</a>')
+            var publish_button = $('<a class="btn btn-success">Publish</a>').click(() => {
+                $.ajax({
+                    url: "{% url 'projects:publish_project' %}",
+                    type: 'post',
+                    data: {'id' : element.pk},
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+                    },
+                    success: (resp) => {
+                        append_project(resp[0]);
+                        $('#user-project-' + element.pk).remove();
+                        append_user_project(resp[0])
+                    }
+                })
+            })
+            var delete_button = $('<a class="btn btn-danger">Delete</a>')
+            button_div.append(edit_button)
+            button_div.append(publish_button)
+            button_div.append(delete_button)
+        }
+
+        div.append(detail_div)
+        div.append(button_div)
+
+        return div
+    }
+
     function getCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -112,22 +170,8 @@
             </div>
         </div>
         {% else %}
-        <div class="d-flex flex-column m-3">
+        <div class="d-flex flex-column m-3" id="user-projects-list">
             <h3>Your Projects</h3>
-            {% for project in user_projects %}
-                <div class="d-flex flex-row flex-wrap justify-content-between">
-                    <div class="ms-2 c-details"><h6 class="mb-0">{{ project.fields.title }}</h6><span>{{ project.fields.time_created }}</span></div>
-                    <div>
-                        {% if not project.fields.is_published %}
-                            <a class="btn btn-primary">Edit</a>
-                            <a class="btn btn-success">Publish</a>
-                            <a class="btn btn-danger">Delete</a>
-                            {% else %}
-                            <a class="btn btn-success">Done</a>
-                        {% endif %}
-                    </div>
-                </div>
-            {% endfor %}
         </div>
     {% endif %}
 

@@ -1,3 +1,4 @@
+from os import stat
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.core import serializers
@@ -14,7 +15,7 @@ def show_projects(request):
 
     context = {
         'logged_in' : request.user.is_authenticated,
-        'user_projects' : encode_projects(user_projects, request.user),
+        'user_projects' : True if user_projects else False,
     }
 
     return render(request, 'show_projects.html', context)
@@ -34,19 +35,36 @@ def create_project(request):
     return render(request, 'create_project.html', {'form': form})
 
 def get_projects(request):
-    data = Project.objects.filter(title__icontains=request.GET.get('search')).annotate(like_count=Count('liked_by')).order_by('-like_count')
+    data = Project.objects.filter(is_published=True).filter(title__icontains=request.GET.get('search')).annotate(like_count=Count('liked_by')).order_by('-like_count')
 
     return HttpResponse(json.dumps(encode_projects(data, request.user.id)), content_type='application/json')
+
+def get_user_projects(request):
+    data = Project.objects.filter(user=request.user).order_by('-time_created')
+
+    return HttpResponse(json.dumps(encode_projects(data, request.user.id)), content_type='application/json')
+
+def publish_project(request):
+    project = Project.objects.get(pk=request.POST.get('id'))
+
+    if project.user != request.user:
+        return HttpResponse(status=403)
+    
+    project.is_published = True
+    project.save()
+    return HttpResponse(json.dumps([encode_project(project, request.user.id), ]), content_type='application/json')
+
 
 @login_required(login_url='/auth/login/')
 def like_project(request):
     if request.user.is_authenticated:
         project_id = request.POST.get('id')
         project = Project.objects.get(pk=project_id)
-        if request.user in project.liked_by.all():
-            project.liked_by.remove(request.user)
-        else:
-            project.liked_by.add(request.user)
+        if project.is_published:
+            if request.user in project.liked_by.all():
+                project.liked_by.remove(request.user)
+            else:
+                project.liked_by.add(request.user)
         return HttpResponse(json.dumps([encode_project(project, request.user.id), ]), content_type='application/json')
 
 def donate_project(request):
