@@ -60,7 +60,7 @@
                 })
             });
         
-        var progress_bar = $('<div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>')
+        var progress_bar = $('<div class="progress-bar' + (data.is_done ? ' bg-success' : '') + '" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>')
             .attr('style', 'width: ' + data.current_donation / data.donation_target * 100 + '%;')
         
         var card_body = $('<div class="card-body"></div>')
@@ -72,7 +72,7 @@
                         .append($('<span></span>')
                             .text(data.time_created))))
                 .append(like_button))
-            .append($('<div class="mt-5"></div>')
+            .append($('<div class="mt-5' + (data.is_done ? ' text-success' : '') + '"></div>')
                 .append($('<h3 class="heading"></h3>')
                     .text(data.title))
                 .append($('<div class="mt-5"></div>')
@@ -102,8 +102,25 @@
         var button_div = $('<div></div>')
 
         if (data.is_published){
-            var done_button = $('<a class="btn btn-success">Done</a>')
-            button_div.append(done_button)
+            if (!data.is_done) {
+                var done_button = $('<button class="btn btn-success">Done</button>').click(() => {
+                    $.ajax({
+                        url: "{% url 'projects:done_project' %}",
+                        type: 'post',
+                        data: {'id' : element.pk},
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+                        },
+                        success: (resp) => {
+                            $('#project-' + element.pk).remove();
+                            append_project(resp[0]);
+                            $('#user-project-' + element.pk).remove();
+                            append_user_project(resp[0])
+                        }
+                    })
+                })
+                button_div.append(done_button)
+            }
         }
         else {
             var edit_button = $('<a href="./edit/' + element.pk + '" %}" class="btn btn-primary">Edit</a>')

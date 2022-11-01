@@ -21,6 +21,13 @@ def show_projects(request):
 
     return render(request, 'show_projects.html', context)
 
+def show_project(request, id):
+    project = Project.objects.get(pk=id)
+
+    # print(Donation.objects.filter(project=id).aggregate(Sum('amount'))['amount__sum'])
+
+    return render(request, 'show_project.html', {'project' : encode_project(project, request.user.id), 'logged_in' : request.user.is_authenticated})
+
 @login_required(login_url='/auth/login/')
 def create_project(request):
     if request.method == 'POST':
@@ -115,12 +122,15 @@ def get_donations(request):
 
     return HttpResponse(json.dumps({'donation_sum' : donation_sum, 'donators' : donators}), content_type='application/json')
 
-def show_project(request, id):
-    project = Project.objects.get(pk=id)
+def done_project(request):
+    project = Project.objects.get(pk=request.POST.get('id'))
 
-    # print(Donation.objects.filter(project=id).aggregate(Sum('amount'))['amount__sum'])
-
-    return render(request, 'show_project.html', {'project' : encode_project(project, request.user.id), 'logged_in' : request.user.is_authenticated})
+    if project.user != request.user:
+        return HttpResponse(status=403)
+    
+    project.is_done = True
+    project.save()
+    return HttpResponse(json.dumps([encode_project(project, request.user.id), ]), content_type='application/json')
 
 def encode_projects(data_query_set, user_id):
     data_list = []
