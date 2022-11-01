@@ -21,7 +21,7 @@
         <form method="POST" action="{% url 'projects:create_project' %}" class="form-create" id="create-form">
             {% csrf_token %}
             <input type="text" name="title" placeholder="Project title" maxlength="100" required="" class='form-control' id="id_title">
-            <textarea name="description" placeholder="Project description" cols="40" rows="10" maxlength="1000" required="" class='form-control mt-3' id="id_description"></textarea>
+            <textarea name="description" placeholder="Project description" cols="40" rows="10" maxlength="10000" required="" class='form-control mt-3' id="id_description"></textarea>
             <div class="d-flex flex-row mt-3">
                 <label for="id_donation_target">Donation target</label>
                 <input type="number" name="donation_target" min="0" max="9223372036854775807" required="" class='form-control' id="id_donation_target">

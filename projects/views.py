@@ -10,7 +10,12 @@ from .forms import ProjectForm, DonationForm
 import json
 
 def show_projects(request):
-    context = {'logged_in' : request.user.is_authenticated}
+    user_projects = Project.objects.filter(user=request.user) if request.user.is_authenticated else None
+
+    context = {
+        'logged_in' : request.user.is_authenticated,
+        'user_projects' : encode_projects(user_projects, request.user),
+    }
 
     return render(request, 'show_projects.html', context)
 

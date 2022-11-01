@@ -97,19 +97,39 @@
 
 {% block content %}
 <main class="d-flex flex-column flex-nowrap">
-    <div class="px-4 py-5 my-5 text-center">
-        <h1 class="display-5 fw-bold">Create your project</h1>
-        <div class="col-lg-6 mx-auto">
-            <p class="lead mb-4">Propose an innovative project that will increase the life quality of everyone.</p>
-            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                {% if logged_in %}
-                    <a href="{% url 'projects:create_project' %}" class="btn btn-primary btn-lg px-4 gap-3">Create project</a>
-                    {% else %}
-                    <a href="{% url 'authentication:login' %}" class="btn btn-warning btn-lg px-4 gap-3">Login to create project</a>
-                {% endif %}
+    {% if not user_projects %}
+        <div class="px-4 py-5 my-5 text-center">
+            <h1 class="display-5 fw-bold">Create your project</h1>
+            <div class="col-lg-6 mx-auto">
+                <p class="lead mb-4">Propose an innovative project that will increase the life quality of everyone.</p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    {% if logged_in %}
+                        <a href="{% url 'projects:create_project' %}" class="btn btn-primary btn-lg px-4 gap-3">Create project</a>
+                        {% else %}
+                        <a href="{% url 'authentication:login' %}" class="btn btn-warning btn-lg px-4 gap-3">Login to create project</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
-    </div>
+        {% else %}
+        <div class="d-flex flex-column m-3">
+            <h3>Your Projects</h3>
+            {% for project in user_projects %}
+                <div class="d-flex flex-row flex-wrap justify-content-between">
+                    <div class="ms-2 c-details"><h6 class="mb-0">{{ project.fields.title }}</h6><span>{{ project.fields.time_created }}</span></div>
+                    <div>
+                        {% if not project.fields.is_published %}
+                            <a class="btn btn-primary">Edit</a>
+                            <a class="btn btn-success">Publish</a>
+                            <a class="btn btn-danger">Delete</a>
+                            {% else %}
+                            <a class="btn btn-success">Done</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
     <!-- <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 200px;">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
             <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
