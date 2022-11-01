@@ -1,4 +1,5 @@
 from os import stat
+import re
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.core import serializers
@@ -43,6 +44,25 @@ def get_user_projects(request):
     data = Project.objects.filter(user=request.user).order_by('-time_created')
 
     return HttpResponse(json.dumps(encode_projects(data, request.user.id)), content_type='application/json')
+
+def edit_project(request, id):
+    project = Project.objects.get(pk=id)
+
+    if not project:
+        return HttpResponse(status=404)
+
+    if project.is_published:
+        return HttpResponse(status=403)
+
+    if request.method == 'POST':
+        project.title = request.POST.get('title')
+        project.description = request.POST.get('description')
+        project.donation_target = request.POST.get('donation_target')
+        project.save()
+        return redirect(reverse('projects:show_projects'))
+
+    return render(request, 'edit_project.html', {'project' : project})
+
 
 def publish_project(request):
     project = Project.objects.get(pk=request.POST.get('id'))
