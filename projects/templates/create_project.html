@@ -4,16 +4,13 @@
 {% endblock meta %}
 
 {% block navbar %}
-<div class="container-fluid">
-    <a class="navbar-brand text-white" href="/projects/">StartIn Projects</a>
-    <div class="d-flex justify-content-end">
-        {% if logged_in %}  
-            <a class="btn btn-outline-danger m-1" href="{% url 'authentication:logout' %}">Logout</a>
-            {% else %}
-            <a class="btn btn-outline-primary m-1" href="{% url 'authentication:login' %}">Login</a>
-            <a class="btn btn-outline-primary m-1" href="{% url 'authentication:register' %}">Register</a>
-        {% endif %}
-    </div>
+<div class="d-flex justify-content-end">
+    {% if logged_in %}  
+        <a class="btn btn-outline-danger m-1" href="{% url 'authentication:logout' %}">Logout</a>
+        {% else %}
+        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:login' %}">Login</a>
+        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:register' %}">Register</a>
+    {% endif %}
 </div>
 {% endblock navbar %}
 
