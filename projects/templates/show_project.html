@@ -53,13 +53,13 @@
             $('#donators-list').empty();
             data.donators.forEach(element => {
                 $('#donators-list')
-                    .append($('<div class="mt-2"></div>').text(element.username + ' donated Rp' + element.amount + '!'))
+                    .append($('<div class="border-top mt-2"></div>').text(element.username + ' donated Rp' + element.amount + '!'))
             });
             if (data.donators.length == 0) {
-                $('#donator-heading').hide();
+                $('#donator-div').hide();
             }
             else {
-                $('#donator-heading').show();
+                $('#donator-div').show();
             }
         });
     }
@@ -114,8 +114,8 @@
             <div class="d-flex w-100">
                 {{ project.fields.description }}
             </div>
-            <div class="d-flex flex-column flex-fill align-items-start" style="max-width: 250px;">
-                <h3 id="donator-heading">Donator:</h3>
+            <div class="d-flex flex-column flex-fill align-items-start border border-2 rounded-3 p-3" id="donator-div" style="max-width: 400px;">
+                <h3>Donator:</h3>
                 <div id="donators-list">
                 </div>
             </div>
