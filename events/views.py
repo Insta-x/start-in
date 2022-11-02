@@ -13,6 +13,30 @@ def show_events(request):
     }
     return render(request, "events.html", context)
 
+def show_events_1(request):
+    data_events = Events.objects.all()
+
+    context = {
+        'list_events' : data_events
+    }
+    return render(request, "show_events1.html", context)
+
+def show_events_2(request):
+    data_events = Events.objects.all()
+
+    context = {
+        'list_events' : data_events
+    }
+    return render(request, "show_events2.html", context)
+
+def show_events_3(request):
+    data_events = Events.objects.all()
+
+    context = {
+        'list_events' : data_events
+    }
+    return render(request, "show_events3.html", context)
+
 def add_events(request):
     if request.method == "POST":
         bodyRequest = json.loads(request.body.decode("utf-8"))
@@ -27,6 +51,7 @@ def add_events(request):
         url_image = bodyRequest['url_image']
 
         event = Events.objects.create(user=request.user, event_type=event_type, event_title=event_title, description=description, schedule=schedule, location=location, url_image=url_image)
+        event.save()
 
         return JsonResponse({})
     else:
