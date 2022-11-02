@@ -16,6 +16,7 @@ def show_projects(request):
 
     context = {
         'logged_in' : request.user.is_authenticated,
+        'username' : request.user.username,
         'user_projects' : True if user_projects else False,
     }
 
@@ -24,9 +25,13 @@ def show_projects(request):
 def show_project(request, id):
     project = Project.objects.get(pk=id)
 
-    # print(Donation.objects.filter(project=id).aggregate(Sum('amount'))['amount__sum'])
+    context = {
+        'logged_in' : request.user.is_authenticated,
+        'username' : request.user.username,
+        'project' : encode_project(project, request.user.id),
+    }
 
-    return render(request, 'show_project.html', {'project' : encode_project(project, request.user.id), 'logged_in' : request.user.is_authenticated})
+    return render(request, 'show_project.html', context)
 
 @login_required(login_url='/auth/login/')
 def create_project(request):
@@ -40,7 +45,14 @@ def create_project(request):
             return HttpResponseRedirect(reverse('projects:show_projects'))
     else:
         form = ProjectForm()
-    return render(request, 'create_project.html', {'form': form})
+    
+    context = {
+        'logged_in' : request.user.is_authenticated,
+        'username' : request.user.username,
+        'form': form,
+    }
+
+    return render(request, 'create_project.html', context)
 
 def get_projects(request):
     data = Project.objects.filter(is_published=True).filter(title__icontains=request.GET.get('search')).annotate(like_count=Count('liked_by')).order_by('-like_count')
@@ -67,8 +79,14 @@ def edit_project(request, id):
         project.donation_target = request.POST.get('donation_target')
         project.save()
         return redirect(reverse('projects:show_projects'))
+    
+    context = {
+        'logged_in' : request.user.is_authenticated,
+        'username' : request.user.username,
+        'project': project,
+    }
 
-    return render(request, 'edit_project.html', {'project' : project})
+    return render(request, 'edit_project.html', context)
 
 def delete_project(request):
     project = Project.objects.get(pk=request.POST.get('id'))

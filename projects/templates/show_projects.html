@@ -204,13 +204,14 @@
 {% endblock meta %}
 
 {% block navbar %}
-<div class="d-flex justify-content-end">
-    {% if logged_in %}
-        <a class="btn btn-outline-danger m-1" href="{% url 'authentication:logout' %}">Logout</a>
-        {% else %}
-        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:login' %}">Login</a>
-        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:register' %}">Register</a>
-    {% endif %}
+<div class="mx-auto order-0 navbar-collapse collapse">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><a class="btn btn-light" href="/">Home</a></li>
+        <li class="nav-item"><a class="btn btn-light" href="/projects">Projects</a></li>
+        <li class="nav-item"><a class="btn btn-light" href="/inforum">Forum</a></li>
+        <li class="nav-item"><a class="btn btn-light" href="/shop">Shop</a></li>
+        <li class="nav-item"><a class="btn btn-light" href="/events">Events</a></li>
+    </ul>
 </div>
 {% endblock navbar %}
 
