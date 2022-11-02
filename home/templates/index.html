@@ -20,6 +20,7 @@
               <li><a href="/projects"> <img src="../../static/assets/project.svg" class="w-7 h-7"/> projects</a></li>
               <li><a href="/inforum"> <img src="../../static/assets/forum.svg" class="w-7 h-7"/> forum</a></li>
               <li><a href="/shop"> <img src="../../static/assets/shopping-bag.svg" class="w-7 h-7"/> shop</a></li>
+              <li><a href="/events"> <img src="../../static/assets/speech.svg" class="w-8 h-8"/> events</a></li>
               {%if username%}
               <li><a href="/auth/logout" class="text-red-500"> <img src="../../static/assets/logout.svg" class="w-7 h-7"/> logout</a></li>
               {%else%}
@@ -75,26 +76,25 @@
   <h2 class="text-4xl mb-6">About Us</h2>
   <div class="flex flex-col lg:flex-row gap-y-4 lg:gap-x-6 justify-center items-center">
     <img src="../../static/assets/startin-logo.png" class="w-64 h-64 lg:w-80 lg:h-80 transform transition hover:-translate-x-10 hover:-rotate-45 duration-200"/>
-      <p class="text-l text-justify mx-8 lg:mx-0 lg:w-1/2 ">The StartIn Foundation aims to advance technological innovation in Indonesia. StartIn provides a means for everyone who has a technological innovation idea to get donations from others to fund their projects. 
+      <p class="text-base lg:text-lg text-justify mx-8 lg:mx-0 lg:w-1/2 ">The StartIn Foundation aims to advance technological innovation in Indonesia. StartIn provides a means for everyone who has a technological innovation idea to get donations from others to fund their projects. 
         In this way, it is hoped that StartIn can support the growth of Indonesian technology and increase the number of tech startups. StartIn also provides a means for everyone to learn everything about technology and how to start their own business, even startup, by attending workshops, talk shows, courses and participating on myriads of forum threads available on StartIn. 
         StartIn also displays the latest news about tech startups and the latest technology with the most potential. This way, everybody will have the same chances on achieving their dreams while also gaining insight and knowledge regarding the technology and business trend that is currently happenning.
       </p>
   </div>
 </article>
-<section class="w-full my-16  min-h-[50vh] flex flex-col lg:items-center overflow-x-hidden">
+<section class="w-full py-16  min-h-[50vh] flex flex-col lg:items-center overflow-x-hidden">
  <h3 class="text-4xl mb-4 font-semibold text-center">Our Products</h3>
 
- <div class="flex gap-x-5 gap-y-5 px-8 mx-10 lg:mx-8 py-10 lg:justify-center lg:flex-wrap max-w-7xl overflow-x-auto">
-
+ <div class="flex gap-x-5 gap-y-5 px-4 lg:px-8 ml-3 lg:mx-8 py-10 lg:justify-center lg:flex-wrap max-w-7xl overflow-x-auto">
   <!-- card --> 
-  <div class="card card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[450px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
+  <div class="card lg:card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[300px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
     <!-- just change the width and height of img if needed-->
-    <figure class="py-10"><img src="../../static/assets/startup.svg" alt="startup" class="w-44 h-44 p-4"/></figure>
-    <div class="card-body">
-      <h2 class="card-title">Projects</h2>
+    <figure class="lg:py-10"><img src="../../static/assets/startup.svg" alt="startup" class="w-[100px] h-[100px] py-2 lg:w-44 lg:h-44 lg:p-4"/></figure>
+    <div class="card-body p-4 lg:p-8">
+      <h2 class="card-title text-lg lg:text-xl">Projects</h2>
       <!-- gausah panjang-panjang descnya-->
-      <p>Built for those who are interested in projects by others. Everybody can donate to any ongoing projects and or propose a fundraise for their own projects.</p>
-      <p class="font-semibold">From Everybody, For Everybody</p>
+      <p class="text-[14px] lg:text-[16px]">Built for those who are interested in projects by others. Everybody can donate to any ongoing projects and or propose a fundraise for their own projects.</p>
+      <p class="font-semibold text-[14px] lg:text-[16px] mb-10">From Everybody, For Everybody</p>
       <div class="card-actions justify-end">
         <!-- make sure the url is correct-->
         <a href="/projects" target="__blank" class="btn btn-primary mt-1">open in new tab</a>
@@ -102,29 +102,29 @@
     </div>
   </div>
   <!-- card --> 
-  <div class="card card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[450px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
+  <div class="card lg:card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[300px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
     <!-- just change the width and height of img if needed-->
-    <figure class="py-10"><img src="../../static/assets/chat.svg" alt="startup" class=" ml-3 w-[150px] h-[150px] p-4"/></figure>
-    <div class="card-body">
-      <h2 class="card-title">Forum</h2>
+    <figure class="lg:py-10"><img src="../../static/assets/chat.svg" alt="startup" class=" lg:ml-3 w-[100px] h-[100px] lg:w-[150px] lg:h-[150px] p-4"/></figure>
+    <div class="card-body p-4 lg:p-8">
+      <h2 class="card-title text-lg lg:text-xl">Forum</h2>
       <!-- gausah panjang-panjang descnya-->
-      <p>Forum based feature where anybody can ask and answer any question or discussion related to tech, business, and startup.</p>
-      <p class="font-semibold">Ask, Answer, and Gain Knowledge</p>
+      <p class="text-[14px] lg:text-[16px]">Forum based feature where anybody can ask and answer any question or discussion related to tech, business, and startup.</p>
+      <p class="font-semibold text-[14px] lg:text-[16px] mb-10">Ask, Answer, and Gain Knowledge</p>
       <div class="card-actions justify-end">
         <!-- make sure the url is correct-->
-        <a href="/projects" target="__blank" class="btn btn-primary mt-1">open in new tab</a>
+        <a href="/inforum" target="__blank" class="btn btn-primary mt-1">open in new tab</a>
       </div>
     </div>
   </div>
-   <!-- card --> 
-   <div class="card card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[450px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
+  <!-- card --> 
+  <div class="card lg:card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[300px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
     <!-- just change the width and height of img if needed-->
-    <figure class="py-10"><img src="../../static/assets/shop-svgrepo-com.svg" alt="startup" class="w-44 h-44 p-4"/></figure>
-    <div class="card-body">
-      <h2 class="card-title">Shop</h2>
+    <figure class="lg:py-10"><img src="../../static/assets/shop-svgrepo-com.svg" alt="startup" class=" w-[100px] h-[100px] py-2 lg:w-44 lg:h-44 lg:p-4"/></figure>
+    <div class="card-body p-4 lg:p-8">
+      <h2 class="card-title text-lg lg:text-xl">Shop</h2>
       <!-- gausah panjang-panjang descnya-->
-      <p> We need an aditional funds to keep developing and running our website, so we can help more inovators around the world!.</p>
-      <p class="font-semibold">Help us spread our impact, buy our merchandise 😊</p>
+      <p class="text-[14px] lg:text-[16px]">We need aditional funds to keep developing and running our website so we can help more great minds and innovators around the world!</p>
+      <p class="font-semibold text-[14px] lg:text-[16px] mb-10">Help us spread our impact, buy our merchandise 😊</p>
       <div class="card-actions justify-end">
         <!-- make sure the url is correct-->
         <a href="/shop" target="__blank" class="btn btn-primary mt-1">open in new tab</a>
@@ -132,29 +132,14 @@
     </div>
   </div>
   <!-- card --> 
-  <div class="card card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[450px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
+  <div class="card lg:card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[300px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
     <!-- just change the width and height of img if needed-->
-    <figure class="py-10"><img src="../../static/assets/chat.svg" alt="startup" class=" ml-3 w-[150px] h-[150px] p-4"/></figure>
-    <div class="card-body">
-      <h2 class="card-title">Events</h2>
+    <figure class="lg:py-10"><img src="../../static/assets/chat.svg" alt="startup" class=" ml-3 w-[100px] h-[100px] lg:w-[150px] lg:h-[150px] p-4"/></figure>
+    <div class="card-body p-4 lg:p-8">
+      <h2 class="card-title text-lg lg:text-xl">Courses</h2>
       <!-- gausah panjang-panjang descnya-->
-      <p>Forum based feature where anybody can ask and answer any question or discussion related to tech, business, and startup.</p>
-      <p class="font-semibold">Ask, Answer, and Gain Knowledge</p>
-      <div class="card-actions justify-end">
-        <!-- make sure the url is correct-->
-        <a href="/projects" target="__blank" class="btn btn-primary mt-1">open in new tab</a>
-      </div>
-    </div>
-  </div>
-   <!-- card --> 
-   <div class="card card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[450px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
-    <!-- just change the width and height of img if needed-->
-    <figure class="py-10"><img src="../../static/assets/startup.svg" alt="startup" class="w-44 h-44 p-4"/></figure>
-    <div class="card-body">
-      <h2 class="card-title">News</h2>
-      <!-- gausah panjang-panjang descnya-->
-      <p>Built for those who are interested in projects by others. Everybody can donate to any ongoing projects and or propose a fundraise for their own projects.</p>
-      <p class="font-semibold">From Everybody, For Everybody</p>
+      <p class="text-[14px] lg:text-[16px]">Forum based feature where anybody can ask and answer any question or discussion related to tech, business, and startup.</p>
+      <p class="font-semibold text-[14px] lg:text-[16px] mb-10">Ask, Answer, and Gain Knowledge</p>
       <div class="card-actions justify-end">
         <!-- make sure the url is correct-->
         <a href="/projects" target="__blank" class="btn btn-primary mt-1">open in new tab</a>
@@ -162,14 +147,29 @@
     </div>
   </div>
   <!-- card --> 
-  <div class="card card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[450px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
+  <div class="card lg:card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[300px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
     <!-- just change the width and height of img if needed-->
-    <figure class="py-10"><img src="../../static/assets/chat.svg" alt="startup" class=" ml-3 w-[150px] h-[150px] p-4"/></figure>
-    <div class="card-body">
-      <h2 class="card-title">Courses</h2>
+    <figure class="lg:py-10"><img src="../../static/assets/chat.svg" alt="startup" class=" ml-3 w-[100px] h-[100px] lg:w-[150px] lg:h-[150px] p-4"/></figure>
+    <div class="card-body p-4 lg:p-8">
+      <h2 class="card-title text-lg lg:text-xl">Courses</h2>
       <!-- gausah panjang-panjang descnya-->
-      <p>Forum based feature where anybody can ask and answer any question or discussion related to tech, business, and startup.</p>
-      <p class="font-semibold">Ask, Answer, and Gain Knowledge</p>
+      <p class="text-[14px] lg:text-[16px]">Forum based feature where anybody can ask and answer any question or discussion related to tech, business, and startup.</p>
+      <p class="font-semibold text-[14px] lg:text-[16px] mb-10">Ask, Answer, and Gain Knowledge</p>
+      <div class="card-actions justify-end">
+        <!-- make sure the url is correct-->
+        <a href="/projects" target="__blank" class="btn btn-primary mt-1">open in new tab</a>
+      </div>
+    </div>
+  </div>
+  <!-- card --> 
+  <div class="card lg:card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[300px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
+    <!-- just change the width and height of img if needed-->
+    <figure class="lg:py-10"><img src="../../static/assets/chat.svg" alt="startup" class=" ml-3 w-[100px] h-[100px] lg:w-[150px] lg:h-[150px] p-4"/></figure>
+    <div class="card-body p-4 lg:p-8">
+      <h2 class="card-title text-lg lg:text-xl">Courses</h2>
+      <!-- gausah panjang-panjang descnya-->
+      <p class="text-[14px] lg:text-[16px]">Forum based feature where anybody can ask and answer any question or discussion related to tech, business, and startup.</p>
+      <p class="font-semibold text-[14px] lg:text-[16px] mb-10">Ask, Answer, and Gain Knowledge</p>
       <div class="card-actions justify-end">
         <!-- make sure the url is correct-->
         <a href="/projects" target="__blank" class="btn btn-primary mt-1">open in new tab</a>
