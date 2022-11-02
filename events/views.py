@@ -13,6 +13,26 @@ def show_events(request):
     }
     return render(request, "events.html", context)
 
+def add_events(request):
+    if request.method == "POST":
+        bodyRequest = json.loads(request.body.decode("utf-8"))
+        print(bodyRequest['url_image'])
+
+        
+        event_type = bodyRequest['event_type']
+        event_title = bodyRequest['event_title']
+        description = bodyRequest['description']
+        schedule = bodyRequest['schedule']
+        location = bodyRequest['location']
+        url_image = bodyRequest['url_image']
+
+        event = Events.objects.create(user=request.user, event_type=event_type, event_title=event_title, description=description, schedule=schedule, location=location, url_image=url_image)
+
+        return JsonResponse({})
+    else:
+        return JsonResponse({})
+
+
 
 
 # def add_events(request):

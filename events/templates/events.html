@@ -47,9 +47,7 @@
         <li><a href="/inforum">forum</a></li>
         <li><a href="/shop">shop</a></li>
         <li><a href="/events">events</a></li>
-
-        <li><a for="my-modal">add event</a></li>
-
+        <li><a href="/news">news</a></li>
       </ul>
     </div>
     <div class="navbar-end">
@@ -94,7 +92,7 @@
                 <label class="label">
                   <span class="label-text text-base">URL Image </span>
                 </label>
-                <input type="file" class="text-sm text-gray-900" id="image"/>
+                <input type="text" class="input input-bordered" id="image"/>
             </div>
   
             <label class="label">
@@ -103,13 +101,13 @@
             <div class="form-control">
               <label class="label cursor-pointer">
                 <span class="label-text">Talkshow</span>
-                <input type="radio" name="radio-6" class="radio" value="Talkshow" checked />
+                <input type="radio" name="radio-6" class="radio" value="Talkshow" id="talkshow" checked />
               </label>
             </div>
             <div class="form-control">
               <label class="label cursor-pointer">
                 <span class="label-text">Workshop</span>
-                <input type="radio" name="radio-6" class="radio" value="Workshop" />
+                <input type="radio" name="radio-6" class="radio" value="Workshop" id="workshop" />
               </label>
             </div>
           
@@ -145,7 +143,9 @@
           </div>
           
           <div class="modal-action">
-            <label for="my-modal-6" class="btn" type="submit">ADD</label>
+            <label for="my-modal-6" class="btn btn-outline btn-accent">CLOSE</label>
+            <button for="my-modal-6" class="btn btn-outline" id="submit-form" type="submit">ADD</button>
+            
           </div>
 
         </form>
@@ -168,8 +168,10 @@
         </div>
 
         <h2 class="card-title">Workshop : Cinematography In Game Dev</h2>
+        <p class="card-desc text-xs">oleh: Game Developer Batam</p>
         <p>Pernah kah teman-teman bertanya, bagaimana proses pembuatan Cinematography di game development? 
-          Tools dan teknik apa saja yang akan dipakai? bagaimana tahapan-nya dan apa saja yang perlu diperhatikan?</p>
+          Bagaimana tahapan-nya dan apa saja yang perlu diperhatikan?
+          Kali ini kita akan belajar bersama Ervin Ahmad, kita akan belajar dari pengalaman, perspektif-nya serta praktek bagaimana proses pembuatan Cinematography di game development dari awal sampai selesai.</p>
         <div class="card-actions p-3 justify-end">
           <button class="btn">Read more!</button>
         </div>
@@ -185,8 +187,27 @@
         </div>
 
         <h2 class="card-title">Sharing session Game Design</h2>
+        <p class="card-desc text-xs">oleh: Game Developer Batam</p>
         <p>Pernah kah teman-teman bertanya, bagaimana proses Game Design yang baik? dasar-dasar game desain dan bagaimana desain game untuk game free to play? 
-          bagaimana tahapan-nya dan apa saja yang perlu diperhatikan?</p>
+          bagaimana tahapan-nya dan apa saja yang perlu diperhatikan ? Kali ini kita akan belajar bersama Ervin Ahmad mengenai perspektif-nya tentang "Fundamentals of game design" dan bersama Julio Andryanto kita akan belajar tentang "Game design rules of free to play games"</p>
+        <div class="card-actions p-3 justify-end">
+          <button class="btn">Read more!</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card w-96 glass m-4 ">
+      <figure><img src="https://dicoding-web-img.sgp1.cdn.digitaloceanspaces.com/original/event/dos:it_incubation_2022_logo_280922092950.png" alt="car!"/></figure>
+      <div class="card-body">
+
+        <div class="card-actions justify-start">
+          <div class="badge badge-outline">Workshop</div> 
+        </div>
+
+        <h2 class="card-title">IT INCUBATION - 2022</h2>
+        <p class="card-desc text-xs">oleh: GDSC UIN Maulana Malik Ibrahim Malang</p>
+        <p>This activity focuses on growing the passion and potential of new students in the field of Informatics Technology through intensive training. This activity aims to introduce and provide a briefing to new students about Information Technology in the digital industry. 
+          It is hoped that the participants will be able to produce an initial design of products in the field of Informatics Technology that are innovative and able to compete in the digital industry.</p>
         <div class="card-actions p-3 justify-end">
           <button class="btn">Read more!</button>
         </div>
@@ -199,17 +220,91 @@
 
 
 <script>
-  document.addEventListener("DOMContentLoaded", async()=>{
+  // document.addEventListener("DOMContentLoaded", ()=>{
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    console.log(document.getElementById('events-form'))
 
     console.log("masuk script")
 
-    document.getElementById('events-form').addEventListener("submit", async()=>{
-      console.log(document.getElementById('judul'))
+    const form = document.getElementById('events-form')
 
-      console.log(document.getElementById('judul').value)
+    form.addEventListener("submit", async(event)=>{
+      event.preventDefault()
+      // console.log(document.getElementById('judul'))
+      const gambar = document.getElementById('image').value
+      const talkshow = document.getElementById('talkshow').checked
+      const workshop = document.getElementById('workshop').checked
+      const judul = document.getElementById('judul').value
+      const deskripsi = document.getElementById('deskripsi').value
+      const jadwal = document.getElementById('jadwal').value
+      const lokasi = document.getElementById('lokasi').value
+      console.log(gambar)
+      console.log(talkshow)
+      console.log(workshop)
+      console.log(judul)
+      console.log(deskripsi)
+      console.log(jadwal)
+      console.log(lokasi)
+      let event_type = ""
+
+      if (talkshow) {
+        event_type = "Talkshow"
+      }
+      else {
+        event_type = "Workshop"
+      }
+
+
+      const formData = {
+        'url_image':gambar,
+        'event_type':event_type,
+        'event_title':judul,
+        'description':deskripsi,
+        'schedule':jadwal,
+        'location':lokasi,
+      }
+
+      var formDataobj= new FormData()
+      formDataobj.append('url_image', gambar)
+      
+      formDataobj.append('event_type', event_type)
+      formDataobj.append('event_title', judul)
+      formDataobj.append('description', deskripsi)
+      formDataobj.append('schedule', jadwal)
+      formDataobj.append('location', lokasi)
+
+      console.log(formDataobj)
+      console.log(JSON.stringify(formDataobj))
+
+      const response = await fetch("/events/add/", {
+        method: "POST",
+        headers : {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie("csrftoken"),
+        },
+        body: JSON.stringify(formData),
+      })
+
     })
 
-  })
+  // })
 </script>
 
 {% endblock content %}
