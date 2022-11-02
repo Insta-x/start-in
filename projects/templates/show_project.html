@@ -53,8 +53,14 @@
             $('#donators-list').empty();
             data.donators.forEach(element => {
                 $('#donators-list')
-                    .append($('<div></div>').text(element.username + ' donated Rp' + element.amount + '!'))
+                    .append($('<div class="border-top mt-2"></div>').text(element.username + ' donated Rp' + element.amount + '!'))
             });
+            if (data.donators.length == 0) {
+                $('#donator-div').hide();
+            }
+            else {
+                $('#donator-div').show();
+            }
         });
     }
 
@@ -108,8 +114,10 @@
             <div class="d-flex w-100">
                 {{ project.fields.description }}
             </div>
-            <div class="d-flex flex-column align-items-start" id="donators-list" style="max-width: 250px;">
+            <div class="d-flex flex-column flex-fill align-items-start border border-2 rounded-3 p-3" id="donator-div" style="max-width: 400px;">
                 <h3>Donator:</h3>
+                <div id="donators-list">
+                </div>
             </div>
         </div>
     </div>

@@ -173,21 +173,21 @@
         var button_div = $('<div class="row justify-content-end"></div>')
 
         if (data.is_published){
-            button_div.append($('<a href="./project/' + element.pk + '" class="col btn btn-secondary ms-1">View</a>'))
+            button_div.append($('<a href="./project/' + element.pk + '" class="col btn btn-secondary ms-1" style="max-width: 100px;">View</a>'))
 
             if (!data.is_done) {
-                var done_button = $('<button class="col btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#done-modal">Done</button>').click(() => {
+                var done_button = $('<button class="col btn btn-success ms-1" style="max-width: 100px;" data-bs-toggle="modal" data-bs-target="#done-modal">Done</button>').click(() => {
                     $('#done-id-project').val(element.pk)
                 })
                 button_div.append(done_button)
             }
         }
         else {
-            var edit_button = $('<a href="./edit/' + element.pk + '" %}" class="col btn btn-primary ms-1">Edit</a>')
-            var publish_button = $('<button class="col btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#publish-modal">Publish</button>').click(() => {
+            var edit_button = $('<a href="./edit/' + element.pk + '" %}" class="col btn btn-primary ms-1" style="max-width: 100px;">Edit</a>')
+            var publish_button = $('<button class="col btn btn-success ms-1" style="max-width: 100px;" data-bs-toggle="modal" data-bs-target="#publish-modal">Publish</button>').click(() => {
                 $('#publish-id-project').val(element.pk)
             })
-            var delete_button = $('<button class="col btn btn-danger ms-1" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete</button>').click(() => {
+            var delete_button = $('<button class="col btn btn-danger ms-1" style="max-width: 100px;" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete</button>').click(() => {
                 $('#delete-id-project').val(element.pk)
             })
             button_div.append(edit_button)
