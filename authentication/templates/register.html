@@ -110,16 +110,14 @@
                     <h4>Formulir Registrasi</h4>
                     </div>
                     <!-- Form -->
-                    <form class="px-3">
+                    <form class="px-3" method="POST">
+                        {% csrf_token %}
                         <!-- Input Box -->
                         <div class="form-input">
                             <input type="text" name="username" placeholder="Username" maxlength="150" autocapitalize="none" autocomplete="username" autofocus="" required="" id="id_username" class="form-control">
                         </div>
                         <div class="form-input">
                             <input type="text" name="name" placeholder="Name" maxlength="150" autocapitalize="none" autofocus="" required="" id="id_name" class="form-control">
-                        </div>
-                        <div class="form-input">
-                            <input type="password" name="password1" placeholder="Password" autocomplete="new-password" required="" id="id_password1" class="form-control">
                         </div>
                         <div class="form-input">
                             <input type="password" name="password1" placeholder="Password" autocomplete="new-password" required="" id="id_password1" class="form-control">
@@ -139,14 +137,15 @@
 
 
                         <!-- Register Button -->
-                    <div class="mb-3"> 
-                            <button type="submit" class="btn btn-block">Register</button>
+                        <div class="mb-3"> 
+                                <button type="submit" class="btn btn-block">Register</button>
+                            </div>
+                            <div class="text-center mb-2">
+                            </div>
+                            <div class="text-center mb-5 text-white">Sudah punya akun?
+                                <a class="login-link" href="{% url 'authentication:login' %}">Login di sini</a>
                         </div>
-                        <div class="text-center mb-2">
-                        </div>
-                        <div class="text-center mb-5 text-white">Sudah punya akun?
-                            <a class="login-link" href="{% url 'authentication:login' %}">Login di sini</a>
-                    </div>
+                    </form>
                 </div>
             </div>
             <!-- FORM CONTAINER END -->

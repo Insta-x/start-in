@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- BOOTSTRAP -->
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+
+<script>
+    // Memastikan semua elemen HTML sudah ter-compile
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    document.addEventListener("DOMContentLoaded", async() =>{
+        const submitButton = document.getElementById('submit-form')
+        const formEvents = document.getElementById('form-events')
+
+        const event_title = document.getElementById('id_event_title')
+        const event_type = document.getElementById('id_event_type')
+        const description = document.getElementById('id_description')
+        const developer_name = document.getElementById('id_developer_name')
+        const schedule = document.getElementById('id_schedule')
+        const location = document.getElementById('id_location')
+        const event_image = document.getElementById('id_event_image')
+
+        const csrf = document.getElementById('csrfmiddlewaretoken')
+        console.log(csrf)
+
+
+        formEvents.addEventListener('submit', async(event)=>{
+            // Agar tidak langsung mengirimkan data
+            event.preventDefault()
+
+            var formData = new FormData()
+            // formData.append('csrfmiddlewaretoken', csrf[0].value)
+            formData.append('event_image', event_image.files[0])
+            formData.append('event_title', event_title.value)
+            formData.append('event_type', event_type.value)
+            formData.append('developer_name', developer_name.value)
+            formData.append('description', description.value)
+            formData.append('schedule', schedule.value)
+            formData.append('location', location.value)
+
+            const response = await fetch(("{% url 'events:add_events' %}"), {
+                method: 'POST',
+                headers : {
+                    'X-CSRFToken':getCookie("csrftoken")
+                },
+                body: formData
+            })
+
+        })
+    })
+</script>
+
+<div class=" px-10">
+
+    <form action="" id="form-events" class="d-flex flex-column gap-3 px-5">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit" id="submit-form" class="btn btn-primary">Submit</button>
+    </form>
+        
+
+    
+</div>
+
+
+{% endblock content %}
