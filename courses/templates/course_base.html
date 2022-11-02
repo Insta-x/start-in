@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="{% static 'projects/style.css' %}">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top bg-light ps-3 pb-2">
+    <div class="container-fluid">
+      <div class="d-flex flex-row flex-nowrap">
+        <img src="{% static 'assets/startin-logo.png' %}" class="me-2" style="width: 2.5rem; height: 2.5rem;"/>
+        <a class="navbar-brand text-dark font-semibold text-xl tracking-wider" href="/projects/"> StartIn Projects</a>
+      </div>
+    {% block navbar %}
+    {% endblock navbar %}
+    </div>
+  </nav>
+  {% block meta %}
+  {% endblock meta %}
+</head>
+
+<body>
+  {% block content %}
+  {% endblock content %}
+  <footer class="footer p-10 bg-slate-300 p-5 mt-5">
+    <div class="d-flex flex-row">
+      <div class="d-flex flex-column flex-fill">
+        <div id="footer-logo" class="d-flex flex-row align-items-center">
+          <img src="{% static 'assets/startin-logo.png' %}" style="width: 2.5rem; height: 2.5rem;"/>
+          <h4 class="font-semibold text-xl tracking-wider"> StartIn</h4>
+        </div>
+        <p>StartIn Inc.<br>Providing reliable resources since 2022</p>
+        <p> © 2022 Copyright of StartIn</p>
+      </div> 
+      <div class="d-flex flex-column flex-fill">
+        <span class="footer-title">Products</span> 
+        <a href="/projects" class="hover-link link-secondary">Projects</a> 
+        <a href="/inforum" class="hover-link link-secondary">Forum</a> 
+        <a href="/shop" class="hover-link link-secondary">Shop</a> 
+        <a href="/courses/" class="hover-link link-secondary">Courses</a>
+      </div> 
+      <div class="d-flex flex-column flex-fill">
+        <span class="footer-title">Company</span> 
+        <a class="hover-link link-secondary">About us</a> 
+        <a class="hover-link link-secondary">Contact</a>
+      </div> 
+      <div class="d-flex flex-column flex-fill">
+        <span class="footer-title">Legal</span> 
+        <a href="#" class="hover-link link-secondary">Terms of use</a>
+        <a href="#" class="hover-link link-secondary">Privacy policy</a> 
+        <a href="#" class="hover-link link-secondary">Cookie policy</a>
+      </div>
+    </div>
+      
+  </footer>
+</body>
+
+</html>
