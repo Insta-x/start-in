@@ -7,20 +7,22 @@
 {% endblock navbar %}
 
 {% block content %}
-<div class="m-5 d-flex flex-row justify-content-center">
-    <div style="max-width: 600px;">
-        <h1 class="text-center bold">Edit Project</h1>
-        <form method="POST" action="" class="form-create" id="create-form">
-            {% csrf_token %}
-            <input type="text" name="title" placeholder="Project title" maxlength="100" required="" class='form-control' id="id_title" value="{{ project.title }}">
-            <textarea name="description" placeholder="Project description" cols="40" rows="10" maxlength="10000" required="" class='form-control mt-3' id="id_description">{{ project.description }}</textarea>
-            <div class="d-flex flex-row mt-3">
-                <label for="id_donation_target">Donation target</label>
-                <input type="number" name="donation_target" min="0" max="9223372036854775807" required="" class='form-control' id="id_donation_target" value="{{ project.donation_target }}">
-            </div>
-            <input class="btn btn-primary mt-3" style="width: 100%;" type="submit" name="submit" value="Save"/> 
-        </form>
-        <a href="/projects/" class="btn btn-danger mt-3 w-100">Cancel</a>
+<main>
+    <div class="m-5 d-flex flex-row justify-content-center">
+        <div style="max-width: 600px;">
+            <h1 class="text-center bold">Edit Project</h1>
+            <form method="POST" action="" class="form-create" id="create-form">
+                {% csrf_token %}
+                <input type="text" name="title" placeholder="Project title" maxlength="100" required="" class='form-control' id="id_title" value="{{ project.title }}">
+                <textarea name="description" placeholder="Project description" cols="40" rows="10" maxlength="10000" required="" class='form-control mt-3' id="id_description">{{ project.description }}</textarea>
+                <div class="d-flex flex-row mt-3">
+                    <label for="id_donation_target">Donation target</label>
+                    <input type="number" name="donation_target" min="0" max="9223372036854775807" required="" class='form-control' id="id_donation_target" value="{{ project.donation_target }}">
+                </div>
+                <input class="btn btn-primary mt-3" style="width: 100%;" type="submit" name="submit" value="Save"/> 
+            </form>
+            <a href="/projects/" class="btn btn-danger mt-3 w-100">Cancel</a>
+        </div>
     </div>
-</div>
+</main>
 {% endblock content %}
