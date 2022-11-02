@@ -4,14 +4,6 @@
 {% endblock meta %}
 
 {% block navbar %}
-<div class="d-flex justify-content-end">
-    {% if logged_in %}  
-        <a class="btn btn-outline-danger m-1" href="{% url 'authentication:logout' %}">Logout</a>
-        {% else %}
-        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:login' %}">Login</a>
-        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:register' %}">Register</a>
-    {% endif %}
-</div>
 {% endblock navbar %}
 
 {% block content %}
@@ -26,9 +18,9 @@
                 <label for="id_donation_target">Donation target</label>
                 <input type="number" name="donation_target" min="0" max="9223372036854775807" required="" class='form-control' id="id_donation_target" value="{{ project.donation_target }}">
             </div>
-            
-            <input class="btn btn-primary mt-3" style="width: 100%;" type="submit" name="submit" value="Save"/>
+            <input class="btn btn-primary mt-3" style="width: 100%;" type="submit" name="submit" value="Save"/> 
         </form>
+        <a href="/projects/" class="btn btn-danger mt-3 w-100">Cancel</a>
     </div>
 </div>
 {% endblock content %}

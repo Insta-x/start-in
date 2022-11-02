@@ -104,7 +104,8 @@
         var card_div = $('<div class="card project-card mt-2 mb-2 p-2"></div>')
             .attr('id', 'project-' + element.pk);
         
-        var like_button = $('<button type="button" class="btn btn-outline-primary btn-rounded btn-sm like-btn"></button>')
+        var like_button = $('<button type="button" class="btn btn-rounded btn-sm like-btn"></button>')
+            .addClass(data.is_liked ? 'btn-outline-primary' : 'btn-outline-secondary')
             .html("<img src=\'{% static 'projects/like-icon.svg' %}\'/>" + data.like_count)
             .attr('id', 'like-' + element.pk)
             .click(() => {
@@ -118,6 +119,12 @@
                     success: (data) => {
                         $('#like-' + element.pk)
                             .html("<img src=\'{% static 'projects/like-icon.svg' %}\'/>" + data[0].fields.like_count)
+                        if (data[0].fields.is_liked) {
+                            $('#like-' + element.pk).removeClass('btn-outline-secondary').addClass('btn-outline-primary')
+                        }
+                        else {
+                            $('#like-' + element.pk).removeClass('btn-outline-primary').addClass('btn-outline-secondary')
+                        }
                     }
                 })
             });
@@ -192,7 +199,7 @@
         div.append($('<div class="col"></div>').append(progress_bar))
         div.append($('<div class="col justify-content-end"></div>').append(button_div))
 
-        return $('<div class="container"></div>').append(div)
+        return $('<div class="container-fluid"></div>').append(div)
     }
 
     function getCookie(name) {
@@ -204,13 +211,10 @@
 {% endblock meta %}
 
 {% block navbar %}
-<div class="d-flex justify-content-end">
-    {% if logged_in %}
-        <a class="btn btn-outline-danger m-1" href="{% url 'authentication:logout' %}">Logout</a>
-        {% else %}
-        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:login' %}">Login</a>
-        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:register' %}">Register</a>
-    {% endif %}
+<div class="mx-auto order-0 navbar-collapse collapse">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item"><a class="btn btn-light" href="/">Home</a></li>
+    </ul>
 </div>
 {% endblock navbar %}
 
@@ -231,7 +235,7 @@
             </div>
         </div>
         {% else %}
-        <div class="d-flex flex-column m-3" id="user-projects-list">
+        <div class="d-flex flex-column m-3 mt-5 mb-5" id="user-projects-list">
             <div class="d-flex flex-row justify-content-between mb-2">
                 <h3>Your Projects</h3>
                 <a href="{% url 'projects:create_project' %}" class="btn btn-primary">Create project</a>
