@@ -70,6 +70,14 @@ def edit_project(request, id):
 
     return render(request, 'edit_project.html', {'project' : project})
 
+def delete_project(request):
+    project = Project.objects.get(pk=request.POST.get('id'))
+
+    if project.user != request.user:
+        return HttpResponse(status=403)
+    
+    project.delete()
+    return HttpResponse('Success', content_type='text/plain')
 
 def publish_project(request):
     project = Project.objects.get(pk=request.POST.get('id'))
