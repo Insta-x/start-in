@@ -1,92 +1,215 @@
 {% extends 'base.html' %}
-{% load static %}
 
 {% block content %}
 
-<!-- BOOTSTRAP -->
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-</head>
 
 <!-- Style HTML-->
 <style>
     .header {
         text-align: center;
-        padding-top: 10px;
+        padding-top: 15px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        padding-bottom: 15px;
+        
     }
+    
 
-    .body {
-        padding-bottom: 20px;
-    }
-
-    #description {
-        white-space: pre-line;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 3; /* number of lines to show */
-                line-clamp: 3; 
-        -webkit-box-orient: vertical;
-    }
-
-    .card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    }
-
-    .card:hover {
-    box-shadow: 0 12px 24px 0 rgba(0,0,0,0.2);
-    }
 </style>
 
-<!-- Navbar StartIn Events-->
-<nav class="navbar navbar-light bg-light fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" style="text-align: center; font-weight: bold;"href="#">StartIn Events</a>
-        <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Cari Event" aria-label="Search">
-            <button class="btn btn-outline-dark" type="submit">Search</button>
-        </form>
-
-        <a class="nav-link active" aria-current="page" style="font-weight:bold" href="/">HOME</a> 
-    
+<!-- Navbar StartIn -->
+<navbar class="navbar bg-base-100 shadow-md">
+    <div class="navbar-start">
+      <div class="dropdown">
+        <label tabindex="0" class="btn btn-ghost lg:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+        </label>
+        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+            <li><a href="/projects"> <img src="../../static/assets/project.svg" class="w-7 h-7"/> projects</a></li>
+            <li><a href="/inforum"> <img src="../../static/assets/forum.svg" class="w-7 h-7"/> forum</a></li>
+            <li><a href="/shop"> <img src="../../static/assets/shopping-bag.svg" class="w-7 h-7"/> shop</a></li>
+            <li><a href="/events"> <img src="../../static/assets/speech.svg" class="w-8 h-8"/> events</a></li>
+            {%if username%}
+            <li><a href="/auth/logout" class="text-red-500"> <img src="../../static/assets/logout.svg" class="w-7 h-7"/> logout</a></li>
+            {%else%}
+            
+            <li><a href="/auth/login"> <img src="../../static/assets/person.svg" class="w-7 h-7"/> login</a></li>
+            {%endif%}
+        </ul>
+      </div>
+      <a href="/" class="btn btn-ghost normal-case text-2xl mb-1 flex items-center gap-x-2">
+        <img src="../../static/assets/startin-logo.png" class="w-10 h-10"/>
+          <h4 class="font-semibold text-xl tracking-wider">StartIn</h4>
+      </a>
     </div>
-</nav>
+    <div class="navbar-center hidden lg:flex">
+      <ul class="menu menu-horizontal p-0">
+        <li><a href="/projects">projects</a></li>
+        <li><a href="/inforum">forum</a></li>
+        <li><a href="/shop">shop</a></li>
+        <li><a href="/events">events</a></li>
+
+        <li><a for="my-modal">add event</a></li>
+
+      </ul>
+    </div>
+    <div class="navbar-end">
+      {% if username %}
+      <div class="dropdown dropdown-hover relative mr-2">
+        <label tabindex="0" class="text-lg sm:text-xl text-gray-500 p-3 rounded-md transition duration-100 btn-ghost"> Hi, <span class="text-violet-500">{{username}}<span></label>
+        
+        <ul tabindex="0" class="hidden lg:flex dropdown-content absolute right-0 menu ">
+            <div class="w-full h-[20px] bg-transparent "></div>
+            <li><a href="/auth/logout" class=" p-3 py-4 text-right shadow-md bg-base-100 rounded-sm w-44 cursor-pointer text-red-500"> <img src="../../static/assets/logout.svg" class="w-6 h-6"/> logout</a></li>
+        </ul>
+      </div>
+      {%else%}
+       <a href="/auth/login" class="hidden lg:flex gap-x-1 p-2 border-2 hover:border-blue-500 transition duration-100 rounded-md "> <img src="../../static/assets/person.svg" class="w-6 h-6"/> login</a>
+      {%endif %}
+    </div>
+</navbar>
+
+<!-- Header -->
+<div class="header">
+    <h2 style="font-weight: bold; font-size: xx-large;">List Event</h2>
+    <h6>Grow your network and learn from the best developers</h6>
+</div>
+
 
 <body>
-    <h1>Text Kosong</h1>
-    <div class="header">
-        <h2>Daftar Event</h2>
-        <h6 style="padding-bottom: 20px;">Grow your network and learn from the best developers</h6>
-    </div>
+  <div class="flex justify-center">
 
-    <div class="row row-cols-md-3 mx-auto" style="width: 100%; padding-left: 10px; padding-right: 10px;">
-      
-        {% for event in list_events %}
-          <div class="col">
-              <div class="card mb-3">
-                <img src="../../static/event/Workshop_1.png" class="card-img-top" alt="image">
-                <h5 class="card-header">{{event.event_type}}</h5>
+    <!-- The button to open modal -->
+    <label for="my-modal-6" class="btn">ADD EVENT</label>
 
-                  <div class="card-body">
-                      
-                      <h3 class="card-title" style="padding-bottom: 2px">{{event.event_title}}</h3>
-                      <h6 class="card-subtitle" style="padding-bottom: 15px">oleh {{event.developer}}</h6>
-                      <p class="card-text" id="description">{{event.description}}</p>
-                      <h6 class="card-text" style="text-align: right; padding-top: 10px;">{{event.location}}</h6>
-    
-                  </div>
-
-              </div>
+    <!-- Put this part before </body> tag -->
+    <input type="checkbox" id="my-modal-6" class="modal-toggle" />
+    <div class="modal modal-bottom sm:modal-middle">
+      <div class="modal-box">
+        <h2 class="font-bold text-2xl text-center">New Event!</h2>
+        
+        <form action="" id="events-form">
+          {% csrf_token %}
+          <div class="form-control">
+            <div class="form-control">
+                <label class="label">
+                  <span class="label-text text-base">URL Image </span>
+                </label>
+                <input type="file" class="text-sm text-gray-900" id="image"/>
+            </div>
+  
+            <label class="label">
+              <span class="label-text text-base">Category</span>
+            </label>
+            <div class="form-control">
+              <label class="label cursor-pointer">
+                <span class="label-text">Talkshow</span>
+                <input type="radio" name="radio-6" class="radio" value="Talkshow" checked />
+              </label>
+            </div>
+            <div class="form-control">
+              <label class="label cursor-pointer">
+                <span class="label-text">Workshop</span>
+                <input type="radio" name="radio-6" class="radio" value="Workshop" />
+              </label>
+            </div>
+          
+  
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text text-base">Title</span>
+              </label>
+              <input type="text" class="input input-bordered" id="judul"/>
+            </div>
+  
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text text-base">Description</span>
+              </label>
+              <input type="text" class="input input-bordered" id="deskripsi"/>
+            </div>
+  
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text text-base">Schedule</span>
+              </label>
+              <input type="text" class="input input-bordered" id="jadwal"/>
+            </div>
+  
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text text-base">Location</span>
+              </label>
+              <input type="text" class="input input-bordered" id="lokasi"/>
+            </div>
+  
           </div>
-        {% endfor %}
+          
+          <div class="modal-action">
+            <label for="my-modal-6" class="btn" type="submit">ADD</label>
+          </div>
 
+        </form>
+        
+      </div>
+    </div>
+    <h1>
+  </div>
+
+
+  
+  <div class="flex justify-center p-4">
+
+    <div class="card w-96 glass m-4 ">
+      <figure><img src="https://dicoding-web-img.sgp1.cdn.digitaloceanspaces.com/original/event/dos:workshop_cinematography_in_game_dev_logo_220822175002.png" alt="car!"/></figure>
+      <div class="card-body">
+
+        <div class="card-actions justify-start">
+          <div class="badge badge-outline">Workshop</div> 
+        </div>
+
+        <h2 class="card-title">Workshop : Cinematography In Game Dev</h2>
+        <p>Pernah kah teman-teman bertanya, bagaimana proses pembuatan Cinematography di game development? 
+          Tools dan teknik apa saja yang akan dipakai? bagaimana tahapan-nya dan apa saja yang perlu diperhatikan?</p>
+        <div class="card-actions p-3 justify-end">
+          <button class="btn">Read more!</button>
+        </div>
+      </div>
     </div>
 
-    <p style="padding-bottom: 15px;"></p>
+    <div class="card w-96 glass m-4">
+      <figure><img src="https://dicoding-web-img.sgp1.cdn.digitaloceanspaces.com/original/event/dos:sharing_session_game_design_logo_270922111318.png" alt="car!"/></figure>
+      <div class="card-body">
+
+        <div class="card-actions justify-start">
+          <div class="badge badge-outline">Talkshow</div> 
+        </div>
+
+        <h2 class="card-title">Sharing session Game Design</h2>
+        <p>Pernah kah teman-teman bertanya, bagaimana proses Game Design yang baik? dasar-dasar game desain dan bagaimana desain game untuk game free to play? 
+          bagaimana tahapan-nya dan apa saja yang perlu diperhatikan?</p>
+        <div class="card-actions p-3 justify-end">
+          <button class="btn">Read more!</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 </body>
 
 
+<script>
+  document.addEventListener("DOMContentLoaded", async()=>{
+
+    console.log("masuk script")
+
+    document.getElementById('events-form').addEventListener("submit", async()=>{
+      console.log(document.getElementById('judul'))
+
+      console.log(document.getElementById('judul').value)
+    })
+
+  })
+</script>
 
 {% endblock content %}
