@@ -192,7 +192,7 @@
         div.append($('<div class="col"></div>').append(progress_bar))
         div.append($('<div class="col justify-content-end"></div>').append(button_div))
 
-        return $('<div class="container"></div>').append(div)
+        return $('<div class="container-fluid"></div>').append(div)
     }
 
     function getCookie(name) {
@@ -207,10 +207,6 @@
 <div class="mx-auto order-0 navbar-collapse collapse">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item"><a class="btn btn-light" href="/">Home</a></li>
-        <li class="nav-item"><a class="btn btn-light" href="/projects">Projects</a></li>
-        <li class="nav-item"><a class="btn btn-light" href="/inforum">Forum</a></li>
-        <li class="nav-item"><a class="btn btn-light" href="/shop">Shop</a></li>
-        <li class="nav-item"><a class="btn btn-light" href="/events">Events</a></li>
     </ul>
 </div>
 {% endblock navbar %}
@@ -232,7 +228,7 @@
             </div>
         </div>
         {% else %}
-        <div class="d-flex flex-column m-3" id="user-projects-list">
+        <div class="d-flex flex-column m-3 mt-5 mb-5" id="user-projects-list">
             <div class="d-flex flex-row justify-content-between mb-2">
                 <h3>Your Projects</h3>
                 <a href="{% url 'projects:create_project' %}" class="btn btn-primary">Create project</a>
