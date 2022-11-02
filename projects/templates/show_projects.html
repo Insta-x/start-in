@@ -104,7 +104,8 @@
         var card_div = $('<div class="card project-card mt-2 mb-2 p-2"></div>')
             .attr('id', 'project-' + element.pk);
         
-        var like_button = $('<button type="button" class="btn btn-outline-primary btn-rounded btn-sm like-btn"></button>')
+        var like_button = $('<button type="button" class="btn btn-rounded btn-sm like-btn"></button>')
+            .addClass(data.is_liked ? 'btn-outline-primary' : 'btn-outline-secondary')
             .html("<img src=\'{% static 'projects/like-icon.svg' %}\'/>" + data.like_count)
             .attr('id', 'like-' + element.pk)
             .click(() => {
@@ -118,6 +119,12 @@
                     success: (data) => {
                         $('#like-' + element.pk)
                             .html("<img src=\'{% static 'projects/like-icon.svg' %}\'/>" + data[0].fields.like_count)
+                        if (data[0].fields.is_liked) {
+                            $('#like-' + element.pk).removeClass('btn-outline-secondary').addClass('btn-outline-primary')
+                        }
+                        else {
+                            $('#like-' + element.pk).removeClass('btn-outline-primary').addClass('btn-outline-secondary')
+                        }
                     }
                 })
             });
