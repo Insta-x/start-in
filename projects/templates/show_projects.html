@@ -38,6 +38,25 @@
             })
         })
 
+        $('form#delete-form').submit(function(event) {
+            event.preventDefault();
+
+            var actionurl = event.currentTarget.action;
+
+            $.ajax({
+                url: actionurl,
+                type: 'post',
+                data: $('form#delete-form').serialize(),
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+                },
+                success: (resp) => {
+                    $('#delete-modal').modal('hide');
+                    $('#user-project-' + $('#delete-id-project').val()).remove();
+                }
+            })
+        })
+
         $.get("{% url 'projects:get_projects' %}", $("form#search-bar-form").serialize(), (data) => {
             append_projects(data);
         });
@@ -152,18 +171,8 @@
             var publish_button = $('<button class="col btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#publish-modal">Publish</button>').click(() => {
                 $('#publish-id-project').val(element.pk)
             })
-            var delete_button = $('<button class="col btn btn-danger ms-1">Delete</button>').click(() => {
-                $.ajax({
-                    url: "{% url 'projects:delete_project' %}",
-                    type: 'post',
-                    data: {'id' : element.pk},
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-                    },
-                    success: (resp) => {
-                        $('#user-project-' + element.pk).remove();
-                    }
-                })
+            var delete_button = $('<button class="col btn btn-danger ms-1" data-bs-toggle="modal" data-bs-target="#delete-modal">Delete</button>').click(() => {
+                $('#delete-id-project').val(element.pk)
             })
             button_div.append(edit_button)
             button_div.append(publish_button)
@@ -237,24 +246,46 @@
         </div>
     </div>
 
-    <div class="modal fade" id="publish-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="publish-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="publish-modal-label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Publish this project</h1>
+                    <h1 class="modal-title fs-5" id="publish-modal-label">Publish this project</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form method="POST" action="{% url 'projects:publish_project' %}" class="form-publish" id="publish-form">
                         {% csrf_token %}
                         <input type="hidden" name="id" id="publish-id-project" value="-1">
-                        <div class="text-center text-danger">
+                        <div class="text-center text-danger fw-bold">
                             <h3>WARNING</h3>
                             <p>You can't edit the project once you publish it!</p>
                         </div>
                         <input class="btn btn-success mt-3" id="publish-submit" style="width: 100%;" type="submit" name="submit" value="Publish"/>
                     </form>
                     <button type="button" class="btn btn-danger w-100 mt-2" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delete-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="delete-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="delete-modal-label">DELETE THIS PROJECT</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'projects:delete_project' %}" class="form-delete" id="delete-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" id="delete-id-project" value="-1">
+                        <div class="text-center text-danger fw-bold">
+                            <h3>ARE YOU SURE?</h3>
+                        </div>
+                        <input class="btn btn-danger mt-3" id="delete-submit" style="width: 100%;" type="submit" name="submit" value="Delete"/>
+                    </form>
+                    <button type="button" class="btn btn-secondary w-100 mt-2" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
