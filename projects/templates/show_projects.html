@@ -1,0 +1,186 @@
+{% extends 'projects_base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>StartIn Projects</title>
+<script>
+    $(document).ready(function(){
+        $("form#search-bar-form").submit(function( event ) {
+            // alert( "Handler for .submit() called." );
+            event.preventDefault();
+
+            var actionurl = event.currentTarget.action;
+
+            $.get(actionurl, $("form#search-bar-form").serialize(), (data) => {
+                $('#projects-list').empty();
+                append_projects(data);
+            });
+        });
+
+        $.get("{% url 'projects:get_projects' %}", $("form#search-bar-form").serialize(), (data) => {
+            append_projects(data);
+        });
+    });
+
+    function append_projects(projects) {
+        projects.forEach(element => {
+            $("#projects-list").append(createProjectCard(element));
+        });
+    }
+
+    function createProjectCard(element) {
+        var data = element.fields
+
+        var card_div = $('<div class="card project-card mt-2 mb-2 p-2"></div>')
+            .attr('id', 'project-' + element.pk);
+        
+        var like_button = $('<button type="button" class="btn btn-outline-primary btn-rounded btn-sm like-btn"></button>')
+            .html("<img src=\'{% static 'projects/like-icon.svg' %}\'/>" + data.like_count)
+            .attr('id', 'like-' + element.pk)
+            .click(() => {
+                $.ajax({
+                    url: "{% url 'projects:like_project' %}",
+                    type: 'post',
+                    data: {'id' : element.pk},
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+                    },
+                    success: (data) => {
+                        $('#like-' + element.pk)
+                            .html("<img src=\'{% static 'projects/like-icon.svg' %}\'/>" + data[0].fields.like_count)
+                    }
+                })
+            });
+        
+        var progress_bar = $('<div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>')
+            .attr('style', 'width: ' + data.current_donation / data.donation_target * 100 + '%;')
+        
+        var card_body = $('<div class="card-body"></div>')
+            .append($('<div class="d-flex justify-content-between"></div>')
+                .append($('<div class="d-flex flex-row align-items-center"></div>')
+                    .append($('<div class="ms-2 c-details">')
+                        .append($('<h6 class="mb-0"></h6>')
+                            .text(data.owner_username))
+                        .append($('<span></span>')
+                            .text(data.time_created))))
+                .append(like_button))
+            .append($('<div class="mt-5"></div>')
+                .append($('<h3 class="heading"></h3>')
+                    .text(data.title))
+                .append($('<div class="mt-5"></div>')
+                    .append($('<div class="progress"></div>')
+                        .append(progress_bar))
+                    .append($('<div class="mt-3"> <span class="text1">Rp' + data.current_donation + ' <span class="text2">/ Rp' + data.donation_target + '</span></span> </div>')))
+                .append($('<a href="./project/' + element.pk + '" class="btn btn-secondary mt-4">Read More</a>')));
+
+        return card_div.append(card_body);
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+</script>
+{% endblock meta %}
+
+{% block navbar %}
+<div class="d-flex justify-content-end">
+    {% if logged_in %}
+        <a class="btn btn-outline-danger m-1" href="{% url 'authentication:logout' %}">Logout</a>
+        {% else %}
+        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:login' %}">Login</a>
+        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:register' %}">Register</a>
+    {% endif %}
+</div>
+{% endblock navbar %}
+
+{% block content %}
+<main class="d-flex flex-column flex-nowrap">
+    <div class="px-4 py-5 my-5 text-center">
+        <h1 class="display-5 fw-bold">Create your project</h1>
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">Propose an innovative project that will increase the life quality of everyone.</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                {% if logged_in %}
+                    <a href="{% url 'projects:create_project' %}" class="btn btn-primary btn-lg px-4 gap-3">Create project</a>
+                    {% else %}
+                    <a href="{% url 'authentication:login' %}" class="btn btn-warning btn-lg px-4 gap-3">Login to create project</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <!-- <div class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark" style="width: 200px;">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+            <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+            <span class="fs-4">Sidebar</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+            <a href="#" class="nav-link active" aria-current="page">
+                Create Project
+            </a>
+            </li>
+        </ul>
+        <hr>
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="" class="rounded-circle me-2" width="32" height="32">
+            <strong>mdo</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+            <li><a class="dropdown-item" href="#">New project...</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Sign out</a></li>
+            </ul>
+        </div>
+    </div> -->
+
+    <div class="d-flex flex-column w-100">
+        <div class="container-fluid mt-3">
+            <form class="search-form" id="search-bar-form" action="./get-projects">
+                <div class="input-group">
+                    <input type="text" class="form-control m-2" placeholder="Search Projects..." name="search">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-primary m-2">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-around" id="projects-list">
+            <!-- <div class="card project-card mt-3 p-2">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="ms-2 c-details">
+                                <h6 class="mb-0">Mailchimp</h6> <span>1 days ago</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-outline-primary btn-rounded btn-sm">
+                            <img src="{% static 'projects/like-icon.svg' %}"/> 101
+                        </button>
+                    </div>
+                    <div class="mt-5">
+                        <h3 class="heading">Senior Product<br>Designer-Singapore</h3>
+                        <div class="mt-5">
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="mt-3"> <span class="text1">32 Applied <span class="text2">of 50 capacity</span></span> </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        
+    </div>
+        
+
+    
+</main>
+
+{% endblock content %}

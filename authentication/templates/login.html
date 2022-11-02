@@ -2,44 +2,131 @@
 
 {% block meta %}
 <title>Login</title>
-{% endblock meta %}
 
-{% block navbar %}
-<div class="container-fluid">
-    <a class="navbar-brand text-white" href="#">To Do List</a>
-    <div class="d-flex justify-content-end">
-        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:login' %}">Login</a>
-        <a class="btn btn-outline-primary m-1" href="{% url 'authentication:register' %}">Register</a>
-    </div>
-</div>
-{% endblock navbar %}
+{% endblock meta %}
 
 {% block content %}
 
-<div class = "login container-fluid text-center mt-5">
+<style>
+    .container-fluid{
+        background-color: #31335d;
+    }
 
-    <h1>Login</h1>
+    .infinity-image-container{
+        background: url("../../static/assets/login-bg2.jpg") left no-repeat;
+        background-size: cover;
+        opacity: 0.6;
+        height: 100vh;
+    }
 
-    <form method="POST" action="" class="form-signin">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username" class="form-control">
-        <input type="password" name="password" placeholder="Password" class="form-control">
+    .infinity-form-container{
+        background: #31335d;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 
-        <input class="btn btn-primary mt-3" type="submit" value="Login">
-    </form>
+    .infinity-form{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 100vh;
+    }
 
-    <div style="margin: 0 auto; max-width: 330px; width: 100%; padding: 0 15px;">
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
+    .infinity-form h4 {
+        font-weight: bold;
+        color: white;
+    }
+
+    .infinity-form .form-input {
+        position: relative;
+    }
+
+    .infinity-form .form-input input {
+        width: 100%;
+        margin-bottom: 20px;
+        height: 40px;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        background: white;
+        padding-left: 45px;
+    }
+
+    .infinity-form .form-input input:focus,
+    .infinity-form .form-input input:valid {
+        border: 2px solid #4285f4;   
+    }    
+
+    .infinity-form button[type="submit"] {
+        margin-top: 10px;
+        border: none;
+        cursor: pointer;
+        border-radius: 20px;
+        background: linear-gradient(45deg, #4285f4, #709de8);   /*Button Color*/
+        color: #fff;
+        font-weight: bold;
+        transition: 0.5s;
+        width: 100%;
+    }
+
+    .infinity-form button[type="submit"]:hover {
+        background: linear-gradient(45deg, #709de8, #4285f4);   /*Button color when hover*/
+    }
+
+    .forget-link , .login-link , .register-link {
+        color: #fff;
+        font-weight: bold;
+    }
+
+    .forget-link:hover , .login-link:hover , .register-link:hover {
+        color: #4285f4;
+        text-decoration: none;
+    }
+</style>
+
+
+<div class="container-fluid">
+    <div class="row ">
+        <!-- IMAGE CONTAINER BEGIN -->
+        <div class="col-lg-6 col-md-6 d-none d-md-block infinity-image-container"></div>
+        <!-- IMAGE CONTAINER END -->
+
+        <!-- FORM CONTAINER BEGIN -->
         
-    Belum mempunyai akun? <a href="{% url 'authentication:register' %}">Buat Akun</a>
+        <div class="col-lg-6 col-md-6 infinity-form-container">				
+            <div class="col-lg-9 col-md-12 col-sm-9 col-xs-12 infinity-form">
+                <!-- Company Logo -->
+                <div class="text-center mb-3 mt-5">
+                    <img src="../../static/assets/startin-logo.png" width="50px">
+                </div>
+                <div class="text-center mb-4">
+              <h4>Masuk ke akun anda</h4>
+            </div>
+            <!-- Form -->
+            <form method="POST" action="" class="form-signin">
+                {% csrf_token %}
 
-</div>
+                <div class="form-input">
+                    <input type="text" name="username" placeholder="Username" class="form-control">
+                </div>
+                <div class="form-input">
+                    <input type="password" name="password" placeholder="Password" class="form-control">
+                </div>
+
+                <!-- Login Button -->
+                <div class="mb-3"> 
+                    <button type="submit" class="btn btn-block">Login</button>
+                </div>
+                <div class="text-center mb-5 text-white">Belum mempunyai akun? 
+                    <a class="register-link" href="{% url 'authentication:register' %}">Buat di sini</a>
+                </div>
+
+            </form>
+        <!-- FORM CONTAINER END -->
+    </div>
+</div>	
+
 
 {% endblock content %}

@@ -26,6 +26,8 @@ urlpatterns = [
     path('shop/',include('shop.urls')),
     path('inforum/', include('inforum.urls')),
     path('news/', include('news.urls')),
+    path('events/', include('events.urls')),
+    path('projects/', include('projects.urls')),
 ]
 
 # Handle Media (Image)
