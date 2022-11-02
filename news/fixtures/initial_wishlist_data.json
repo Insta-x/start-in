@@ -1,0 +1,11 @@
+[
+    {
+        "model":"news.newsitems",
+        "pk":1,
+        "fields":{
+            "news_title":"Contoh Berita",
+            "author":"Muhammad Raihan",
+            "news_text": "Berita ini merupakan contoh yang akan didapatkan jika admin memutuskan untuk mengepost berita disini. Jika berita ini merupakan satu-satunya berita yang tersedia, maka admin belum mengepost berita sama sekali."
+        }
+    }
+]
