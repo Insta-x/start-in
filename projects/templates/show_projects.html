@@ -32,7 +32,7 @@
                 success: (resp) => {
                     $('#publish-modal').modal('hide');
                     append_project(resp[0]);
-                    $('#user-project-' + $('#publish-id-project').val()).remove();
+                    $('#user-project-' + resp[0].pk).remove();
                     append_user_project(resp[0])
                 }
             })
@@ -53,6 +53,28 @@
                 success: (resp) => {
                     $('#delete-modal').modal('hide');
                     $('#user-project-' + $('#delete-id-project').val()).remove();
+                }
+            })
+        })
+
+        $('form#done-form').submit(function(event) {
+            event.preventDefault();
+
+            var actionurl = event.currentTarget.action;
+
+            $.ajax({
+                url: actionurl,
+                type: 'post',
+                data: $('form#done-form').serialize(),
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+                },
+                success: (resp) => {
+                    $('#done-modal').modal('hide');
+                    $('#project-' + resp[0].pk).remove();
+                    append_project(resp[0]);
+                    $('#user-project-' + resp[0].pk).remove();
+                    append_user_project(resp[0])
                 }
             })
         })
@@ -147,21 +169,8 @@
             button_div.append($('<a href="./project/' + element.pk + '" class="col btn btn-secondary ms-1">View</a>'))
 
             if (!data.is_done) {
-                var done_button = $('<button class="col btn btn-success ms-1">Done</button>').click(() => {
-                    $.ajax({
-                        url: "{% url 'projects:done_project' %}",
-                        type: 'post',
-                        data: {'id' : element.pk},
-                        beforeSend: function(xhr) {
-                            xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-                        },
-                        success: (resp) => {
-                            $('#project-' + element.pk).remove();
-                            append_project(resp[0]);
-                            $('#user-project-' + element.pk).remove();
-                            append_user_project(resp[0])
-                        }
-                    })
+                var done_button = $('<button class="col btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#done-modal">Done</button>').click(() => {
+                    $('#done-id-project').val(element.pk)
                 })
                 button_div.append(done_button)
             }
@@ -284,6 +293,28 @@
                             <h3>ARE YOU SURE?</h3>
                         </div>
                         <input class="btn btn-danger mt-3" id="delete-submit" style="width: 100%;" type="submit" name="submit" value="Delete"/>
+                    </form>
+                    <button type="button" class="btn btn-secondary w-100 mt-2" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="done-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="done-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="done-modal-label">Finish this project</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'projects:done_project' %}" class="form-done" id="done-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" id="done-id-project" value="-1">
+                        <div class="text-center">
+                            <p>Confirm that the project reached donation target</p>
+                        </div>
+                        <input class="btn btn-success mt-3" id="done-submit" style="width: 100%;" type="submit" name="submit" value="Confirm"/>
                     </form>
                     <button type="button" class="btn btn-secondary w-100 mt-2" data-bs-dismiss="modal">Cancel</button>
                 </div>
