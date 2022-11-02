@@ -28,6 +28,7 @@ urlpatterns = [
     path('news/', include('news.urls')),
     path('events/', include('events.urls')),
     path('projects/', include('projects.urls')),
+    path('courses/', include('courses.urls'))
 ]
 
 # Handle Media (Image)
