@@ -33,6 +33,7 @@
                     data: $("form#donate-form").serialize(),
                     success: function(data) {
                         update_donation();
+                        $('#donate-modal').modal('hide');
                     },
                     error: function(){
                         alert("ERROR");
@@ -92,9 +93,11 @@
                     <img src="{% static 'projects/like-icon.svg' %}"/> {{ project.fields.like_count }}
                 </button>
                 {% if logged_in %}
-                    <button type="button" class="btn btn-primary btn-rounded btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                        Donate
-                    </button>
+                    {% if not project.fields.is_done %}
+                        <button type="button" class="btn btn-primary btn-rounded btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#donate-modal">
+                            Donate
+                        </button>
+                    {% endif %}
                     {% else %}
                     <a href="{% url 'authentication:login' %}" class="btn btn-warning btn-rounded btn-sm mt-3">
                         Login to donate
@@ -117,32 +120,26 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Donate to this project</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" action="{% url 'projects:donate_project' %}" class="form-donate" id="donate-form">
-                        {% csrf_token %}
-                        <!-- <input type="text" name="title" placeholder="Title" maxlength="128" required="" id="id_title" class="form-control">
-                        <textarea name="description" placeholder="Description" cols="40" rows="10" required="" id="id_description" class="form-control"></textarea> -->
-                        <!-- {{ form.as_p }} -->
-                        <!-- <select name="project_id" required="" id="id_project_id">
-                            <option value="" selected="">---------</option>
-                            <option value="1">Project object (1)</option>
-                            <option value="2">Project object (2)</option>
-                        </select> -->
-                        <input type="hidden" name="project" id="id_project" value="{{ project.pk }}">
-                        <input class='form-control' type="number" name="amount" value="1" min="0" max="9223372036854775807" required="" id="id_amount">
-                        <input class="btn btn-primary mt-3" style="width: 100%;" type="submit" name="submit" value="Donate" data-bs-dismiss="modal"/>
-                    </form>
-                    <button type="button" class="btn btn-danger w-100 mt-2" data-bs-dismiss="modal">Cancel</button>
+    {% if not project.fields.is_done %}
+        <div class="modal fade" id="donate-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Donate to this project</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{% url 'projects:donate_project' %}" class="form-donate" id="donate-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="project" id="id_project" value="{{ project.pk }}">
+                            <input class='form-control' type="number" name="amount" value="1" min="1" max="9223372036854775807" required="" id="id_amount">
+                            <input class="btn btn-primary mt-3" id="donate-submit" style="width: 100%;" type="submit" name="submit" value="Donate"/>
+                        </form>
+                        <button type="button" class="btn btn-danger w-100 mt-2" data-bs-dismiss="modal">Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 </main>
 {% endblock content %}

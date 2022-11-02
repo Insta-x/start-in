@@ -137,3 +137,7 @@ html {
 .tracking-wider {
     letter-spacing: 0.05em;
 }
+
+.flex-even {
+    flex: 1;
+}

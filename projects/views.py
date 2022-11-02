@@ -1,3 +1,5 @@
+from os import stat
+import re
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.core import serializers
@@ -10,9 +12,21 @@ from .forms import ProjectForm, DonationForm
 import json
 
 def show_projects(request):
-    context = {'logged_in' : request.user.is_authenticated}
+    user_projects = Project.objects.filter(user=request.user) if request.user.is_authenticated else None
+
+    context = {
+        'logged_in' : request.user.is_authenticated,
+        'user_projects' : True if user_projects else False,
+    }
 
     return render(request, 'show_projects.html', context)
+
+def show_project(request, id):
+    project = Project.objects.get(pk=id)
+
+    # print(Donation.objects.filter(project=id).aggregate(Sum('amount'))['amount__sum'])
+
+    return render(request, 'show_project.html', {'project' : encode_project(project, request.user.id), 'logged_in' : request.user.is_authenticated})
 
 @login_required(login_url='/auth/login/')
 def create_project(request):
@@ -29,19 +43,63 @@ def create_project(request):
     return render(request, 'create_project.html', {'form': form})
 
 def get_projects(request):
-    data = Project.objects.filter(title__icontains=request.GET.get('search')).annotate(like_count=Count('liked_by')).order_by('-like_count')
+    data = Project.objects.filter(is_published=True).filter(title__icontains=request.GET.get('search')).annotate(like_count=Count('liked_by')).order_by('-like_count')
 
     return HttpResponse(json.dumps(encode_projects(data, request.user.id)), content_type='application/json')
+
+def get_user_projects(request):
+    data = Project.objects.filter(user=request.user).order_by('-time_created')
+
+    return HttpResponse(json.dumps(encode_projects(data, request.user.id)), content_type='application/json')
+
+def edit_project(request, id):
+    project = Project.objects.get(pk=id)
+
+    if not project:
+        return HttpResponse(status=404)
+
+    if project.is_published:
+        return HttpResponse(status=403)
+
+    if request.method == 'POST':
+        project.title = request.POST.get('title')
+        project.description = request.POST.get('description')
+        project.donation_target = request.POST.get('donation_target')
+        project.save()
+        return redirect(reverse('projects:show_projects'))
+
+    return render(request, 'edit_project.html', {'project' : project})
+
+def delete_project(request):
+    project = Project.objects.get(pk=request.POST.get('id'))
+
+    if project.user != request.user:
+        return HttpResponse(status=403)
+    
+    project.delete()
+    return HttpResponse('Success', content_type='text/plain')
+
+def publish_project(request):
+    project = Project.objects.get(pk=request.POST.get('id'))
+
+    if project.user != request.user:
+        return HttpResponse(status=403)
+    
+    project.is_published = True
+    project.save()
+    return HttpResponse(json.dumps([encode_project(project, request.user.id), ]), content_type='application/json')
+
 
 @login_required(login_url='/auth/login/')
 def like_project(request):
     if request.user.is_authenticated:
         project_id = request.POST.get('id')
         project = Project.objects.get(pk=project_id)
-        if request.user in project.liked_by.all():
-            project.liked_by.remove(request.user)
-        else:
-            project.liked_by.add(request.user)
+        if project.is_published:
+            if request.user in project.liked_by.all():
+                project.liked_by.remove(request.user)
+            else:
+                project.liked_by.add(request.user)
         return HttpResponse(json.dumps([encode_project(project, request.user.id), ]), content_type='application/json')
 
 def donate_project(request):
@@ -72,12 +130,15 @@ def get_donations(request):
 
     return HttpResponse(json.dumps({'donation_sum' : donation_sum, 'donators' : donators}), content_type='application/json')
 
-def show_project(request, id):
-    project = Project.objects.get(pk=id)
+def done_project(request):
+    project = Project.objects.get(pk=request.POST.get('id'))
 
-    # print(Donation.objects.filter(project=id).aggregate(Sum('amount'))['amount__sum'])
-
-    return render(request, 'show_project.html', {'project' : encode_project(project, request.user.id), 'logged_in' : request.user.is_authenticated})
+    if project.user != request.user:
+        return HttpResponse(status=403)
+    
+    project.is_done = True
+    project.save()
+    return HttpResponse(json.dumps([encode_project(project, request.user.id), ]), content_type='application/json')
 
 def encode_projects(data_query_set, user_id):
     data_list = []
