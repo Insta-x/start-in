@@ -17,6 +17,27 @@
             });
         });
 
+        $('form#publish-form').submit(function(event) {
+            event.preventDefault();
+
+            var actionurl = event.currentTarget.action;
+
+            $.ajax({
+                url: actionurl,
+                type: 'post',
+                data: $('form#publish-form').serialize(),
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+                },
+                success: (resp) => {
+                    $('#publish-modal').modal('hide');
+                    append_project(resp[0]);
+                    $('#user-project-' + $('#publish-id-project').val()).remove();
+                    append_user_project(resp[0])
+                }
+            })
+        })
+
         $.get("{% url 'projects:get_projects' %}", $("form#search-bar-form").serialize(), (data) => {
             append_projects(data);
         });
@@ -128,20 +149,8 @@
         }
         else {
             var edit_button = $('<a href="./edit/' + element.pk + '" %}" class="col btn btn-primary ms-1">Edit</a>')
-            var publish_button = $('<button class="col btn btn-success ms-1">Publish</button>').click(() => {
-                $.ajax({
-                    url: "{% url 'projects:publish_project' %}",
-                    type: 'post',
-                    data: {'id' : element.pk},
-                    beforeSend: function(xhr) {
-                        xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
-                    },
-                    success: (resp) => {
-                        append_project(resp[0]);
-                        $('#user-project-' + element.pk).remove();
-                        append_user_project(resp[0])
-                    }
-                })
+            var publish_button = $('<button class="col btn btn-success ms-1" data-bs-toggle="modal" data-bs-target="#publish-modal">Publish</button>').click(() => {
+                $('#publish-id-project').val(element.pk)
             })
             var delete_button = $('<button class="col btn btn-danger ms-1">Delete</button>').click(() => {
                 $.ajax({
@@ -225,6 +234,29 @@
         </div>
 
         <div class="d-flex flex-wrap justify-content-around" id="projects-list">
+        </div>
+    </div>
+
+    <div class="modal fade" id="publish-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Publish this project</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="{% url 'projects:publish_project' %}" class="form-publish" id="publish-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="id" id="publish-id-project" value="-1">
+                        <div class="text-center text-danger">
+                            <h3>WARNING</h3>
+                            <p>You can't edit the project once you publish it!</p>
+                        </div>
+                        <input class="btn btn-success mt-3" id="publish-submit" style="width: 100%;" type="submit" name="submit" value="Publish"/>
+                    </form>
+                    <button type="button" class="btn btn-danger w-100 mt-2" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
         </div>
     </div>
 </main>
