@@ -1,2 +1,1 @@
-release: sh -c 'python manage.py makemigrations && python manage.py migrate'
-web: gunicorn startin.wsgi --log-file -
+web: python manage.py migrate && gunicorn startin.wsgi
