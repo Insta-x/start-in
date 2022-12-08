@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Menambahkan bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+   
+    <!--Menambahkan AJAX-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="../static/styling/shop-style.css">
+
+    <title>StartIn Store</title>  
+    
+    <script> 
+
+        let user = "{{request.user}}"
+       
+        // Kode didapat dari django documentation
+        function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+              const cookies = document.cookie.split(';');
+              for (let i = 0; i < cookies.length; i++) {
+                  const cookie = cookies[i].trim();
+                  // Does this cookie string begin with the name we want?
+                  if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                      break;
+                  }
+              }
+          }
+          return cookieValue;
+      }
+      const csrftoken = getCookie('csrftoken');
+      </script>
+
+</head>
+<body>
+
+
+
+    <!--NAVBAR-->
+    <nav class="navbar bg-light">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/"><strong>StartIn Home</strong></a>
+                <a class="navbar-brand" href="{% url 'shop:homepage' %}">Store</a>
+                <a class="btn btn-primary" href="{% url 'authentication:logout' %}">Login/Logout page</a>
+            </div>
+            <ul class="nav navbar=nav">
+                <li class="active">
+                    <a class="navbar-brand" href="{% url 'shop:cart' %}"> <img src="../static/image/checkout.png" width="35"></a>
+                    <div class = 'cart-item-count' id = 'cart'><h4>{{cart.cartquantity}}</h4></div>
+                </li>
+            </ul>
+        </div>  
+    </nav>
+          
+          
+          
+</body>
+
+{% block content %}
+
+
+
+{% endblock content %}
+
+<!--Link file javascript ke sini-->
+<script src="../static/js/cart.js"></script>
+
+
+<!--Menambahkan modal untuk peringatkan user untuk login dulu-->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel"><strong>StartIn Store</strong></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+        <h3 style="text-align:center ;">You have to login to buy our products 😊</h3>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="logout" data-bs-dismiss="modal"><a href="{% url 'authentication:logout' %}">Logout</a></button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+<div class="footer">
+
+  <footer class="footer p-10 bg-slate-300 p-5 mt-5">
+      <div class="d-flex flex-row">
+        <div class="d-flex flex-column flex-fill">
+          <div id="footer-logo" class="d-flex flex-row align-items-center">
+            <img src="../static/image/startin-logo.png" style="width: 2.5rem; height: 2.5rem;"/>
+            <h4 class="font-semibold text-xl tracking-wider"> StartIn</h4>
+          </div>
+          <p>StartIn Inc.<br>Providing reliable resources since 2022</p>
+          <p> © 2022 Copyright of StartIn</p>
+        </div> 
+        <div class="d-flex flex-column flex-fill">
+          <span class="footer-title">Products</span> 
+          <a href="/projects" class="hover-link link-secondary">Projects</a> 
+          <a href="/inforum" class="hover-link link-secondary">Forum</a> 
+          <a href="/shop" class="hover-link link-secondary">Shop</a> 
+          <a class="hover-link link-secondary">ini isi lagi</a>
+        </div> 
+        <div class="d-flex flex-column flex-fill">
+          <span class="footer-title">Company</span> 
+          <a class="hover-link link-secondary">About us</a> 
+          <a class="hover-link link-secondary">Contact</a>
+        </div> 
+        <div class="d-flex flex-column flex-fill">
+          <span class="footer-title">Legal</span> 
+          <a href="#" class="hover-link link-secondary">Terms of use</a>
+          <a href="#" class="hover-link link-secondary">Privacy policy</a> 
+          <a href="#" class="hover-link link-secondary">Cookie policy</a>
+        </div>
+      </div>
+        
+    </footer>
+</div>
+
+
+
+</html>

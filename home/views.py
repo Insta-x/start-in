@@ -1,4 +1,4 @@
 from django.shortcuts import render
 
-def hello_world(request):
-    return render(request, 'hello.html')
+def index(request):
+    return render(request, 'index.html', {"username" : request.user.username})

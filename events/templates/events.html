@@ -1,0 +1,311 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<!-- Style HTML-->
+<style>
+    .header {
+        text-align: center;
+        padding-top: 15px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        padding-bottom: 15px;
+        
+    }
+    
+
+</style>
+
+<!-- Navbar StartIn -->
+<navbar class="navbar bg-base-100 shadow-md">
+    <div class="navbar-start">
+      <div class="dropdown">
+        <label tabindex="0" class="btn btn-ghost lg:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+        </label>
+        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+            <li><a href="/projects"> <img src="../../static/assets/project.svg" class="w-7 h-7"/> projects</a></li>
+            <li><a href="/inforum"> <img src="../../static/assets/forum.svg" class="w-7 h-7"/> forum</a></li>
+            <li><a href="/shop"> <img src="../../static/assets/shopping-bag.svg" class="w-7 h-7"/> shop</a></li>
+            <li><a href="/events"> <img src="../../static/assets/speech.svg" class="w-8 h-8"/> events</a></li>
+            {%if username%}
+            <li><a href="/auth/logout" class="text-red-500"> <img src="../../static/assets/logout.svg" class="w-7 h-7"/> logout</a></li>
+            {%else%}
+            
+            <li><a href="/auth/login"> <img src="../../static/assets/person.svg" class="w-7 h-7"/> login</a></li>
+            {%endif%}
+        </ul>
+      </div>
+      <a href="/" class="btn btn-ghost normal-case text-2xl mb-1 flex items-center gap-x-2">
+        <img src="../../static/assets/startin-logo.png" class="w-10 h-10"/>
+          <h4 class="font-semibold text-xl tracking-wider">StartIn</h4>
+      </a>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+      <ul class="menu menu-horizontal p-0">
+        <li><a href="/projects">projects</a></li>
+        <li><a href="/inforum">forum</a></li>
+        <li><a href="/shop">shop</a></li>
+        <li><a href="/events">events</a></li>
+        <li><a href="/news">news</a></li>
+        <li><a href="/courses">courses</a></li>
+      </ul>
+    </div>
+    <div class="navbar-end">
+      {% if username %}
+      <div class="dropdown dropdown-hover relative mr-2">
+        <label tabindex="0" class="text-lg sm:text-xl text-gray-500 p-3 rounded-md transition duration-100 btn-ghost"> Hi, <span class="text-violet-500">{{username}}<span></label>
+        
+        <ul tabindex="0" class="hidden lg:flex dropdown-content absolute right-0 menu ">
+            <div class="w-full h-[20px] bg-transparent "></div>
+            <li><a href="/auth/logout" class=" p-3 py-4 text-right shadow-md bg-base-100 rounded-sm w-44 cursor-pointer text-red-500"> <img src="../../static/assets/logout.svg" class="w-6 h-6"/> logout</a></li>
+        </ul>
+      </div>
+      {%else%}
+       <a href="/auth/login" class="hidden lg:flex gap-x-1 p-2 border-2 hover:border-blue-500 transition duration-100 rounded-md "> <img src="../../static/assets/person.svg" class="w-6 h-6"/> login</a>
+      {%endif %}
+    </div>
+</navbar>
+
+<!-- Header -->
+<div class="header">
+    <h2 style="font-weight: bold; font-size: xx-large;">List Event</h2>
+    <h6>Grow your network and learn from the best developers</h6>
+</div>
+
+
+<body>
+  <div class="flex justify-center">
+
+    <!-- The button to open modal -->
+    <label for="my-modal-6" class="btn">ADD EVENT</label>
+
+    <!-- Put this part before </body> tag -->
+    <input type="checkbox" id="my-modal-6" class="modal-toggle" />
+    <div class="modal modal-bottom sm:modal-middle">
+      <div class="modal-box">
+        <h2 class="font-bold text-2xl text-center">New Event!</h2>
+        
+        <form action="" id="events-form">
+          {% csrf_token %}
+          <div class="form-control">
+            <div class="form-control">
+                <label class="label">
+                  <span class="label-text text-base">URL Image </span>
+                </label>
+                <input type="text" class="input input-bordered" id="image"/>
+            </div>
+  
+            <label class="label">
+              <span class="label-text text-base">Category</span>
+            </label>
+            <div class="form-control">
+              <label class="label cursor-pointer">
+                <span class="label-text">Talkshow</span>
+                <input type="radio" name="radio-6" class="radio" value="Talkshow" id="talkshow" checked />
+              </label>
+            </div>
+            <div class="form-control">
+              <label class="label cursor-pointer">
+                <span class="label-text">Workshop</span>
+                <input type="radio" name="radio-6" class="radio" value="Workshop" id="workshop" />
+              </label>
+            </div>
+          
+  
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text text-base">Title</span>
+              </label>
+              <input type="text" class="input input-bordered" id="judul"/>
+            </div>
+  
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text text-base">Description</span>
+              </label>
+              <input type="text" class="input input-bordered" id="deskripsi"/>
+            </div>
+  
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text text-base">Schedule</span>
+              </label>
+              <input type="text" class="input input-bordered" id="jadwal"/>
+            </div>
+  
+            <div class="form-control">
+              <label class="label">
+                <span class="label-text text-base">Location</span>
+              </label>
+              <input type="text" class="input input-bordered" id="lokasi"/>
+            </div>
+  
+          </div>
+          
+          <div class="modal-action">
+            <label for="my-modal-6" class="btn btn-outline btn-accent">CLOSE</label>
+            <button for="my-modal-6" class="btn btn-outline" id="submit-form" type="submit">ADD</button>
+            
+          </div>
+
+        </form>
+        
+      </div>
+    </div>
+    <h1>
+  </div>
+
+
+  
+  <div class="flex justify-center p-4">
+
+    <div class="card w-96 glass m-4 ">
+      <figure><img src="https://dicoding-web-img.sgp1.cdn.digitaloceanspaces.com/original/event/dos:workshop_cinematography_in_game_dev_logo_220822175002.png" alt="car!"/></figure>
+      <div class="card-body">
+
+        <div class="card-actions justify-start">
+          <div class="badge badge-outline">Workshop</div> 
+        </div>
+
+        <h2 class="card-title">Workshop : Cinematography In Game Dev</h2>
+        <p class="card-desc text-xs">oleh: Game Developer Batam</p>
+        <p>Pernah kah teman-teman bertanya, bagaimana proses pembuatan Cinematography di game development? 
+          Bagaimana tahapan-nya dan apa saja yang perlu diperhatikan?
+          Kali ini kita akan belajar bersama Ervin Ahmad, kita akan belajar dari pengalaman, perspektif-nya serta praktek bagaimana proses pembuatan Cinematography di game development dari awal sampai selesai.</p>
+        <div class="card-actions p-3 justify-end">
+          <a class="btn" href="/events/show_events_1">Read more!</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card w-96 glass m-4">
+      <figure><img src="https://dicoding-web-img.sgp1.cdn.digitaloceanspaces.com/original/event/dos:sharing_session_game_design_logo_270922111318.png" alt="car!"/></figure>
+      <div class="card-body">
+
+        <div class="card-actions justify-start">
+          <div class="badge badge-outline">Talkshow</div> 
+        </div>
+
+        <h2 class="card-title">Sharing session Game Design</h2>
+        <p class="card-desc text-xs">oleh: Game Developer Batam</p>
+        <p>Pernah kah teman-teman bertanya, bagaimana proses Game Design yang baik? dasar-dasar game desain dan bagaimana desain game untuk game free to play? 
+          bagaimana tahapan-nya dan apa saja yang perlu diperhatikan ? Kali ini kita akan belajar bersama Ervin Ahmad mengenai perspektif-nya tentang "Fundamentals of game design" dan bersama Julio Andryanto kita akan belajar tentang "Game design rules of free to play games"</p>
+        <div class="card-actions p-3 justify-end">
+          <a class="btn" href="/events/show_events_2">Read more!</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card w-96 glass m-4 ">
+      <figure><img src="https://dicoding-web-img.sgp1.cdn.digitaloceanspaces.com/original/event/dos:it_incubation_2022_logo_280922092950.png" alt="car!"/></figure>
+      <div class="card-body">
+
+        <div class="card-actions justify-start">
+          <div class="badge badge-outline">Workshop</div> 
+        </div>
+
+        <h2 class="card-title">IT INCUBATION - 2022</h2>
+        <p class="card-desc text-xs">oleh: GDSC UIN Maulana Malik Ibrahim Malang</p>
+        <p>This activity focuses on growing the passion and potential of new students in the field of Informatics Technology through intensive training. This activity aims to introduce and provide a briefing to new students about Information Technology in the digital industry. 
+          It is hoped that the participants will be able to produce an initial design of products in the field of Informatics Technology that are innovative and able to compete in the digital industry.</p>
+        <div class="card-actions p-3 justify-end">
+          <a class="btn" href="/events/show_events_3">Read more!</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+
+
+<script>
+  // document.addEventListener("DOMContentLoaded", ()=>{
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    console.log(document.getElementById('events-form'))
+
+    console.log("masuk script")
+
+    const form = document.getElementById('events-form')
+
+    form.addEventListener("submit", async(event)=>{
+      event.preventDefault()
+      // console.log(document.getElementById('judul'))
+      const gambar = document.getElementById('image').value
+      const talkshow = document.getElementById('talkshow').checked
+      const workshop = document.getElementById('workshop').checked
+      const judul = document.getElementById('judul').value
+      const deskripsi = document.getElementById('deskripsi').value
+      const jadwal = document.getElementById('jadwal').value
+      const lokasi = document.getElementById('lokasi').value
+      console.log(gambar)
+      console.log(talkshow)
+      console.log(workshop)
+      console.log(judul)
+      console.log(deskripsi)
+      console.log(jadwal)
+      console.log(lokasi)
+      let event_type = ""
+
+      if (talkshow) {
+        event_type = "Talkshow"
+      }
+      else {
+        event_type = "Workshop"
+      }
+
+
+      const formData = {
+        'url_image':gambar,
+        'event_type':event_type,
+        'event_title':judul,
+        'description':deskripsi,
+        'schedule':jadwal,
+        'location':lokasi,
+      }
+
+      var formDataobj= new FormData()
+      formDataobj.append('url_image', gambar)
+      
+      formDataobj.append('event_type', event_type)
+      formDataobj.append('event_title', judul)
+      formDataobj.append('description', deskripsi)
+      formDataobj.append('schedule', jadwal)
+      formDataobj.append('location', lokasi)
+
+      console.log(formDataobj)
+      console.log(JSON.stringify(formDataobj))
+
+      const response = await fetch("/events/add/", {
+        method: "POST",
+        headers : {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCookie("csrftoken"),
+        },
+        body: JSON.stringify(formData),
+      })
+
+    })
+
+  // })
+</script>
+
+{% endblock content %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+
+{% endblock meta %}
+
+{% block content %}
+<main class="max-w-screen min-h-screen flex flex-col items-center justify-start bg-gray-50">
+    <navbar class="navbar bg-base-100 shadow-md">
+        <div class="navbar-start">
+          <div class="dropdown">
+            <label tabindex="0" class="btn btn-ghost lg:hidden">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+            </label>
+            <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                <li><a href="/projects"> <img src="../../static/assets/project.svg" class="w-7 h-7"/> projects</a></li>
+                <li><a href="/inforum"> <img src="../../static/assets/forum.svg" class="w-7 h-7"/> forum</a></li>
+                <li><a href="/shop"> <img src="../../static/assets/shopping-bag.svg" class="w-7 h-7"/> shop</a></li>
+                <li><a href="/events"> <img src="../../static/assets/speech.svg" class="w-8 h-8"/> events</a></li>
+                <li><a href="/courses"> <img src="../../static/assets/courses.svg" class="w-8 h-8"/> events</a></li>
+
+                {%if username%}
+                <li><a href="/auth/logout" class="text-red-500"> <img src="../../static/assets/logout.svg" class="w-7 h-7"/> logout</a></li>
+                {%else%}
+                
+                <li><a href="/auth/login"> <img src="../../static/assets/person.svg" class="w-7 h-7"/> login</a></li>
+                {%endif%}
+            </ul>
+          </div>
+          <a href="/" class="btn btn-ghost normal-case text-2xl mb-1 flex items-center gap-x-2">
+            <img src="../../static/assets/startin-logo.png" class="w-10 h-10"/>
+              <h4 class="font-semibold text-xl tracking-wider">StartIn</h4>
+          </a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+          <ul class="menu menu-horizontal p-0">
+            <li><a href="/projects">projects</a></li>
+            <li><a href="/inforum">forum</a></li>
+            <li><a href="/shop">shop</a></li>
+            <li><a href="/events">events</a></li>
+            <li><a href="/courses">courses</a></li>
+    
+          </ul>
+        </div>
+        <div class="navbar-end">
+
+<div class="embed-responsive embed-responsive-16by9 relative w-full overflow-hidden" style="padding-top: 56.25%">
+    <p class="mt-1 text-lg font-medium text-gray-900">Judul</p>
+  <iframe
+    class="embed-responsive-item absolute top-0 right-0 bottom-0 left-0 w-full h-full"
+    src="https://www.youtube.com/embed/vlDzYIIOYmM?enablejsapi=1&amp;origin=https%3A%2F%2Fmdbootstrap.com"
+    allowfullscreen=""
+    data-gtm-yt-inspected-2340190_699="true"
+    id="240632615"
+  ></iframe>
+  
+</div>
+
+{% endblock content %}
+{% endblock meta %}

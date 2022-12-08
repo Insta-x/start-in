@@ -1,0 +1,109 @@
+
+{% extends 'base-shop.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Document</title>    
+</head>
+
+
+<body>       
+{% block content %}
+<!-- Menambahkan bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+<style>
+
+    .jumbotron{
+        padding-top: 40px;
+        margin: auto;
+        width: 75%;
+        
+    }
+
+    .index-intro {
+        width: 100%;
+        background-color: antiquewhite;
+    }
+
+    .container-fluid {
+        margin: 0;
+    }
+
+    .image-grid {
+        --gap: 16px;
+        --num-cols: 2;
+        --row-heights: 300px;
+
+        box-sizing: border-box;
+        padding: var(--gap);
+
+        display: grid;
+        grid-template-columns: repeat(var(--num-cols), 1fr);
+        grid-auto-rows: var(--row-heights);
+        gap: var(--gap);
+    }
+    
+
+    img {
+        margin-bottom: 10px;
+    }
+
+    .card-body {
+        background-image: url('../static/image/address.png');
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center;
+    }
+
+    .card:hover{
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+    }
+    
+    body {
+        margin: auto;
+        width: 100%;
+        background-image: url('../static/image/purple_bg.png');
+        background-repeat: repeat;
+        background-size: 100%;
+        background-position: center;
+    }
+</style>
+
+<div class = 'container'>
+    <div class = 'row'>
+
+        {% for product in products %}
+        <div class = 'col-md-4 col-lg-4'>
+          <div class="card" style="width: 18rem;">
+              <img src=" {{ product.image.url }}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h3 class="card-title">{{product.name}}</h3>
+                <h4 class="card-text">Rp {{product.price}}</h4>
+                <a  class="btn btn-primary addtocart" data-action = 'add' data-product= "{{product.product_id}}">Add to Cart</a>
+              </div>
+            </div>
+            <br>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+</body>
+</html>

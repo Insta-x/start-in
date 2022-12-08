@@ -1,0 +1,189 @@
+{% extends 'base.html'%}
+
+{%block meta%}
+<title>StartIn</title>
+<link href="../static/assets/startin-logo.png" rel="shortcut icon" />
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/daisyui@2.33.0/dist/full.css" rel="stylesheet" type="text/css" />
+
+{%endblock meta%}
+
+{%block content%}
+<main class="max-w-screen min-h-screen bg-white">
+  <navbar class="navbar bg-base-100 shadow-md">
+    <div class="navbar-start">
+      <div class="dropdown">
+        <label tabindex="0" class="btn btn-ghost lg:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+        </label>
+        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+            <li><a href="/projects"> <img src="../../static/assets/project.svg" class="w-7 h-7"/> projects</a></li>
+            <li><a href="/inforum"> <img src="../../static/assets/forum.svg" class="w-7 h-7"/> forum</a></li>
+            <li><a href="/shop"> <img src="../../static/assets/shopping-bag.svg" class="w-7 h-7"/> shop</a></li>
+            <li><a href="/events"> <img src="../../static/assets/speech.svg" class="w-8 h-8"/> events</a></li>
+            <li><a href="/news"> <img src="../../static/assets/newspaper.svg" class="w-7 h-7"/> news</a></li>
+            <li><a href="/courses"> <img src="../../static/assets/courses.svg" class="w-8 h-8"/> courses</a></li>
+            {%if username%}
+            <li><a href="/auth/logout" class="text-red-500"> <img src="../../static/assets/logout.svg" class="w-7 h-7"/> logout</a></li>
+            {%else%}
+            
+            <li><a href="/auth/login"> <img src="../../static/assets/person.svg" class="w-7 h-7"/> login</a></li>
+            {%endif%}
+        </ul>
+      </div>
+      <a href="/" class="btn btn-ghost normal-case text-2xl mb-1 flex items-center gap-x-2">
+        <img src="../../static/assets/startin-logo.png" class="w-10 h-10"/>
+          <h4 class="font-semibold text-xl tracking-wider">StartIn</h4>
+      </a>
+    </div>
+    <div class="navbar-center hidden lg:flex">
+      <ul class="menu menu-horizontal p-0">
+        <li><a href="/projects">projects</a></li>
+        <li><a href="/inforum">forum</a></li>
+        <li><a href="/shop">shop</a></li>
+        <li><a href="/events">events</a></li>
+        <li><a href="/news">news</a></li>
+        <li><a href="/courses">courses</a></li>
+
+
+      </ul>
+    </div>
+    <div class="navbar-end">
+      {% if username %}
+      <div class="dropdown dropdown-hover relative mr-2">
+        <label tabindex="0" class="text-lg sm:text-xl text-gray-500 p-3 rounded-md transition duration-100 btn-ghost"> Hi, <span class="text-violet-500">{{username}}<span></label>
+        
+        <ul tabindex="0" class="hidden lg:flex dropdown-content absolute right-0 menu ">
+            <div class="w-full h-[20px] bg-transparent "></div>
+            <li><a href="/auth/logout" class=" p-3 py-4 text-right shadow-md bg-base-100 rounded-sm w-44 cursor-pointer text-red-500"> <img src="../../static/assets/logout.svg" class="w-6 h-6"/> logout</a></li>
+        </ul>
+      </div>
+      {%else%}
+       <a href="/auth/login" class="hidden lg:flex gap-x-1 p-2 border-2 hover:border-blue-500 transition duration-100 rounded-md "> <img src="../../static/assets/person.svg" class="w-6 h-6"/> login</a>
+      {%endif %}
+    </div>
+</navbar>
+  <section class="w-full h-[350px] md:h-[500px] relative shadow-sm">
+    <img src="../../static/assets/fujitsu-landing-page.png" alt="banner" class="w-full h-full absolute object-cover"/>
+    <div class="w-full h-full z-10 absolute flex justify-center items-center gap-x-5 text-white">
+      <div class="flex flex-col justify-start items-start mb-[100px] mr-[100px] sm:mr-[300px] flex-shrink-0">
+
+        <h1 class="text-4xl sm:text-6xl md:text-8xl font-semibold  mb-3 ">StartIn</h1>
+        <h2 class="text-xl sm:text-3xl">
+          Innovate your better future.
+        </h2>
+      </div>
+        
+    <div>
+</section>
+<article id="#about_us" class="w-full mt-10 font-semibold text-gray-700 text-center flex-col items-center">
+  <h2 class="text-4xl mb-6">About Us</h2>
+  <div class="flex flex-col lg:flex-row gap-y-4 lg:gap-x-6 justify-center items-center">
+    <img src="../../static/assets/startin-logo.png" class="w-64 h-64 lg:w-80 lg:h-80 transform transition hover:-translate-x-10 hover:-rotate-45 duration-200"/>
+      <p class="text-base lg:text-lg text-justify mx-8 lg:mx-0 lg:w-1/2 ">The StartIn Foundation aims to advance technological innovation in Indonesia. StartIn provides a means for everyone who has a technological innovation idea to get donations from others to fund their projects. 
+        In this way, it is hoped that StartIn can support the growth of Indonesian technology and increase the number of tech startups. StartIn also provides a means for everyone to learn everything about technology and how to start their own business, even startup, by attending workshops, talk shows, courses and participating on myriads of forum threads available on StartIn. 
+        StartIn also displays the latest news about tech startups and the latest technology with the most potential. This way, everybody will have the same chances on achieving their dreams while also gaining insight and knowledge regarding the technology and business trend that is currently happenning.
+      </p>
+  </div>
+</article>
+<section id="our_products" class="w-full py-16  min-h-[50vh] flex flex-col lg:items-center overflow-x-hidden">
+ <h3 class="text-4xl mb-4 font-semibold text-center">Our Products</h3>
+
+ <div class="flex gap-x-5 gap-y-5 px-4 lg:px-8 ml-3 lg:mx-8 py-10 lg:justify-center lg:flex-wrap max-w-7xl overflow-x-auto">
+  <!-- card --> 
+  <div class="card lg:card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[300px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
+    <!-- just change the width and height of img if needed-->
+    <figure class="lg:py-10"><img src="../../static/assets/startup.svg" alt="startup" class="w-[100px] h-[100px] py-2 lg:w-44 lg:h-44 lg:p-4"/></figure>
+    <div class="card-body p-4 lg:p-8">
+      <h2 class="card-title text-lg lg:text-xl">Projects</h2>
+      <!-- gausah panjang-panjang descnya-->
+      <p class="text-[14px] lg:text-[16px]">Built for those who are interested in projects by others. Everybody can donate to any ongoing projects and or propose a fundraise for their own projects.</p>
+      <p class="font-semibold text-[14px] lg:text-[16px] mb-10">From Everybody, For Everybody</p>
+      <div class="card-actions justify-end">
+        <!-- make sure the url is correct-->
+        <a href="/projects" target="__blank" class="btn btn-primary mt-1">open in new tab</a>
+      </div>
+    </div>
+  </div>
+  <!-- card --> 
+  <div class="card lg:card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[300px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
+    <!-- just change the width and height of img if needed-->
+    <figure class="lg:py-10"><img src="../../static/assets/chat.svg" alt="startup" class=" lg:ml-3 w-[100px] h-[100px] lg:w-[150px] lg:h-[150px] p-4"/></figure>
+    <div class="card-body p-4 lg:p-8">
+      <h2 class="card-title text-lg lg:text-xl">Forum</h2>
+      <!-- gausah panjang-panjang descnya-->
+      <p class="text-[14px] lg:text-[16px]">Forum based feature where anybody can ask and answer any question or discussion related to tech, business, and startup.</p>
+      <p class="font-semibold text-[14px] lg:text-[16px] mb-10">Ask, Answer, and Gain Knowledge</p>
+      <div class="card-actions justify-end">
+        <!-- make sure the url is correct-->
+        <a href="/inforum" target="__blank" class="btn btn-primary mt-1">open in new tab</a>
+      </div>
+    </div>
+  </div>
+  <!-- card --> 
+  <div class="card lg:card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[300px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
+    <!-- just change the width and height of img if needed-->
+    <figure class="lg:py-10"><img src="../../static/assets/shop-svgrepo-com.svg" alt="startup" class=" w-[100px] h-[100px] py-2 lg:w-44 lg:h-44 lg:p-4"/></figure>
+    <div class="card-body p-4 lg:p-8">
+      <h2 class="card-title text-lg lg:text-xl">Shop</h2>
+      <!-- gausah panjang-panjang descnya-->
+      <p class="text-[14px] lg:text-[16px]">We need aditional funds to keep developing and running our website so we can help more great minds and innovators around the world!</p>
+      <p class="font-semibold text-[14px] lg:text-[16px] mb-10">Help us spread our impact, buy our merchandise 😊</p>
+      <div class="card-actions justify-end">
+        <!-- make sure the url is correct-->
+        <a href="/shop" target="__blank" class="btn btn-primary mt-1">open in new tab</a>
+      </div>
+    </div>
+  </div>
+  <!-- card --> 
+  <div class="card lg:card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[300px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
+    <!-- just change the width and height of img if needed-->
+    <figure class="lg:py-10"><img src="../../static/assets/calendar-svgrepo-com.svg" alt="startup" class=" ml-3 w-[100px] h-[100px] lg:w-[150px] lg:h-[150px] p-4"/></figure>
+    <div class="card-body p-4 lg:p-8">
+      <h2 class="card-title text-lg lg:text-xl">Events</h2>
+      <!-- gausah panjang-panjang descnya-->
+      <p class="text-[14px] lg:text-[16px]">Events based feature where anybody can join and create any events or attraction related to tech and business with special show such as talkshow or workshop. </p>
+      <p class="font-semibold text-[14px] lg:text-[16px] mb-10">Don't be a FOMO, join us now!</p>
+      <div class="card-actions justify-end">
+        <!-- make sure the url is correct-->
+        <a href="/events" target="__blank" class="btn btn-primary mt-1">open in new tab</a>
+      </div>
+    </div>
+  </div>
+  <!-- card --> 
+  <div class="card lg:card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[300px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
+    <!-- just change the width and height of img if needed-->
+    <figure class="lg:py-10"><img src="../../static/assets/news.svg" alt="startup" class=" ml-3 w-[100px] h-[100px] lg:w-[150px] lg:h-[150px] p-4"/></figure>
+    <div class="card-body p-4 lg:p-8">
+      <h2 class="card-title text-lg lg:text-xl">News</h2>
+      <!-- gausah panjang-panjang descnya-->
+      <p class="text-[14px] lg:text-[16px]">News based feature where anybody can read any topics or headline related to tech, business, and startup.</p>
+      <p class="font-semibold text-[14px] lg:text-[16px] mb-10">Your Vision. Our Future</p>
+      <div class="card-actions justify-end">
+        <!-- make sure the url is correct-->
+        <a href="/news" target="__blank" class="btn btn-primary mt-1">open in new tab</a>
+      </div>
+    </div>
+  </div>
+  <!-- card --> 
+  <div class="card lg:card-side bg-base-100 hover:bg-gray-100 shadow-xl w-[300px] md:w-[500px] lg:w-[49%] transition duration-100 flex-shrink-0 lg:flex-shrink-1">
+    <!-- just change the width and height of img if needed-->
+    <figure class="lg:py-10"><img src="../../static/assets/courses.svg" alt="startup" class=" ml-3 w-[100px] h-[100px] lg:w-[150px] lg:h-[150px] p-4"/></figure>
+    <div class="card-body p-4 lg:p-8">
+      <h2 class="card-title text-lg lg:text-xl">Courses</h2>
+      <!-- gausah panjang-panjang descnya-->
+      <p class="text-[14px] lg:text-[16px]">Curated and selected free courses where people can learn more about business, startup, and technology.</p>
+      <p class="font-semibold text-[14px] lg:text-[16px] mb-10">Let's become a non-stop learner! 🧠</p>
+      <div class="card-actions justify-end">
+        <!-- make sure the url is correct-->
+        <a href="/courses" target="__blank" class="btn btn-primary mt-1">open in new tab</a>
+      </div>
+    </div>
+  </div>
+  
+ </div>
+  
+</section>
+</main>
+{%endblock content%}
+

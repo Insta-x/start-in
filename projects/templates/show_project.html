@@ -1,0 +1,153 @@
+{% extends 'projects_base.html' %}
+{% load static %}
+
+{% block meta %}
+<script>
+    $(document).ready(function(){
+        $('#like-{{ project.pk }}')
+            .click(() => {
+                $.ajax({
+                    url: "{% url 'projects:like_project' %}",
+                    type: 'post',
+                    data: {'id' : '{{ project.pk }}'},
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("X-CSRFToken", getCookie("csrftoken"));
+                    },
+                    success: (data) => {
+                        $('#like-' + '{{ project.pk }}')
+                            .html("<img src=\'{% static 'projects/like-icon.svg' %}\'/>" + data[0].fields.like_count)
+                        
+                        if (data[0].fields.is_liked) {
+                            $('#like-' + '{{ project.pk }}').removeClass('btn-outline-secondary').addClass('btn-outline-primary')
+                        }
+                        else {
+                            $('#like-' + '{{ project.pk }}').removeClass('btn-outline-primary').addClass('btn-outline-secondary')
+                        }
+                    }
+                })
+            });
+        
+        $( "form#donate-form" ).submit(function( event ) {
+            // alert( "Handler for .submit() called." );
+            event.preventDefault();
+
+            var actionurl = event.currentTarget.action;
+
+            $.ajax({
+                    url: actionurl,
+                    type: 'post',
+                    dataType: 'json',
+                    data: $("form#donate-form").serialize(),
+                    success: function(data) {
+                        update_donation();
+                        $('#donate-modal').modal('hide');
+                    },
+                    error: function(){
+                        alert("ERROR");
+                    }
+            });
+        });
+        
+        update_donation()
+    });
+
+    function update_donation() {
+        $.get("{% url 'projects:get_donations' %}", 'project_id={{ project.pk }}', (data) => {
+            console.log(data);
+            $('#donation-amount').text('Rp' + data.donation_sum + ' ');
+            $('.progress-bar')
+                .attr('style', 'width:' + data.donation_sum / {{ project.fields.donation_target }} * 100 + '%;')
+            $('#donators-list').empty();
+            data.donators.forEach(element => {
+                $('#donators-list')
+                    .append($('<div class="border-top mt-2"></div>').text(element.username + ' donated Rp' + element.amount + '!'))
+            });
+            if (data.donators.length == 0) {
+                $('#donator-div').hide();
+            }
+            else {
+                $('#donator-div').show();
+            }
+        });
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+</script>
+{% endblock meta %}
+
+{% block navbar %}
+{% endblock navbar %}
+
+{% block content %}
+<main class="d-flex flex-nowrap">
+    <div class="d-flex flex-column w-100 m-5">
+        <a href="/projects/" class="btn btn-outline-primary mb-5" style="max-width: 80px;">Back</a>
+        <div class="d-flex justify-content-between">
+            <div class="d-flex flex-column align-items-left">
+                <h1>{{ project.fields.title }}</h1>
+                <div class="d-flex flex-column mt-2">
+                    <h5 class="text-muted">Proposed by: {{ project.fields.owner_username }}</h5>
+                    <h5 class="text-muted">Proposed on: {{ project.fields.time_created }}</h5>
+                </div>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+                <button type="button" class="btn {% if project.fields.is_liked %}btn-outline-primary{% else %}btn-outline-secondary{% endif %} btn-rounded btn-sm like-btn" id="like-{{ project.pk }}">
+                    <img src="{% static 'projects/like-icon.svg' %}"/> {{ project.fields.like_count }}
+                </button>
+                {% if logged_in %}
+                    {% if not project.fields.is_done %}
+                        <button type="button" class="btn btn-primary btn-rounded btn-sm mt-3" data-bs-toggle="modal" data-bs-target="#donate-modal">
+                            Donate
+                        </button>
+                    {% endif %}
+                    {% else %}
+                    <a href="{% url 'authentication:login' %}" class="btn btn-warning btn-rounded btn-sm mt-3">
+                        Login to donate
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="mt-5">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div class="mt-3"> <span class="text1" id="donation-amount">Rp{{ project.fields.current_donation }} </span><span class="text2">/ Rp{{ project.fields.donation_target }}</span> </div>
+        </div>
+        <div class="d-flex flex-row mt-5">
+            <div class="d-flex w-100">
+                {{ project.fields.description }}
+            </div>
+            <div class="d-flex flex-column flex-fill align-items-start border border-2 rounded-3 p-3" id="donator-div" style="max-width: 400px;">
+                <h3>Donator:</h3>
+                <div id="donators-list">
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if not project.fields.is_done %}
+        <div class="modal fade" id="donate-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Donate to this project</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{% url 'projects:donate_project' %}" class="form-donate" id="donate-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="project" id="id_project" value="{{ project.pk }}">
+                            <input class='form-control' type="number" name="amount" value="1" min="1" max="9223372036854775807" required="" id="id_amount">
+                            <input class="btn btn-primary mt-3" id="donate-submit" style="width: 100%;" type="submit" name="submit" value="Donate"/>
+                        </form>
+                        <button type="button" class="btn btn-danger w-100 mt-2" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</main>
+{% endblock content %}

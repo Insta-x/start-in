@@ -1,0 +1,29 @@
+
+<style>
+  body {
+    margin: auto;
+    width: 30%;
+    padding: 10px;
+    background-image: url('../static/image/address.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    /* background-position: center; */
+  }
+
+  
+</style>
+
+
+<br><br><br>
+
+
+<div class="jumbotron text-center">
+    <h1 class="display-3">Thank You, {{username}}!</h1>
+    <p class="lead">Your purchase meant a lot for us 😊</p>
+    <p class="lead"><strong>Please check your email</strong> to see your shipment progress.</p>
+    <hr>
+
+    <p class="lead">
+      <a class="btn btn-primary btn-sm" href="{% url 'shop:homepage' %}" role="button">Continue to homepage</a>
+    </p>
+  </div>
