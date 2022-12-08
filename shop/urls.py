@@ -13,6 +13,9 @@ urlpatterns = [
     path('checkout', views.checkout, name = 'checkout'),
     path('add-address', views.add_address, name = 'add_address'),
     path('order-done',views.order_done,name='done'),
+
+    # Tambahin url json
+    path('json/', views.request_json, name='show_json')
     
     
 

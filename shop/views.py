@@ -13,6 +13,9 @@ from django.contrib.auth.decorators import login_required
 
 from authentication.forms import NormalUserCreationForm
 
+from django.http import HttpResponse
+from django.core import serializers
+
 # Create your views here.
 
 # Fungsi register, login, logout
@@ -196,5 +199,11 @@ def order_done(request):
         'username' : request.user.username
     }
     return render(request, 'done.html', context)
+
+
+# Membuat sebuah fungsi yang menerima parameter request (JSON)
+def request_json(request):
+    data = Product.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 
