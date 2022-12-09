@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import show_projects, show_project, get_projects, get_user_projects, get_donations
+from .views import show_projects, show_project, get_project, get_projects, get_user_projects, get_donations
 from .views import create_project, edit_project, delete_project, publish_project, like_project, donate_project, done_project
 
 app_name = 'projects'
@@ -7,7 +7,8 @@ app_name = 'projects'
 urlpatterns = [
     path('', show_projects, name='show_projects'),
     path('get-projects/', get_projects, name='get_projects'),
-    path('get-user-projects', get_user_projects, name='get_user_projects'),
+    path('get-user-projects/', get_user_projects, name='get_user_projects'),
+    path('api/project/<int:id>', get_project, name='get_project'),
     path('like-project/', like_project, name='like_project'),
     path('project/<int:id>', show_project, name='show_project'),
     path('edit/<int:id>', edit_project, name='edit_project'),

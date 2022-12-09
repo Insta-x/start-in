@@ -54,6 +54,11 @@ def create_project(request):
 
     return render(request, 'create_project.html', context)
 
+def get_project(request, id):
+    project = Project.objects.get(pk=id)
+    
+    return HttpResponse(json.dumps(encode_project(project, request.user.id)), content_type='application/json')
+
 def get_projects(request):
     data = Project.objects.filter(is_published=True).filter(title__icontains=request.GET.get('search')).annotate(like_count=Count('liked_by')).order_by('-like_count')
 
