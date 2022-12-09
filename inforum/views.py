@@ -49,7 +49,7 @@ def get_forum(request, forum_id):
     #TODO:return data and render template html
     return HttpResponse(serializers.serialize("json", forum), content_type="application/json")
 
-@login_required(login_url="/auth/login")
+#@login_required(login_url="/auth/login")
 def add_forum(request):
     if request.method == "POST":
 
@@ -63,7 +63,7 @@ def add_forum(request):
 
     return HttpResponse("only POST method allowd!")
 
-@login_required(login_url="/auth/login")
+#@login_required(login_url="/auth/login")
 def add_comment(request, forum_id):
     if request.method == "POST":
 
@@ -96,7 +96,7 @@ def delete_comment(request,forum_id, comment_id):
 
     return HttpResponse("only DELETE method allowd!")
 
-@login_required(login_url="/auth/login")
+#@login_required(login_url="/auth/login")
 def delete_forum(request,forum_id):
     if request.method == "DELETE":
 
