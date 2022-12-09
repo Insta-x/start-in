@@ -38,10 +38,10 @@ def create_project(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
-            new_task = form.save(commit=False)
-            new_task.user = request.user
-            new_task.save()
-            form.save_m2m()
+            new_project = form.save(commit=False)
+            new_project.user = request.user
+            new_project.save()
+            new_project.save_m2m()
             return HttpResponseRedirect(reverse('projects:show_projects'))
     else:
         form = ProjectForm()
@@ -53,16 +53,6 @@ def create_project(request):
     }
 
     return render(request, 'create_project.html', context)
-
-def get_projects(request):
-    data = Project.objects.filter(is_published=True).filter(title__icontains=request.GET.get('search')).annotate(like_count=Count('liked_by')).order_by('-like_count')
-
-    return HttpResponse(json.dumps(encode_projects(data, request.user.id)), content_type='application/json')
-
-def get_user_projects(request):
-    data = Project.objects.filter(user=request.user).order_by('-time_created')
-
-    return HttpResponse(json.dumps(encode_projects(data, request.user.id)), content_type='application/json')
 
 def edit_project(request, id):
     project = Project.objects.get(pk=id)
@@ -88,6 +78,68 @@ def edit_project(request, id):
 
     return render(request, 'edit_project.html', context)
 
+@login_required(login_url='/auth/login/')
+def api_create_project(request):
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            new_project = form.save(commit=False)
+            new_project.user = request.user
+            new_project.save()
+            new_project.save_m2m()
+            return JsonResponse({
+                'status' : 'Success',
+            }, status=200)
+    
+    return JsonResponse({
+        'status' : 'Failed',
+        'Message' : 'Invalid Requests'
+    }, status=401)
+
+def api_edit_project(request, id):
+    project = Project.objects.get(pk=id)
+
+    if not project:
+        return JsonResponse({
+            'status' : 'Failed',
+            'Message' : 'Project doesn\'t exists'
+        }, status=404)
+
+    if project.is_published:
+        return JsonResponse({
+            'status' : 'Failed',
+            'Message' : 'Forbidden action'
+        }, status=403)
+
+    if request.method == 'POST':
+        project.title = request.POST.get('title')
+        project.description = request.POST.get('description')
+        project.donation_target = request.POST.get('donation_target')
+        project.save()
+        return JsonResponse({
+            'status' : 'Success',
+        }, status=200)
+    
+    return JsonResponse({
+        'status' : 'Failed',
+        'Message' : 'Invalid Requests'
+    }, status=401)
+
+def get_project(request, id):
+    project = Project.objects.get(pk=id)
+    
+    return HttpResponse(json.dumps(encode_project(project, request.user.id)), content_type='application/json')
+
+def get_projects(request):
+    data = Project.objects.filter(is_published=True).filter(title__icontains=request.GET.get('search')).annotate(like_count=Count('liked_by')).order_by('-like_count')
+
+    return HttpResponse(json.dumps(encode_projects(data, request.user.id)), content_type='application/json')
+
+def get_user_projects(request):
+    data = Project.objects.filter(user=request.user).order_by('-time_created')
+
+    return HttpResponse(json.dumps(encode_projects(data, request.user.id)), content_type='application/json')
+
 def delete_project(request):
     project = Project.objects.get(pk=request.POST.get('id'))
 
@@ -106,7 +158,6 @@ def publish_project(request):
     project.is_published = True
     project.save()
     return HttpResponse(json.dumps([encode_project(project, request.user.id), ]), content_type='application/json')
-
 
 @login_required(login_url='/auth/login/')
 def like_project(request):

@@ -49,7 +49,7 @@ def get_forum(request, forum_id):
     #TODO:return data and render template html
     return HttpResponse(serializers.serialize("json", forum), content_type="application/json")
 
-@login_required(login_url="/auth/login")
+#@login_required(login_url="/auth/login")
 def add_forum(request):
     if request.method == "POST":
 
@@ -63,7 +63,24 @@ def add_forum(request):
 
     return HttpResponse("only POST method allowd!")
 
-@login_required(login_url="/auth/login")
+
+def add_forum_json(request):
+    if request.method == "POST":
+
+        data = json.loads(request.body)
+        user = User.objects.filter(username = data['username'])[0];
+        #TODO: validate request payload
+        newForum = Forum(user_id=user, username=user.username);
+        newForum.title = data["title"];
+        newForum.content =data["content"];
+        newForum.category= data["category"];
+        newForum.save();
+        return HttpResponse(serializers.serialize("json", [newForum]), content_type="application/json")
+
+    return HttpResponse("only POST method allowd!")
+
+
+#@login_required(login_url="/auth/login")
 def add_comment(request, forum_id):
     if request.method == "POST":
 
@@ -84,7 +101,7 @@ def get_comment(request, forum_id):
 
         return HttpResponse(serializers.serialize("json", comments), content_type="application/json")
 
-@login_required(login_url="/auth/login")
+#@login_required(login_url="/auth/login")
 def delete_comment(request,forum_id, comment_id):
     if request.method == "DELETE":
 
@@ -96,7 +113,7 @@ def delete_comment(request,forum_id, comment_id):
 
     return HttpResponse("only DELETE method allowd!")
 
-@login_required(login_url="/auth/login")
+#@login_required(login_url="/auth/login")
 def delete_forum(request,forum_id):
     if request.method == "DELETE":
 
