@@ -84,7 +84,7 @@ def get_comment(request, forum_id):
 
         return HttpResponse(serializers.serialize("json", comments), content_type="application/json")
 
-@login_required(login_url="/auth/login")
+#@login_required(login_url="/auth/login")
 def delete_comment(request,forum_id, comment_id):
     if request.method == "DELETE":
 
