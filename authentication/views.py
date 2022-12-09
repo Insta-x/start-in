@@ -45,7 +45,7 @@ def logout_user(request):
     response.delete_cookie('last_login')
     return response
 
-def login_api(request):
+def api_login(request):
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(username=username, password=password)
