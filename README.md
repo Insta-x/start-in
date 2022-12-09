@@ -1,4 +1,4 @@
-[Link Aplikasi Heroku](https://start-in.herokuapp.com/)
+[Link Aplikasi Railway](https://start-in.up.railway.app/)
 
 testing, building another branch from uud
 
