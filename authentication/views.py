@@ -65,8 +65,14 @@ def api_login(request):
 
 def api_logout(request):
     logout(request)
-    return JsonResponse({
-        "status": True,
-        "message": "Successfully Logout In!"
-        # Insert any extra data if you want to pass data to Flutter
-    }, status=200)
+    if not request.user.is_authenticated:
+        return JsonResponse({
+            "status": True,
+            "message": "Successfully Logout In!"
+            # Insert any extra data if you want to pass data to Flutter
+        }, status=200)
+    else:
+        return JsonResponse({
+            "status": False,
+            "message": "Failed to Logout."
+        }, status=401)
