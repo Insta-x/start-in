@@ -14,6 +14,7 @@ class Product(models.Model):
     product_id = models.UUIDField(default=uuid.uuid4, primary_key=True, unique=True,editable=False) # ID Unique
     image = models.ImageField()
     category = models.CharField(max_length=20,default="product")
+    description = models.CharField()
 
     def __str__(self):
         return self.name
