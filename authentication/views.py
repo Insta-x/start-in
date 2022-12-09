@@ -1,5 +1,3 @@
-from multiprocessing import context
-from sqlite3 import Date
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core import serializers
@@ -46,3 +44,21 @@ def logout_user(request):
     response = HttpResponseRedirect(reverse('authentication:login'))
     response.delete_cookie('last_login')
     return response
+
+def api_login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        login(request, user)
+        # Redirect to a success page.
+        return JsonResponse({
+            "status": True,
+            "message": "Successfully Logged In!"
+            # Insert any extra data if you want to pass data to Flutter
+        }, status=200)
+    else:
+        return JsonResponse({
+            "status": False,
+            "message": "Failed to Login, check your email/password."
+        }, status=401)
