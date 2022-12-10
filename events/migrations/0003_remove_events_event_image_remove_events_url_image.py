@@ -14,8 +14,4 @@ class Migration(migrations.Migration):
             model_name='events',
             name='event_image',
         ),
-        migrations.RemoveField(
-            model_name='events',
-            name='url_image',
-        ),
     ]

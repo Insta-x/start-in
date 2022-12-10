@@ -24,7 +24,6 @@ class Migration(migrations.Migration):
                 ('description', models.TextField()),
                 ('schedule', models.CharField(max_length=50)),
                 ('location', models.CharField(max_length=100)),
-                ('url_image', models.TextField(default='/')),
                 ('user', models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
