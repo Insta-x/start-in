@@ -45,6 +45,25 @@ def logout_user(request):
     response.delete_cookie('last_login')
     return response
 
+def api_register(request):
+    form = NormalUserCreationForm()
+
+    if request.method == "POST":
+        # print("POST", request.POST)
+        form = NormalUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return JsonResponse({
+                "status": True,
+                "message": "Successfully Registered!"
+                # Insert any extra data if you want to pass data to Flutter
+            }, status=200)
+    
+    return JsonResponse({
+        "status": False,
+        "message": "Failed to Register, check your data."
+    }, status=401)
+
 def api_login(request):
     username = request.POST['username']
     password = request.POST['password']
