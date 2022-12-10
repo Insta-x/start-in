@@ -5,6 +5,11 @@ import json
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 
+# Ambil data json nya
+def get_all_events(request):
+    events = Events.objects.all();
+    return HttpResponse(serializers.serialize("json", events ), content_type="application/json")
+
 def show_events(request):
     data_events = Events.objects.all()
 
