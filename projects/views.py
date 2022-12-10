@@ -41,7 +41,7 @@ def create_project(request):
             new_project = form.save(commit=False)
             new_project.user = request.user
             new_project.save()
-            new_project.save_m2m()
+            form.save_m2m()
             return HttpResponseRedirect(reverse('projects:show_projects'))
     else:
         form = ProjectForm()
@@ -86,7 +86,7 @@ def api_create_project(request):
             new_project = form.save(commit=False)
             new_project.user = request.user
             new_project.save()
-            new_project.save_m2m()
+            form.save_m2m()
             return JsonResponse({
                 'status' : 'Success',
             }, status=200)
@@ -147,7 +147,9 @@ def delete_project(request):
         return HttpResponse(status=403)
     
     project.delete()
-    return HttpResponse('Success', content_type='text/plain')
+    return JsonResponse({
+        'status' : 'Success',
+    }, status=200)
 
 def publish_project(request):
     project = Project.objects.get(pk=request.POST.get('id'))
