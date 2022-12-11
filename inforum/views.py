@@ -2,7 +2,7 @@ from unicodedata import category
 from django.contrib.auth import logout
 from django.shortcuts import render;
 from .models import *;
-from django.http import HttpResponse, HttpResponseRedirect;
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse;
 from django.core import serializers;
 from django.shortcuts import redirect;
 from django.contrib import messages;
@@ -109,7 +109,11 @@ def delete_comment(request,forum_id, comment_id):
         forum = Forum.objects.get(id=forum_id);
         queryComment = Comment.objects.get(from_user=request.user, forum=forum,id=comment_id)
         queryComment.delete();
-        return HttpResponse("successfully deleted your comment")
+        return JsonResponse({
+            "status": True,
+            "message": "comment has been deleted"
+            # Insert any extra data if you want to pass data to Flutter
+        }, status=200)
 
     return HttpResponse("only DELETE and POST method allowd!")
 
