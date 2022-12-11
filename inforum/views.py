@@ -103,7 +103,7 @@ def get_comment(request, forum_id):
 
 #@login_required(login_url="/auth/login")
 def delete_comment(request,forum_id, comment_id):
-    if request.method == "DELETE" or request.method == "POST:
+    if request.method == "DELETE" or request.method == "POST":
 
         #TODO: validate request payload
         forum = Forum.objects.get(id=forum_id);
@@ -115,7 +115,7 @@ def delete_comment(request,forum_id, comment_id):
 
 #@login_required(login_url="/auth/login")
 def delete_forum(request,forum_id):
-    if request.method == "DELETE" or request.method == "POST:
+    if request.method == "DELETE" or request.method == "POST":
 
         #TODO: validate request payload
         forum = Forum.objects.filter(id=forum_id).first();
