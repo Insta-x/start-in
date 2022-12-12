@@ -206,4 +206,22 @@ def request_json(request):
     data = Product.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
+# Fungsi tambah alamat dari flutter
+@login_required(login_url='/auth/login/')
+def api_add_address(request):
+    if request.method == 'POST':
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            DeliveryAdress.objects.create(street=form.cleaned_data["street"], city=form.cleaned_data["city"], 
+            province=form.cleaned_data["province"], postal=form.cleaned_data["postal"], user=request.user)
+
+            return JsonResponse({
+                'status' : 'Success',
+            }, status=200)
+
+        return JsonResponse({
+            'status' : 'Failed',
+            'Message' : 'Invalid Requests'
+        }, status=401)
+
 
