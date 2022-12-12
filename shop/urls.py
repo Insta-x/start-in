@@ -15,7 +15,8 @@ urlpatterns = [
     path('order-done',views.order_done,name='done'),
 
     # Tambahin url json
-    path('json/', views.request_json, name='show_json')
+    path('json/', views.request_json, name='show_json'),
+    path('address_json/', views.request_address, name='show_address' ),
     
     
 
