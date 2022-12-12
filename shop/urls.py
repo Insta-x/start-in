@@ -17,6 +17,7 @@ urlpatterns = [
     # Tambahin url json
     path('json/', views.request_json, name='show_json'),
     path('address_json/', views.request_address, name='show_address' ),
+    path('add_address_flutter',views.api_add_address, name='add_address_flutter')
     
     
 
