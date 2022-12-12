@@ -224,4 +224,9 @@ def api_add_address(request):
             'Message' : 'Invalid Requests'
         }, status=401)
 
+def request_address(request):
+    data = DeliveryAdress.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+
 
